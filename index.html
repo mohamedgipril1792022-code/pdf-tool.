@@ -40,7 +40,7 @@ body{display:flex;flex-direction:column}
 <button role="tab" data-k="xl" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18l-7 8v7l-4 2v-9z"/></svg><span>فلتر الإكسيل</span></button>
 <button role="tab" data-k="sp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/></svg><span>تقسيم الأحكام</span></button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ٣</b><i>·</i>٢ نوفمبر ٢٠٢٦</span></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ٤</b><i>·</i>٣ نوفمبر ٢٠٢٦</span></div>
 <div id="sub" hidden><button data-k="xm" aria-selected="false">فلتر المرافعة</button><button data-k="xa" aria-selected="false">فلتر الأحكام</button></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -3137,18 +3137,18 @@ function persist(){
   try{
     if(!srcFile)return;
     const c={};
-    for(const k in cropCache){const v=cropCache[k];if(/^[ti]\d+$/.test(k)&&v&&(k[0]==='t'||v.no))c[k]=k[0]==='t'?{cat:v.cat,sc:v.sc,manual:!!v.manual,txt:v.txt,src:v.src}:{no:v.no,yr:v.yr||null,q:!!v.q,rl:!!v.rl}}
+    for(const k in cropCache){const v=cropCache[k];if(/^[ti]\d+$/.test(k)&&v&&(k[0]==='t'||v.no))c[k]=k[0]==='t'?{cat:v.cat,sc:v.sc,manual:!!v.manual,txt:v.txt,src:v.src}:{no:v.no,yr:v.yr||null,q:!!v.q,rl:!!v.rl,pl:v.pl}}
     localStorage.setItem(saveKey(srcFile,N),JSON.stringify({v:1,t:Date.now(),c}));
   }catch(e){}
 }
 /* ===== الرولات: رولات المرافعة (متنوع / تسجيل حسب اسم الشيت) + رول الحكم ===== */
-let ROLL={m:new Set(),r:new Set(),j:new Map(),files:{m:[],j:[]}};
-function rollSave(){try{localStorage.setItem('sp1:rolls',JSON.stringify({m:[...ROLL.m],r:[...ROLL.r],j:[...ROLL.j],files:ROLL.files}))}catch(e){}}
-function rollLoad(){try{const o=JSON.parse(localStorage.getItem('sp1:rolls')||'null');if(o){ROLL={m:new Set(o.m||[]),r:new Set(o.r||[]),j:new Map(o.j||[]),files:o.files||{m:[],j:[]}}}}catch(e){}}
+let ROLL={m:new Set(),r:new Set(),j:new Map(),rows:[],files:{m:[],j:[]}};
+function rollSave(){try{localStorage.setItem('sp1:rolls',JSON.stringify({m:[...ROLL.m],r:[...ROLL.r],j:[...ROLL.j],rows:ROLL.rows,files:ROLL.files}))}catch(e){}}
+function rollLoad(){try{const o=JSON.parse(localStorage.getItem('sp1:rolls')||'null');if(o){ROLL={m:new Set(o.m||[]),r:new Set(o.r||[]),j:new Map(o.j||[]),rows:o.rows||[],files:o.files||{m:[],j:[]}}}}catch(e){}}
 const rollDigits=v=>String(v==null?'':v).replace(/[٠-٩]/g,d=>d.charCodeAt(0)-1632).replace(/[۰-۹]/g,d=>d.charCodeAt(0)-1776);
 // sheets: [{name, rows:[[cell,...],...]}] — بتستخرج رقم+سنة كل صف حسب عناوين الأعمدة
 function rollParse(sheets,kind){
-  const out={m:new Set(),r:new Set(),j:new Map(),n:0};
+  const out={m:new Set(),r:new Set(),j:new Map(),rows:[],n:0};
   for(const sh of sheets){
     const rows=sh.rows||[];let hi=-1,cn=-1,cy=-1,ct=-1,cp=-1;
     for(let i=0;i<Math.min(rows.length,15)&&hi<0;i++){
@@ -3159,12 +3159,19 @@ function rollParse(sheets,kind){
     if(hi<0)continue;
     const head=sh.name+' '+rows.slice(0,6).map(r=>(r||[])[0]||'').join(' ');
     const cat=/متنو/.test(sh.name)?'m':/تسجيل/.test(sh.name)?'r':/متنو/.test(head)?'m':/تسجيل/.test(head)?'r':null;
+    const dm=rollDigits(rows.slice(0,6).map(r=>(r||[])[0]||'').join(' ')).match(/(\d{4})\s*[\/\-.]+\s*(\d{1,2})\s*[\/\-.]+\s*(\d{1,2})/);
+    const dt=dm?(dm[1]+'-'+(+dm[2])+'-'+(+dm[3])):'';
     for(let i=hi+1;i<rows.length;i++){
       const r=rows[i]||[],no=parseInt(rollDigits(r[cn]),10),yr=parseInt(rollDigits(r[cy]),10);
       if(!(no>0)||!(yr>=60&&yr<=99))continue;
       const k=no+'/'+yr;out.n++;
       if(kind==='m'){if(cat)out[cat].add(k)}
-      else out.j.set(k,[ct>=0?String(r[ct]||'').trim():'',cp>=0?String(r[cp]||'').trim():'']);
+      else{
+        const ty=ct>=0?String(r[ct]||'').trim():'',who=cp>=0?String(r[cp]||'').trim():'';
+        out.j.set(k,[ty,who]);
+        if(!out._s)out._s=new Set();const _k=[dt,String(r[1]==null?'':r[1]).trim().toUpperCase(),parseInt(rollDigits(r[0]),10)||0,String(no),String(yr)].join('|');if(out._s.has(_k))continue;out._s.add(_k);
+        out.rows.push([dt,String(r[1]==null?'':r[1]).trim().toUpperCase(),parseInt(rollDigits(r[0]),10)||0,String(no),String(yr),who,ty]);
+      }
     }
   }
   return out;
@@ -3187,7 +3194,7 @@ async function rollAdd(files,kind){
       const wb=X.read(await f.arrayBuffer(),{type:'array'});
       const sheets=wb.SheetNames.map(n=>({name:n,rows:X.utils.sheet_to_json(wb.Sheets[n],{header:1,raw:true,defval:''})}));
       const o=rollParse(sheets,kind);
-      o.m.forEach(k=>ROLL.m.add(k));o.r.forEach(k=>ROLL.r.add(k));o.j.forEach((v,k)=>ROLL.j.set(k,v));
+      o.m.forEach(k=>ROLL.m.add(k));o.r.forEach(k=>ROLL.r.add(k));o.j.forEach((v,k)=>ROLL.j.set(k,v));if(kind==='j'){const seen=new Set(ROLL.rows.map(r=>r.slice(0,5).join('|')));o.rows.forEach(r=>{const k=r.slice(0,5).join('|');if(!seen.has(k)){seen.add(k);ROLL.rows.push(r)}})}
       ROLL.files[kind].push(f.name+' ('+fmt(o.n)+')');
     }catch(e){info.textContent='ما قدرتش أقرا '+f.name;}
   }
@@ -3254,6 +3261,46 @@ async function topicByRoll(g,row){
   if(!c)return null;
   return cropCache['t'+g.start]={cat:c,sc:0,src:'roll'};
 }
+// ربط أحكام الملف بصفوف رول الحكم: اسم الملف (تاريخ + عضو) بيحدد صفوف العضو، والأرقام المقروءة بتثبّت الربط
+function rollMatchCore(gr,rows){
+  const ham=(a,b)=>{if(a.length!==b.length)return 9;let h=0;for(let i=0;i<a.length;i++)if(a[i]!==b[i])h++;return h};
+  const out=gr.map(()=>({j:-1,m:''}));
+  gr.forEach((rd,i)=>{
+    const ex=new Map(),nr=new Map();
+    for(const r of rd)rows.forEach((w,j)=>{const h=ham(r,w.no);if(h===0)ex.set(j,(ex.get(j)||0)+1);else if(h===1)nr.set(j,(nr.get(j)||0)+1)});
+    const top=M=>{const s=[...M.entries()].sort((a,b)=>b[1]-a[1]);return s.length&&(s.length===1||s[0][1]>s[1][1])?s[0][0]:-1};
+    let j=top(ex);if(j>=0){out[i]={j,m:'x'};return}
+    if(!ex.size){j=top(nr);if(j>=0)out[i]={j,m:'n'}}
+  });
+  for(let i=0;i<gr.length;i++){
+    if(out[i].j>=0)continue;
+    let p=i-1;while(p>=0&&out[p].j<0)p--;
+    let n=i+1;while(n<gr.length&&out[n].j<0)n++;
+    const jp=p<0?-1:out[p].j,jn=n>=gr.length?rows.length:out[n].j,cnt=n-p-1;
+    if(jn>jp&&jn-jp-1===cnt)out[i]={j:jp+(i-p),m:'i'};
+  }
+  return out;
+}
+function rollFileInfo(){
+  const nm=rollDigits(baseName()),dm=nm.match(/(\d{4})\s*[-_./]\s*(\d{1,2})\s*[-_./]\s*(\d{1,2})/)||nm.match(/(\d{1,2})\s*[-_./]\s*(\d{1,2})\s*[-_./]\s*(\d{4})/);
+  let d='';if(dm)d=dm[1].length===4?(dm[1]+'-'+(+dm[2])+'-'+(+dm[3])):(dm[3]+'-'+(+dm[2])+'-'+(+dm[1]));
+  const mm=nm.match(/عضو[\s_]*([^\s\-_.()،]+)/);
+  return {d,mem:mm?mm[1].toUpperCase():''};
+}
+function rollApplyFile(){
+  if(!ROLL.rows.length||!groups.length)return 0;
+  const fi=rollFileInfo();if(!fi.d||!fi.mem)return 0;
+  const rows=ROLL.rows.filter(r=>r[0]===fi.d&&r[1]===fi.mem).map(r=>({s:r[2],no:r[3],yr:r[4],who:r[5],ty:r[6]}));
+  if(!rows.length)return 0;
+  const gr=groups.map(g=>{const rd=[];g.pages.forEach(p=>{const r=cropCache['r'+p];if(r&&r.no&&r.no.s)rd.push(r.no.s)});const c=cropCache['i'+g.start];if(c&&c.no&&!c.rl)rd.push(String(c.no));return rd});
+  const res=rollMatchCore(gr,rows);let n=0;
+  res.forEach((r,i)=>{
+    if(r.j<0)return;const w=rows[r.j],g=groups[i];
+    cropCache['i'+g.start]={no:w.no,yr:w.yr,q:r.m==='i',rl:true,pl:w.who};
+    n++;
+  });
+  return n;
+}
 function rollMissing(){
   if(!ROLL.j.size)return 0;
   const seen=new Set();
@@ -3267,7 +3314,7 @@ $('rollMBtn').addEventListener('click',()=>$('rollMF').click());
 $('rollJBtn').addEventListener('click',()=>$('rollJF').click());
 $('rollMF').addEventListener('change',e=>{const fs=[...e.target.files];e.target.value='';if(fs.length)rollAdd(fs,'m')});
 $('rollJF').addEventListener('change',e=>{const fs=[...e.target.files];e.target.value='';if(fs.length)rollAdd(fs,'j')});
-$('rollClr').addEventListener('click',()=>{if(!confirm('مسح كل الرولات المحفوظة؟'))return;ROLL={m:new Set(),r:new Set(),j:new Map(),files:{m:[],j:[]}};rollSave();rollShow()});
+$('rollClr').addEventListener('click',()=>{if(!confirm('مسح كل الرولات المحفوظة؟'))return;ROLL={m:new Set(),r:new Set(),j:new Map(),rows:[],files:{m:[],j:[]}};rollSave();rollShow()});
 rollShow();
 let topicBusy=false;
 // مجمّع عمّال OCR (لحد ٢ بالتوازي)
@@ -3491,7 +3538,9 @@ async function readNums(btn){
       numsOn=true;numPend=[];
       if(fi!==cur)switchTo(fi);else refresh();      // refresh بتبدأ قراءة أرقام الملف ده
       await Promise.all(numPend);
-      numsOn=false;numPend=[];persist();
+      numsOn=false;numPend=[];
+      if(rollApplyFile())refresh();
+      persist();
     }
   }catch(e){}
   finally{
