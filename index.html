@@ -30,6 +30,7 @@ body{display:flex;flex-direction:column}
 </style>
 </head>
 <body>
+<div id="verTag" dir="rtl" style="position:fixed;left:6px;bottom:3px;z-index:99999;font:10px/1.2 sans-serif;color:#8a97a5;opacity:.75;pointer-events:none">النسخة: ٣ · ٢ نوفمبر ٢٠٢٦ · ٠٥:٠٠</div>
 <div id="tabs" role="tablist">
 <button role="tab" data-k="mf" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>المفوضين</span></button>
 <button role="tab" data-k="mr" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M6 21h12M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z"/></svg><span>المرافعة</span></button>
@@ -3133,7 +3134,7 @@ function persist(){
   try{
     if(!srcFile)return;
     const c={};
-    for(const k in cropCache){const v=cropCache[k];if(/^[ti]\d+$/.test(k)&&v&&(k[0]==='t'||v.no))c[k]=k[0]==='t'?{cat:v.cat,sc:v.sc,manual:!!v.manual,txt:v.txt,src:v.src}:{no:v.no,yr:v.yr||null,q:!!v.q}}
+    for(const k in cropCache){const v=cropCache[k];if(/^[ti]\d+$/.test(k)&&v&&(k[0]==='t'||v.no))c[k]=k[0]==='t'?{cat:v.cat,sc:v.sc,manual:!!v.manual,txt:v.txt,src:v.src}:{no:v.no,yr:v.yr||null,q:!!v.q,rl:!!v.rl}}
     localStorage.setItem(saveKey(srcFile,N),JSON.stringify({v:1,t:Date.now(),c}));
   }catch(e){}
 }
@@ -3209,23 +3210,45 @@ function rollNear(inf){
   ROLL.m.forEach(ck);ROLL.r.forEach(ck);ROLL.j.forEach((v,k)=>ck(k));
   const u=[...new Set(hit)];return u.length===1?u[0]:null;
 }
+function rollSuggest(g,inf,row,sg){
+  const w=row&&row.querySelector('.wn');if(!w)return;
+  w.hidden=false;w.textContent='⚠ ممكن '+toAr(sg)+'؟ (من الرول)';w.style.cursor='pointer';
+  w.onclick=()=>{
+    const i2={no:sg,yr:inf.yr,q:false,rl:true};cropCache['i'+g.start]=i2;row._inf=i2;w.hidden=true;w.textContent='⚠ راجع الرقم';
+    const t=rollCat(i2);if(t){cropCache['t'+g.start]={cat:t,sc:0,src:'roll'};setTopicTag(row,cropCache['t'+g.start])}
+    persist();
+    const n0=names[g.start],inp=row.querySelector('input');if((n0===undefined||n0==='')&&inp)inp.value=caseTitle(i2);
+  };
+}
+// الرقم المشكوك فيه بس بيتراجع على الرولات: لو لقيناه بالظبط يبقى مؤكد، ولو فيه رقم قريب بيتقترح
+function rollFix(g,inf,row){
+  if(!inf||!inf.no||!inf.q||!(ROLL.m.size+ROLL.r.size+ROLL.j.size))return inf;
+  const no=parseInt(rollDigits(inf.no),10);let yr=inf.yr?parseInt(rollDigits(inf.yr),10):0;
+  const has=k=>ROLL.m.has(k)||ROLL.r.has(k)||ROLL.j.has(k);
+  if(!yr){                                   // السنة مش مقروءة: لو الرقم له سنة واحدة بس في الرولات ناخدها
+    const ys=new Set();[ROLL.m,ROLL.r,ROLL.j].forEach(S=>S.forEach((v,k)=>{const key=typeof k==='string'?k:v;const[a,b]=String(key).split('/');if(+a===no)ys.add(b)}));
+    if(ys.size===1)yr=+[...ys][0];
+  }
+  if(yr&&has(no+'/'+yr)){
+    inf.yr=String(yr);inf.q=false;inf.rl=true;
+    if(row){row._inf=inf;const w=row.querySelector('.wn');if(w)w.hidden=true}
+    return inf;
+  }
+  const sg=rollNear(inf);
+  if(sg)rollSuggest(g,inf,row,sg);
+  return inf;
+}
 async function topicByRoll(g,row){
   if(!rollOn())return null;
   const old=cropCache['t'+g.start];if(old&&old.manual)return old;
-  const inf=await caseInfoG(g);
+  let inf=await caseInfoG(g);
   if(row&&inf&&inf.no){
     row._inf=inf;const w=row.querySelector('.wn');
     if(w)w.hidden=!inf.q;
+    rollFix(g,inf,row);
   }
   const c=rollCat(inf);
-  if(!c){
-    const sg=rollNear(inf);
-    if(sg&&row){const w=row.querySelector('.wn');if(w){w.hidden=false;w.textContent='⚠ ممكن '+toAr(sg)+'؟';w.style.cursor='pointer';
-      w.onclick=()=>{const i2={no:sg,yr:inf.yr,q:false};cropCache['i'+g.start]=i2;row._inf=i2;w.hidden=true;w.textContent='⚠ راجع الرقم';
-        const t=rollCat(i2);if(t){cropCache['t'+g.start]={cat:t,sc:0,src:'roll'};setTopicTag(row,cropCache['t'+g.start]);sortRows()}persist();
-        const n0=names[g.start],inp=row.querySelector('input');if((n0===undefined||n0==='')&&inp)inp.value=caseTitle(i2)}}}
-    return null;
-  }
+  if(!c)return null;
   return cropCache['t'+g.start]={cat:c,sc:0,src:'roll'};
 }
 function rollMissing(){
@@ -3498,7 +3521,7 @@ function refresh(){
     const cn=r.querySelector('.cn');cn.onclick=()=>zoom(g.start);
     cropNum(g.start).then(u=>{im.src=u.num;im.classList.remove('ph');cn.src=u.cas;cn.classList.add('on')}).catch(()=>{});
     const inpEl=r.querySelector('input');
-    const applyInf=inf=>{r._inf=inf;{const w=r.querySelector('.wn');if(w)w.hidden=!inf.q}const n0=names[g.start];if(inf.no&&(n0===undefined||n0==='')&&document.activeElement!==inpEl)inpEl.value=caseTitle(inf);applyFilter()};
+    const applyInf=inf=>{r._inf=inf;{const w=r.querySelector('.wn');if(w)w.hidden=!inf.q}rollFix(g,inf,r);const n0=names[g.start];if(inf.no&&(n0===undefined||n0==='')&&document.activeElement!==inpEl)inpEl.value=caseTitle(inf);applyFilter()};
     const cinf=cropCache['i'+g.start];
     if(cinf&&cinf.no)applyInf(cinf);            // نتيجة اتقرت قبل كده: نعرضها من غير إعادة قراءة
     if(numsOn)numPend.push(caseInfoG(g).then(applyInf).catch(()=>{}));   // القراءة بس لما أضغط الزرار أو "تلقائي الكل"
