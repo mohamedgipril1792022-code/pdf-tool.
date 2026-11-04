@@ -41,7 +41,7 @@ body{display:flex;flex-direction:column}
 <button role="tab" data-k="sp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/></svg><span>تقسيم الأحكام</span></button>
 <button role="tab" data-k="nk" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="12" height="15" rx="1"/><path d="M4 7v14h12M11 8h6M11 12h6"/></svg><span>النسخ</span></button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ١٦</b><i>·</i>٤ نوفمبر ٢٠٢٦</span></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ١٨</b><i>·</i>٤ نوفمبر ٢٠٢٦</span></div>
 <div id="sub" hidden><button data-k="xm" aria-selected="false">فلتر المرافعة</button><button data-k="xa" aria-selected="false">فلتر الأحكام</button></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -468,6 +468,17 @@ window.addEventListener('afterprint',fit);
 
 // ===== الجلسات: كل ملف له تاريخ، والملفات اللي ليها نفس التاريخ بتتجمع في جلسة لوحدها =====
 let CURD=null,CURS=0;
+const dateFromName=f=>{
+ const cand=[f&&f.name].concat(String((f&&f.webkitRelativePath)||'').split('/').reverse()).filter(Boolean);
+ for(const c of cand){
+  const s=toEn(String(c)).replace(/[\u200e\u200f]/g,'');
+  let m=s.match(/(\d{4})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})(?!\d)/),y,mo,d;
+  if(m){y=+m[1];mo=+m[2];d=+m[3]}
+  else{m=s.match(/(?<!\d)(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);if(m){d=+m[1];mo=+m[2];y=+m[3]}}
+  if(m&&mo>=1&&mo<=12&&d>=1&&d<=31&&y>=2000&&y<=2100)return d+'/'+mo+'/'+y;
+ }
+ return '';
+};
 const sessDate=s=>{s=toEn(s||'').trim();const m=s.match(/(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s};
 const dateKey=s=>{const m=String(s).match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?(+m[3])*10000+(+m[2])*100+(+m[1]):1e9};
 function sessionsOf(){
@@ -500,7 +511,7 @@ $('files').addEventListener('change',async e=>{
   let skipped=0;
   for(const f of fl){
    if(state.files.some(x=>x.name===f.name&&x.size===f.size&&x.mod===f.lastModified)){skipped++;continue}
-   const p=await parseFile(f);p.size=f.size;p.mod=f.lastModified;p.date=sessDate(p.date);state.files.push(p);
+   const p=await parseFile(f);p.size=f.size;p.mod=f.lastModified;p.date=sessDate(p.date||dateFromName(f));state.files.push(p);
   }
   renderFiles();
   const n=state.files.reduce((s,f)=>s+f.rows.length,0);
@@ -1267,6 +1278,17 @@ window.addEventListener('afterprint',fit);
 
 // ===== الجلسات: كل ملف له تاريخ، والملفات اللي ليها نفس التاريخ بتتجمع في جلسة لوحدها =====
 let CURD=null,CURS=0;
+const dateFromName=f=>{
+ const cand=[f&&f.name].concat(String((f&&f.webkitRelativePath)||'').split('/').reverse()).filter(Boolean);
+ for(const c of cand){
+  const s=toEn(String(c)).replace(/[\u200e\u200f]/g,'');
+  let m=s.match(/(\d{4})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})(?!\d)/),y,mo,d;
+  if(m){y=+m[1];mo=+m[2];d=+m[3]}
+  else{m=s.match(/(?<!\d)(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);if(m){d=+m[1];mo=+m[2];y=+m[3]}}
+  if(m&&mo>=1&&mo<=12&&d>=1&&d<=31&&y>=2000&&y<=2100)return d+'/'+mo+'/'+y;
+ }
+ return '';
+};
 const sessDate=s=>{s=toEn(s||'').trim();const m=s.match(/(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s};
 const dateKey=s=>{const m=String(s).match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?(+m[3])*10000+(+m[2])*100+(+m[1]):1e9};
 function sessionsOf(){
@@ -1299,7 +1321,7 @@ $('files').addEventListener('change',async e=>{
   let skipped=0;
   for(const f of fl){
    if(state.files.some(x=>x.name===f.name&&x.size===f.size&&x.mod===f.lastModified)){skipped++;continue}
-   const p=await parseFile(f);p.size=f.size;p.mod=f.lastModified;p.date=sessDate(p.date);state.files.push(p);
+   const p=await parseFile(f);p.size=f.size;p.mod=f.lastModified;p.date=sessDate(p.date||dateFromName(f));state.files.push(p);
   }
   renderFiles();
   const n=state.files.reduce((s,f)=>s+f.rows.length,0);
@@ -1693,6 +1715,16 @@ table.s2 td.cls.ag{background:#f4b6b6}table.s2 td.cls.ok{background:#c6e8c6}tabl
 
 #clsSes{gap:6px}#clsSes button{padding:7px 10px;font-size:.85rem;text-align:center;line-height:1.35}
 #clsSes button.on{background:var(--acc);color:var(--accfg)}
+
+#clsbox{border:1.5px solid var(--acc);border-radius:12px;padding:10px 14px;background:var(--card);box-shadow:0 1px 4px rgba(0,0,0,.15)}
+#clsbox>summary{cursor:pointer;font-weight:800;display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;list-style:none;padding:4px 0}
+#clsbox>summary::-webkit-details-marker{display:none}
+#clsbox>summary::before{content:"▸";color:var(--acc);font-size:1.1rem;transition:transform .15s}
+#clsbox[open]>summary::before{transform:rotate(90deg)}
+#clsbox[open]>summary{border-bottom:1px solid var(--line);margin-bottom:10px;padding-bottom:8px}
+#clsMini{font-weight:700;font-size:.85rem;margin-inline-start:auto;display:flex;gap:6px}
+#clsMini i{font-style:normal;border-radius:999px;padding:1px 9px;color:#000}
+#clsMini .ag{background:#f4b6b6}#clsMini .ok{background:#c6e8c6}#clsMini .un{background:#e2e2e2}
 </style>
 </head>
 <body>
@@ -1712,7 +1744,7 @@ table.s2 td.cls.ag{background:#f4b6b6}table.s2 td.cls.ok{background:#c6e8c6}tabl
   </div>
   <div style="display:none"><label>الأقسام</label><div id="secs" style="display:flex;flex-direction:column;gap:6px"></div></div>
   <div class="row"><input id="sdate" type="hidden"></div>
-  <details id="clsbox" open><summary style="font-weight:700;cursor:pointer;padding:4px 0">تصنيف الأحكام: ضد / صالح / غير معروف</summary>
+  <details id="clsbox"><summary><span>تصنيف الأحكام</span><span id="clsMini"></span></summary>
    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
     <div><label for="cls_ag">حكم «ضد» لو القرار فيه (افصل بفاصلة)</label><input id="cls_ag" type="text"></div>
     <div><label for="cls_un">حكم «غير معروف» لو القرار فيه</label><input id="cls_un" type="text"></div>
@@ -2063,6 +2095,17 @@ window.addEventListener('afterprint',fit);
 
 // ===== الجلسات: كل ملف له تاريخ، والملفات اللي ليها نفس التاريخ بتتجمع في جلسة لوحدها =====
 let CURD=null,CURS=0;
+const dateFromName=f=>{
+ const cand=[f&&f.name].concat(String((f&&f.webkitRelativePath)||'').split('/').reverse()).filter(Boolean);
+ for(const c of cand){
+  const s=toEn(String(c)).replace(/[\u200e\u200f]/g,'');
+  let m=s.match(/(\d{4})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})(?!\d)/),y,mo,d;
+  if(m){y=+m[1];mo=+m[2];d=+m[3]}
+  else{m=s.match(/(?<!\d)(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);if(m){d=+m[1];mo=+m[2];y=+m[3]}}
+  if(m&&mo>=1&&mo<=12&&d>=1&&d<=31&&y>=2000&&y<=2100)return d+'/'+mo+'/'+y;
+ }
+ return '';
+};
 const sessDate=s=>{s=toEn(s||'').trim();const m=s.match(/(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s};
 const dateKey=s=>{const m=String(s).match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?(+m[3])*10000+(+m[2])*100+(+m[1]):1e9};
 function sessionsOf(){
@@ -2095,7 +2138,7 @@ $('files').addEventListener('change',async e=>{
   let skipped=0;
   for(const f of fl){
    if(state.files.some(x=>x.name===f.name&&x.size===f.size&&x.mod===f.lastModified)){skipped++;continue}
-   const p=await parseFile(f);p.size=f.size;p.mod=f.lastModified;p.date=sessDate(p.date);state.files.push(p);
+   const p=await parseFile(f);p.size=f.size;p.mod=f.lastModified;p.date=sessDate(p.date||dateFromName(f));state.files.push(p);
   }
   renderFiles();
   const n=state.files.reduce((s,f)=>s+f.rows.length,0);
@@ -2247,10 +2290,10 @@ const clsTd=r=>{const c=clsOf(r.dec);return `<td class="cls ${c.c}">${c.t}</td>`
 function clsCount(by){const n={ag:0,ok:0,un:0};for(const k in by)for(const r of by[k])n[clsOf(r.dec).c]++;return n}
 function clsLine(n){return `ضد: ${toAr(n.ag)} — صالح: ${toAr(n.ok)} — غير معروف: ${toAr(n.un)}`}
 function drawCls(res){
- const el=$('clsSum');if(!el)return;if(!res||!res.length){el.innerHTML='';return}
+ const el=$('clsSum');if(!el)return;const mi=$('clsMini');if(!res||!res.length){el.innerHTML='';if(mi)mi.innerHTML='';return}
  const T={ag:0,ok:0,un:0};res.forEach(s=>{const n=clsCount(s.by);T.ag+=n.ag;T.ok+=n.ok;T.un+=n.un});
- el.innerHTML=`<div class="clsbig"><span class="b ag">ضد<b>${toAr(T.ag)}</b></span><span class="b ok">صالح<b>${toAr(T.ok)}</b></span><span class="b un">غير معروف<b>${toAr(T.un)}</b></span></div>`+
-  (res.length>1?res.map(s=>`<div class="hint">جلسة ${esc(toAr(s.date||'بدون تاريخ'))}: ${clsLine(clsCount(s.by))}</div>`).join(''):'');
+ if(mi)mi.innerHTML=`<i class="ag">ضد ${toAr(T.ag)}</i><i class="ok">صالح ${toAr(T.ok)}</i><i class="un">غير معروف ${toAr(T.un)}</i>`;
+ el.innerHTML=`<div class="clsbig"><span class="b ag">ضد<b>${toAr(T.ag)}</b></span><span class="b ok">صالح<b>${toAr(T.ok)}</b></span><span class="b un">غير معروف<b>${toAr(T.un)}</b></span></div>`;
 }
 function drawSesCls(){
  const el=$('clsSes');if(!el)return;
@@ -2258,6 +2301,7 @@ function drawSesCls(){
  el.innerHTML=`<button type="button" class="sec${SESF?'':' on'}" data-d="">كل الجلسات</button>`+SL.map(z=>`<button type="button" class="sec${SESF===z.date?' on':''}" data-d="${esc(z.date)}">جلسة ${esc(toAr(z.date||'بدون تاريخ'))}<br>ضد ${toAr(z.cnt.ag)} · صالح ${toAr(z.cnt.ok)} · غير معروف ${toAr(z.cnt.un)}</button>`).join('');
 }
 $('clsSes')&&$('clsSes').addEventListener('click',e=>{const b=e.target.closest('button[data-d]');if(!b)return;SESF=b.dataset.d;if(state.files.length)build()});
+(function(){const b=$('clsbox');if(!b)return;try{b.open=localStorage.getItem('cls1:open')==='1'}catch(e){}b.addEventListener('toggle',()=>{try{localStorage.setItem('cls1:open',b.open?'1':'0')}catch(e){}})})();
 (function(){
  const ag=$('cls_ag'),un=$('cls_un'),on=$('cls_on'),f=$('cls_f');if(!ag)return;
  ag.value=CLC.ag;un.value=CLC.un;on.checked=CLC.on!==false;
@@ -4622,7 +4666,7 @@ async function parseFile(file){
  const used={},seen=new Map();
  const reg=(label,oi,letter)=>{let s=out.secs.find(x=>x.label===label);if(!s){s={label,kind:'',oi,letter};out.secs.push(s)}return s};
  let parsed=[];
- for(const sh of sheets){const p=parseSheet(sh);if(p&&p.rows.length)parsed.push({sh,p})}
+ for(const sh of sheets){const p=parseSheet(sh);if(p&&!p.date){const dn=dateFromName(file);if(dn){p.date=dn;p.rows.forEach(r=>{if(!r.date)r.date=dn})}}if(p&&p.rows.length)parsed.push({sh,p})}
  if(MODE==='ah'){const fr=x=>x.p.rows.filter(r=>r.dec).length/x.p.rows.length;if(parsed.some(x=>fr(x)>=.2))parsed=parsed.filter(x=>fr(x)>=.2)}
  for(const {sh,p} of parsed){
   out.nsheets++;
@@ -4797,6 +4841,17 @@ window.addEventListener('afterprint',fit);
 
 // ===== الجلسات: كل ملف له تاريخ، والملفات اللي ليها نفس التاريخ بتتجمع في جلسة لوحدها =====
 let CURD=null,CURS=0;
+const dateFromName=f=>{
+ const cand=[f&&f.name].concat(String((f&&f.webkitRelativePath)||'').split('/').reverse()).filter(Boolean);
+ for(const c of cand){
+  const s=toEn(String(c)).replace(/[\u200e\u200f]/g,'');
+  let m=s.match(/(\d{4})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})(?!\d)/),y,mo,d;
+  if(m){y=+m[1];mo=+m[2];d=+m[3]}
+  else{m=s.match(/(?<!\d)(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);if(m){d=+m[1];mo=+m[2];y=+m[3]}}
+  if(m&&mo>=1&&mo<=12&&d>=1&&d<=31&&y>=2000&&y<=2100)return d+'/'+mo+'/'+y;
+ }
+ return '';
+};
 const sessDate=s=>{s=toEn(s||'').trim();const m=s.match(/(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s};
 const dateKey=s=>{const m=String(s).match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?(+m[3])*10000+(+m[2])*100+(+m[1]):1e9};
 function sessionsOf(){
@@ -5328,6 +5383,16 @@ table.s2 td.cls.ag{background:#f4b6b6}table.s2 td.cls.ok{background:#c6e8c6}tabl
 
 #clsSes{gap:6px}#clsSes button{padding:7px 10px;font-size:.85rem;text-align:center;line-height:1.35}
 #clsSes button.on{background:var(--acc);color:var(--accfg)}
+
+#clsbox{border:1.5px solid var(--acc);border-radius:12px;padding:10px 14px;background:var(--card);box-shadow:0 1px 4px rgba(0,0,0,.15)}
+#clsbox>summary{cursor:pointer;font-weight:800;display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;list-style:none;padding:4px 0}
+#clsbox>summary::-webkit-details-marker{display:none}
+#clsbox>summary::before{content:"▸";color:var(--acc);font-size:1.1rem;transition:transform .15s}
+#clsbox[open]>summary::before{transform:rotate(90deg)}
+#clsbox[open]>summary{border-bottom:1px solid var(--line);margin-bottom:10px;padding-bottom:8px}
+#clsMini{font-weight:700;font-size:.85rem;margin-inline-start:auto;display:flex;gap:6px}
+#clsMini i{font-style:normal;border-radius:999px;padding:1px 9px;color:#000}
+#clsMini .ag{background:#f4b6b6}#clsMini .ok{background:#c6e8c6}#clsMini .un{background:#e2e2e2}
 </style>
 </head>
 <body>
@@ -5349,7 +5414,7 @@ table.s2 td.cls.ag{background:#f4b6b6}table.s2 td.cls.ok{background:#c6e8c6}tabl
   </div>
   <details id="secbox"><summary style="font-weight:700;cursor:pointer;padding:4px 0">الأقسام</summary><div id="secs" style="display:flex;flex-direction:column;gap:6px;margin-top:8px"></div></details>
   <input id="sdate" type="hidden">
-  <details id="clsbox" open><summary style="font-weight:700;cursor:pointer;padding:4px 0">تصنيف الأحكام: ضد / صالح / غير معروف</summary>
+  <details id="clsbox"><summary><span>تصنيف الأحكام</span><span id="clsMini"></span></summary>
    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
     <div><label for="cls_ag">حكم «ضد» لو القرار فيه (افصل بفاصلة)</label><input id="cls_ag" type="text"></div>
     <div><label for="cls_un">حكم «غير معروف» لو القرار فيه</label><input id="cls_un" type="text"></div>
@@ -5732,7 +5797,7 @@ async function parseFile(file){
  const used={},seen=new Map();
  const reg=(label,oi,letter)=>{let s=out.secs.find(x=>x.label===label);if(!s){s={label,kind:'',oi,letter};out.secs.push(s)}return s};
  let parsed=[];
- for(const sh of sheets){const p=parseSheet(sh);if(p&&p.rows.length)parsed.push({sh,p})}
+ for(const sh of sheets){const p=parseSheet(sh);if(p&&!p.date){const dn=dateFromName(file);if(dn){p.date=dn;p.rows.forEach(r=>{if(!r.date)r.date=dn})}}if(p&&p.rows.length)parsed.push({sh,p})}
  if(MODE==='ah'){const fr=x=>x.p.rows.filter(r=>r.dec).length/x.p.rows.length;if(parsed.some(x=>fr(x)>=.2))parsed=parsed.filter(x=>fr(x)>=.2)}
  for(const {sh,p} of parsed){
   out.nsheets++;
@@ -5912,6 +5977,17 @@ window.addEventListener('afterprint',fit);
 
 // ===== الجلسات: كل ملف له تاريخ، والملفات اللي ليها نفس التاريخ بتتجمع في جلسة لوحدها =====
 let CURD=null,CURS=0;
+const dateFromName=f=>{
+ const cand=[f&&f.name].concat(String((f&&f.webkitRelativePath)||'').split('/').reverse()).filter(Boolean);
+ for(const c of cand){
+  const s=toEn(String(c)).replace(/[\u200e\u200f]/g,'');
+  let m=s.match(/(\d{4})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})(?!\d)/),y,mo,d;
+  if(m){y=+m[1];mo=+m[2];d=+m[3]}
+  else{m=s.match(/(?<!\d)(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);if(m){d=+m[1];mo=+m[2];y=+m[3]}}
+  if(m&&mo>=1&&mo<=12&&d>=1&&d<=31&&y>=2000&&y<=2100)return d+'/'+mo+'/'+y;
+ }
+ return '';
+};
 const sessDate=s=>{s=toEn(s||'').trim();const m=s.match(/(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s};
 const dateKey=s=>{const m=String(s).match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?(+m[3])*10000+(+m[2])*100+(+m[1]):1e9};
 function sessionsOf(){
@@ -6106,10 +6182,10 @@ const clsTd=r=>{const c=clsOf(r.dec);return `<td class="cls ${c.c}">${c.t}</td>`
 function clsCount(by){const n={ag:0,ok:0,un:0};for(const k in by)for(const r of by[k])n[clsOf(r.dec).c]++;return n}
 function clsLine(n){return `ضد: ${toAr(n.ag)} — صالح: ${toAr(n.ok)} — غير معروف: ${toAr(n.un)}`}
 function drawCls(res){
- const el=$('clsSum');if(!el)return;if(!res||!res.length){el.innerHTML='';return}
+ const el=$('clsSum');if(!el)return;const mi=$('clsMini');if(!res||!res.length){el.innerHTML='';if(mi)mi.innerHTML='';return}
  const T={ag:0,ok:0,un:0};res.forEach(s=>{const n=clsCount(s.by);T.ag+=n.ag;T.ok+=n.ok;T.un+=n.un});
- el.innerHTML=`<div class="clsbig"><span class="b ag">ضد<b>${toAr(T.ag)}</b></span><span class="b ok">صالح<b>${toAr(T.ok)}</b></span><span class="b un">غير معروف<b>${toAr(T.un)}</b></span></div>`+
-  (res.length>1?res.map(s=>`<div class="hint">جلسة ${esc(toAr(s.date||'بدون تاريخ'))}: ${clsLine(clsCount(s.by))}</div>`).join(''):'');
+ if(mi)mi.innerHTML=`<i class="ag">ضد ${toAr(T.ag)}</i><i class="ok">صالح ${toAr(T.ok)}</i><i class="un">غير معروف ${toAr(T.un)}</i>`;
+ el.innerHTML=`<div class="clsbig"><span class="b ag">ضد<b>${toAr(T.ag)}</b></span><span class="b ok">صالح<b>${toAr(T.ok)}</b></span><span class="b un">غير معروف<b>${toAr(T.un)}</b></span></div>`;
 }
 function drawSesCls(){
  const el=$('clsSes');if(!el)return;
@@ -6117,6 +6193,7 @@ function drawSesCls(){
  el.innerHTML=`<button type="button" class="sec${SESF?'':' on'}" data-d="">كل الجلسات</button>`+SL.map(z=>`<button type="button" class="sec${SESF===z.date?' on':''}" data-d="${esc(z.date)}">جلسة ${esc(toAr(z.date||'بدون تاريخ'))}<br>ضد ${toAr(z.cnt.ag)} · صالح ${toAr(z.cnt.ok)} · غير معروف ${toAr(z.cnt.un)}</button>`).join('');
 }
 $('clsSes')&&$('clsSes').addEventListener('click',e=>{const b=e.target.closest('button[data-d]');if(!b)return;SESF=b.dataset.d;if(state.files.length)build()});
+(function(){const b=$('clsbox');if(!b)return;try{b.open=localStorage.getItem('cls1:open')==='1'}catch(e){}b.addEventListener('toggle',()=>{try{localStorage.setItem('cls1:open',b.open?'1':'0')}catch(e){}})})();
 (function(){
  const ag=$('cls_ag'),un=$('cls_un'),on=$('cls_on'),f=$('cls_f');if(!ag)return;
  ag.value=CLC.ag;un.value=CLC.un;on.checked=CLC.on!==false;
