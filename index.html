@@ -39,14 +39,16 @@ body{display:flex;flex-direction:column}
 <button role="tab" data-k="ah" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M9 13l2 2 4-4"/></svg><span>الأحكام</span></button>
 <button role="tab" data-k="xl" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18l-7 8v7l-4 2v-9z"/></svg><span>فلتر الإكسيل</span></button>
 <button role="tab" data-k="sp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/></svg><span>تقسيم الأحكام</span></button>
+<button role="tab" data-k="nk" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="12" height="15" rx="1"/><path d="M4 7v14h12M11 8h6M11 12h6"/></svg><span>النسخ</span></button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ٥</b><i>·</i>٣ نوفمبر ٢٠٢٦</span></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ٩</b><i>·</i>٤ نوفمبر ٢٠٢٦</span></div>
 <div id="sub" hidden><button data-k="xm" aria-selected="false">فلتر المرافعة</button><button data-k="xa" aria-selected="false">فلتر الأحكام</button></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
 <iframe data-k="mr" title="المرافعة"></iframe>
 <iframe data-k="ah" title="الأحكام"></iframe>
 <iframe data-k="sp" title="تقسيم الأحكام"></iframe>
+<iframe data-k="nk" title="النسخ"></iframe>
 <iframe data-k="xm" title="فلتر المرافعة"></iframe>
 <iframe data-k="xa" title="فلتر الأحكام"></iframe>
 </div>
@@ -103,11 +105,11 @@ button.fx{padding:2px 9px;font-size:1.1rem;line-height:1.2}
 
 .sheet2{width:194mm;background:#fff;color:#000;padding:2mm 0}
 .sheet2 *{color:#000}
-.t2{font-size:16pt;font-weight:700;text-align:center;margin-bottom:3mm}
-table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:10.5pt;font-weight:700}
-table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.2mm .8mm;word-break:break-word}
-table.s2 th{background:#9DC3E6}
-table.s2 td.sec{background:#FFE699;font-size:13pt}
+.t2{font-size:20pt;font-weight:700;text-align:center;margin-bottom:3mm}
+table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:12.5pt;font-weight:700}
+table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}
+table.s2 th{background:#9DC3E6;font-size:10.5pt}
+table.s2 td.sec{background:#FFE699;font-size:16pt}
 table.s2 td.ed{cursor:text}
 table.s2 td.flag{background:#ffe97a}
 @media print{table.s2 td.flag{background:none}}
@@ -157,6 +159,12 @@ table.t td{height:8.1mm;word-break:break-word}
 details#cs{display:block}
 details#cs>summary{font-weight:700;cursor:pointer;padding:4px 0}
 details#cs .addrow{margin-top:6px}
+
+.panel,#revbar{}
+body.big .panel,body.big #revbar{display:none!important}
+#bigbar{display:none;position:sticky;top:0;z-index:60;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 8px;margin-bottom:8px}
+body.big #bigbar{display:flex}
+#bigbar button{padding:8px 14px}#bigbar .sp{flex:1}
 </style>
 </head>
 <body>
@@ -181,14 +189,15 @@ details#cs .addrow{margin-top:6px}
   </div>
   <div class="actions">
    <button id="go" type="button">اعمل الصفحة</button>
-   <div id="exp" class="actions" hidden><button id="prt" type="button" class="sec">طباعة أو حفظ</button><button id="xl" type="button" class="sec">Excel</button><button id="wd" type="button" class="sec">Word</button></div>
+   <div id="exp" class="actions" hidden><button id="big" type="button" class="sec">⤢ توسيع</button><button id="prt" type="button" class="sec">طباعة أو حفظ</button><button id="xl" type="button" class="sec">Excel</button><button id="wd" type="button" class="sec">Word</button></div>
   </div>
   <p id="msg" class="hint"></p>
 <style>#cs{display:flex;flex-direction:column;gap:6px}#csr{overflow-x:auto}#csr table{border-collapse:collapse;width:100%;font-size:.88rem}#csr th,#csr td{border:1px solid var(--line);padding:4px 6px;text-align:center}#csr th{background:var(--head)}</style>
 <details id="cs" class="noprint"><summary>بحث برقم الدعوى</summary><div class="addrow"><input id="csq" type="text" dir="ltr" inputmode="numeric" placeholder="مثلًا 1234 أو 1234/70"><button id="csb" type="button">بحث</button></div><div id="csr"></div></details>
  </div>
  <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="eddone" type="button">تم</button></div></div></div>
- <div id="view"><div id="scaler"></div></div>
+ <div id="bigbar" class="noprint"><button id="bsm" type="button" class="sec" aria-label="تصغير">−</button><button id="blg" type="button" class="sec" aria-label="تكبير">+</button><span class="sp"></span><button id="bpr" type="button" class="sec">🖨 طباعة</button><button id="bcl" type="button">✕ إغلاق</button></div>
+  <div id="view"><div id="scaler"></div></div>
 </div>
 <script id="lib-main" type="text/plain">@@LIBMAIN@@<@@/script>
 <script id="lib-worker" type="text/plain">@@LIBWORKER@@<@@/script>
@@ -437,14 +446,24 @@ $('csq').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();c
 function fit(){
  const sc=$('scaler'),v=$('view'),s=sc.firstElementChild;
  if(!s){return}
+ if(document.body.classList.contains('big')){sc.style.transform='none';sc.style.width='194mm';sc.style.zoom=BZ;v.style.height='auto';v.style.overflow='auto';return}
+ sc.style.zoom='';v.style.overflow='';
  sc.style.transform='none';sc.style.width='194mm';
  const w=sc.getBoundingClientRect().width,avail=v.clientWidth;
  const k=Math.min(1,avail/w);
  sc.style.transform='scale('+k+')';
  v.style.height=(sc.getBoundingClientRect().height)+'px';
 }
+let BZ=1;
 window.addEventListener('resize',fit);
-window.addEventListener('beforeprint',()=>{$('scaler').style.transform='none';$('view').style.height='auto'});
+function setBig(on){document.body.classList.toggle('big',on);BZ=1;fit();if(on)window.scrollTo(0,0)}
+$('big').addEventListener('click',()=>setBig(true));
+$('bcl').addEventListener('click',()=>setBig(false));
+$('blg').addEventListener('click',()=>{BZ=Math.min(2.5,BZ+.25);fit()});
+$('bsm').addEventListener('click',()=>{BZ=Math.max(.4,BZ-.25);fit()});
+$('bpr').addEventListener('click',()=>window.print());
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('big')&&!EDC)setBig(false)});
+window.addEventListener('beforeprint',()=>{$('scaler').style.transform='none';$('scaler').style.zoom='';$('view').style.height='auto'});
 window.addEventListener('afterprint',fit);
 
 // ===== الجلسات: كل ملف له تاريخ، والملفات اللي ليها نفس التاريخ بتتجمع في جلسة لوحدها =====
@@ -827,11 +846,11 @@ button.fx{padding:2px 9px;font-size:1.1rem;line-height:1.2}
 
 .sheet2{width:194mm;background:#fff;color:#000;padding:2mm 0}
 .sheet2 *{color:#000}
-.t2{font-size:16pt;font-weight:700;text-align:center;margin-bottom:3mm}
-table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:9pt;font-weight:700}
-table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.2mm .8mm;word-break:break-word}
-table.s2 th{background:#9DC3E6}
-table.s2 td.sec{background:#FFE699;font-size:13pt}
+.t2{font-size:20pt;font-weight:700;text-align:center;margin-bottom:3mm}
+table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:12.5pt;font-weight:700}
+table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}
+table.s2 th{background:#9DC3E6;font-size:10.5pt}
+table.s2 td.sec{background:#FFE699;font-size:16pt}
 table.s2 tr.gap td{border:0;height:9mm}
 table.s2 tr{break-inside:avoid}
 /* ===== صفحة الأجندة ===== */
@@ -875,6 +894,12 @@ td[contenteditable]{cursor:text}td[contenteditable]:hover{background:rgba(255,21
 details#cs{display:block}
 details#cs>summary{font-weight:700;cursor:pointer;padding:4px 0}
 details#cs .addrow{margin-top:6px}
+
+.panel,#revbar{}
+body.big .panel,body.big #revbar{display:none!important}
+#bigbar{display:none;position:sticky;top:0;z-index:60;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 8px;margin-bottom:8px}
+body.big #bigbar{display:flex}
+#bigbar button{padding:8px 14px}#bigbar .sp{flex:1}
 </style>
 </head>
 <body>
@@ -896,13 +921,14 @@ details#cs .addrow{margin-top:6px}
   <div class="row"><input id="sdate" type="hidden"></div>
   <div class="actions">
    <button id="go" type="button">اعمل الصفحة</button>
-   <div id="exp" class="actions" hidden><button id="prt" type="button" class="sec">طباعة أو حفظ</button><button id="xl" type="button" class="sec">Excel</button><button id="wd" type="button" class="sec">Word</button></div>
+   <div id="exp" class="actions" hidden><button id="big" type="button" class="sec">⤢ توسيع</button><button id="prt" type="button" class="sec">طباعة أو حفظ</button><button id="xl" type="button" class="sec">Excel</button><button id="wd" type="button" class="sec">Word</button></div>
   </div>
   <p id="msg" class="hint"></p>
 <style>#cs{display:flex;flex-direction:column;gap:6px}#csr{overflow-x:auto}#csr table{border-collapse:collapse;width:100%;font-size:.88rem}#csr th,#csr td{border:1px solid var(--line);padding:4px 6px;text-align:center}#csr th{background:var(--head)}</style>
 <details id="cs" class="noprint"><summary>بحث برقم الدعوى</summary><div class="addrow"><input id="csq" type="text" dir="ltr" inputmode="numeric" placeholder="مثلًا 1234 أو 1234/70"><button id="csb" type="button">بحث</button></div><div id="csr"></div></details>
  </div>
  <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="eddone" type="button">تم</button></div></div></div>
+  <div id="bigbar" class="noprint"><button id="bsm" type="button" class="sec" aria-label="تصغير">−</button><button id="blg" type="button" class="sec" aria-label="تكبير">+</button><span class="sp"></span><button id="bpr" type="button" class="sec">🖨 طباعة</button><button id="bcl" type="button">✕ إغلاق</button></div>
   <div id="view"><div id="scaler"></div></div>
 </div>
 <script id="lib-main" type="text/plain">@@LIBMAIN@@<@@/script>
@@ -1219,14 +1245,24 @@ $('csq').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();c
 function fit(){
  const sc=$('scaler'),v=$('view'),s=sc.firstElementChild;
  if(!s){return}
+ if(document.body.classList.contains('big')){sc.style.transform='none';sc.style.width='194mm';sc.style.zoom=BZ;v.style.height='auto';v.style.overflow='auto';return}
+ sc.style.zoom='';v.style.overflow='';
  sc.style.transform='none';sc.style.width='194mm';
  const w=sc.getBoundingClientRect().width,avail=v.clientWidth;
  const k=Math.min(1,avail/w);
  sc.style.transform='scale('+k+')';
  v.style.height=(sc.getBoundingClientRect().height)+'px';
 }
+let BZ=1;
 window.addEventListener('resize',fit);
-window.addEventListener('beforeprint',()=>{$('scaler').style.transform='none';$('view').style.height='auto'});
+function setBig(on){document.body.classList.toggle('big',on);BZ=1;fit();if(on)window.scrollTo(0,0)}
+$('big').addEventListener('click',()=>setBig(true));
+$('bcl').addEventListener('click',()=>setBig(false));
+$('blg').addEventListener('click',()=>{BZ=Math.min(2.5,BZ+.25);fit()});
+$('bsm').addEventListener('click',()=>{BZ=Math.max(.4,BZ-.25);fit()});
+$('bpr').addEventListener('click',()=>window.print());
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('big')&&!EDC)setBig(false)});
+window.addEventListener('beforeprint',()=>{$('scaler').style.transform='none';$('scaler').style.zoom='';$('view').style.height='auto'});
 window.addEventListener('afterprint',fit);
 
 // ===== الجلسات: كل ملف له تاريخ، والملفات اللي ليها نفس التاريخ بتتجمع في جلسة لوحدها =====
@@ -1409,7 +1445,7 @@ function tableHtml2(kind,rows){
 }
 function sheetHtml(by){
  closeEd();
- let t=`<section class="sheet2"><div class="t2">${esc(titleTxt())}</div><table class="s2"><colgroup>${[5,5,10,8,21,17,12,11,11].map(w=>`<col style="width:${w}%">`).join('')}</colgroup><tbody>`;
+ let t=`<section class="sheet2"><div class="t2">${esc(titleTxt())}</div><table class="s2"><colgroup>${[6,5,10,8,17,14,11,12,17].map(w=>`<col style="width:${w}%">`).join('')}</colgroup><tbody>`;
  const ks=Object.keys(by);
  ks.forEach((k,i)=>{t+=tableHtml2(k,by[k]);if(i<ks.length-1)t+='<tr class="gap"><td colspan="9"></td></tr>'});
  return t+'</tbody></table></section>';
@@ -1592,11 +1628,11 @@ button.fx{padding:2px 9px;font-size:1.1rem;line-height:1.2}
 
 .sheet2{width:194mm;background:#fff;color:#000;padding:2mm 0}
 .sheet2 *{color:#000}
-.t2{font-size:16pt;font-weight:700;text-align:center;margin-bottom:3mm}
-table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:9pt;font-weight:700}
-table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.2mm .8mm;word-break:break-word}
-table.s2 th{background:#9DC3E6}
-table.s2 td.sec{background:#FFE699;font-size:13pt}
+.t2{font-size:20pt;font-weight:700;text-align:center;margin-bottom:3mm}
+table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:12.5pt;font-weight:700}
+table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}
+table.s2 th{background:#9DC3E6;font-size:10.5pt}
+table.s2 td.sec{background:#FFE699;font-size:16pt}
 table.s2 tr.gap td{border:0;height:9mm}
 table.s2 tr{break-inside:avoid}
 /* ===== صفحة الأجندة ===== */
@@ -1640,6 +1676,12 @@ td[contenteditable]{cursor:text}td[contenteditable]:hover{background:rgba(255,21
 details#cs{display:block}
 details#cs>summary{font-weight:700;cursor:pointer;padding:4px 0}
 details#cs .addrow{margin-top:6px}
+
+.panel,#revbar{}
+body.big .panel,body.big #revbar{display:none!important}
+#bigbar{display:none;position:sticky;top:0;z-index:60;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 8px;margin-bottom:8px}
+body.big #bigbar{display:flex}
+#bigbar button{padding:8px 14px}#bigbar .sp{flex:1}
 </style>
 </head>
 <body>
@@ -1661,13 +1703,14 @@ details#cs .addrow{margin-top:6px}
   <div class="row"><input id="sdate" type="hidden"></div>
   <div class="actions">
    <button id="go" type="button">اعمل الصفحة</button>
-   <div id="exp" class="actions" hidden><button id="prt" type="button" class="sec">طباعة أو حفظ</button><button id="xl" type="button" class="sec">Excel</button><button id="wd" type="button" class="sec">Word</button></div>
+   <div id="exp" class="actions" hidden><button id="big" type="button" class="sec">⤢ توسيع</button><button id="prt" type="button" class="sec">طباعة أو حفظ</button><button id="xl" type="button" class="sec">Excel</button><button id="wd" type="button" class="sec">Word</button></div>
   </div>
   <p id="msg" class="hint"></p>
 <style>#cs{display:flex;flex-direction:column;gap:6px}#csr{overflow-x:auto}#csr table{border-collapse:collapse;width:100%;font-size:.88rem}#csr th,#csr td{border:1px solid var(--line);padding:4px 6px;text-align:center}#csr th{background:var(--head)}</style>
 <details id="cs" class="noprint"><summary>بحث برقم الدعوى</summary><div class="addrow"><input id="csq" type="text" dir="ltr" inputmode="numeric" placeholder="مثلًا 1234 أو 1234/70"><button id="csb" type="button">بحث</button></div><div id="csr"></div></details>
  </div>
  <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="eddone" type="button">تم</button></div></div></div>
+  <div id="bigbar" class="noprint"><button id="bsm" type="button" class="sec" aria-label="تصغير">−</button><button id="blg" type="button" class="sec" aria-label="تكبير">+</button><span class="sp"></span><button id="bpr" type="button" class="sec">🖨 طباعة</button><button id="bcl" type="button">✕ إغلاق</button></div>
   <div id="view"><div id="scaler"></div></div>
 </div>
 <script id="lib-main" type="text/plain">@@LIBMAIN@@<@@/script>
@@ -1975,14 +2018,24 @@ $('csq').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();c
 function fit(){
  const sc=$('scaler'),v=$('view'),s=sc.firstElementChild;
  if(!s){return}
+ if(document.body.classList.contains('big')){sc.style.transform='none';sc.style.width='194mm';sc.style.zoom=BZ;v.style.height='auto';v.style.overflow='auto';return}
+ sc.style.zoom='';v.style.overflow='';
  sc.style.transform='none';sc.style.width='194mm';
  const w=sc.getBoundingClientRect().width,avail=v.clientWidth;
  const k=Math.min(1,avail/w);
  sc.style.transform='scale('+k+')';
  v.style.height=(sc.getBoundingClientRect().height)+'px';
 }
+let BZ=1;
 window.addEventListener('resize',fit);
-window.addEventListener('beforeprint',()=>{$('scaler').style.transform='none';$('view').style.height='auto'});
+function setBig(on){document.body.classList.toggle('big',on);BZ=1;fit();if(on)window.scrollTo(0,0)}
+$('big').addEventListener('click',()=>setBig(true));
+$('bcl').addEventListener('click',()=>setBig(false));
+$('blg').addEventListener('click',()=>{BZ=Math.min(2.5,BZ+.25);fit()});
+$('bsm').addEventListener('click',()=>{BZ=Math.max(.4,BZ-.25);fit()});
+$('bpr').addEventListener('click',()=>window.print());
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('big')&&!EDC)setBig(false)});
+window.addEventListener('beforeprint',()=>{$('scaler').style.transform='none';$('scaler').style.zoom='';$('view').style.height='auto'});
 window.addEventListener('afterprint',fit);
 
 // ===== الجلسات: كل ملف له تاريخ، والملفات اللي ليها نفس التاريخ بتتجمع في جلسة لوحدها =====
@@ -2422,7 +2475,8 @@ header .btn{padding:7px 9px;font-size:13px;white-space:nowrap}
   <div class="top">
     <button class="btn alt" id="rollMBtn" type="button">رولات المرافعة</button>
     <button class="btn alt" id="rollJBtn" type="button">رول الحكم</button>
-    <button class="btn alt" id="rollClr" type="button">مسح الرولات</button>
+    <button class="btn alt" id="rollClrM" type="button">مسح المرافعة</button>
+    <button class="btn alt" id="rollClrJ" type="button">مسح رول الحكم</button>
     <input type="file" id="rollMF" accept=".xls,.xlsx" multiple hidden>
     <input type="file" id="rollJF" accept=".xls,.xlsx" multiple hidden>
   </div>
@@ -3139,7 +3193,7 @@ function persist(){
   try{
     if(!srcFile)return;
     const c={};
-    for(const k in cropCache){const v=cropCache[k];if(/^[ti]\d+$/.test(k)&&v&&(k[0]==='t'||v.no))c[k]=k[0]==='t'?{cat:v.cat,sc:v.sc,manual:!!v.manual,txt:v.txt,src:v.src}:{no:v.no,yr:v.yr||null,q:!!v.q,rl:!!v.rl,pl:v.pl}}
+    for(const k in cropCache){const v=cropCache[k];if(/^[ti]\d+$/.test(k)&&v&&(k[0]==='t'||v.no))c[k]=k[0]==='t'?{cat:v.cat,sc:v.sc,manual:!!v.manual,txt:v.txt,src:v.src}:{no:v.no,yr:v.yr||null,q:!!v.q,rl:!!v.rl,pl:v.pl,mem:v.mem}}
     localStorage.setItem(saveKey(srcFile,N),JSON.stringify({v:1,t:Date.now(),c}));
   }catch(e){}
 }
@@ -3299,10 +3353,10 @@ function rollMatchCore(gr,rows){
 let _rf=null;
 function rollFast(){
   if(!ROLL.rows.length)return false;
-  const fi=rollFileInfo();if(!fi.d||!fi.mem)return false;
+  const fi=rollFileInfo();if(!fi.d)return false;
   const k=fi.d+'|'+fi.mem+'|'+ROLL.rows.length;
   if(_rf&&_rf.k===k)return _rf.v;
-  _rf={k,v:ROLL.rows.some(r=>r[0]===fi.d&&r[1]===fi.mem)};return _rf.v;
+  _rf={k,v:ROLL.rows.some(r=>r[0]===fi.d&&(!fi.mem||r[1]===fi.mem))};return _rf.v;
 }
 function rollFileInfo(){
   const nm=rollDigits(baseName()),dm=nm.match(/(\d{4})\s*[-_./]\s*(\d{1,2})\s*[-_./]\s*(\d{1,2})/)||nm.match(/(\d{1,2})\s*[-_./]\s*(\d{1,2})\s*[-_./]\s*(\d{4})/);
@@ -3312,14 +3366,15 @@ function rollFileInfo(){
 }
 function rollApplyFile(){
   if(!ROLL.rows.length||!groups.length)return 0;
-  const fi=rollFileInfo();if(!fi.d||!fi.mem)return 0;
-  const rows=ROLL.rows.filter(r=>r[0]===fi.d&&r[1]===fi.mem).map(r=>({s:r[2],no:r[3],yr:r[4],who:r[5],ty:r[6]}));
+  const fi=rollFileInfo();if(!fi.d)return 0;
+  const whole=!fi.mem;                         // مفيش عضو في اسم الملف: كل صفوف الجلسة قاموس، والعضو بيطلع من الرول
+  const rows=ROLL.rows.filter(r=>r[0]===fi.d&&(whole||r[1]===fi.mem)).map(r=>({s:r[2],no:r[3],yr:r[4],who:r[5],ty:r[6],mem:r[1]}));
   if(!rows.length)return 0;
   const gr=groups.map(g=>{const rd=[];g.pages.forEach(p=>{const r=cropCache['r'+p];if(r&&r.no&&r.no.s)rd.push(r.no.s)});const c=cropCache['i'+g.start];if(c&&c.no&&!c.rl)rd.push(String(c.no));return rd});
   const res=rollMatchCore(gr,rows);let n=0;
   res.forEach((r,i)=>{
-    if(r.j<0)return;const w=rows[r.j],g=groups[i];
-    cropCache['i'+g.start]={no:w.no,yr:w.yr,q:r.m==='i',rl:true,pl:w.who};
+    if(r.j<0||(whole&&r.m==='i'))return;const w=rows[r.j],g=groups[i];     // الاستنتاج بالترتيب مالوش معنى لما كل الأعضاء مع بعض
+    cropCache['i'+g.start]={no:w.no,yr:w.yr,q:r.m==='i',rl:true,pl:w.who,mem:whole?w.mem:undefined};
     n++;
   });
   return n;
@@ -3337,7 +3392,16 @@ $('rollMBtn').addEventListener('click',()=>$('rollMF').click());
 $('rollJBtn').addEventListener('click',()=>$('rollJF').click());
 $('rollMF').addEventListener('change',e=>{const fs=[...e.target.files];e.target.value='';if(fs.length)rollAdd(fs,'m')});
 $('rollJF').addEventListener('change',e=>{const fs=[...e.target.files];e.target.value='';if(fs.length)rollAdd(fs,'j')});
-$('rollClr').addEventListener('click',()=>{if(!confirm('مسح كل الرولات المحفوظة؟'))return;ROLL={m:new Set(),r:new Set(),j:new Map(),rows:[],files:{m:[],j:[]}};rollSave();rollShow()});
+$('rollClrM').addEventListener('click',()=>{
+  if(!ROLL.m.size&&!ROLL.r.size&&!ROLL.files.m.length){$('rollInfo').textContent='مفيش رولات مرافعة محفوظة.';return}
+  if(!confirm('مسح رولات المرافعة (متنوع / تسجيل) المحفوظة؟ رول الحكم مش هيتمسح.'))return;
+  ROLL.m=new Set();ROLL.r=new Set();ROLL.files.m=[];rollSave();rollShow();
+});
+$('rollClrJ').addEventListener('click',()=>{
+  if(!ROLL.j.size&&!ROLL.rows.length&&!ROLL.files.j.length){$('rollInfo').textContent='مفيش رول حكم محفوظ.';return}
+  if(!confirm('مسح رول الحكم المحفوظ؟ رولات المرافعة مش هتتمسح.'))return;
+  ROLL.j=new Map();ROLL.rows=[];ROLL.files.j=[];rollSave();rollShow();
+});
 rollShow();
 let topicBusy=false;
 // مجمّع عمّال OCR (لحد ٢ بالتوازي)
@@ -3486,7 +3550,7 @@ async function topicAll(btn){
   if(cnt.m+cnt.q+cnt.r)$('status').textContent='· تصنيف: '+fmt(cnt.m)+' متنوع · '+fmt(cnt.q)+' راجع · '+fmt(cnt.r)+' تسجيل جنائي'+(fail?' · '+fmt(fail)+' ما اتصنفش':'')+(rollMissing()?' · '+fmt(rollMissing())+' من رول الحكم مش في الملفات':'');
   topicBusy=false;if(btn){btn.disabled=false;btn.textContent=keepTxt}
 }
-const caseTitle=inf=>toAr(inf.no)+(inf.yr?' لسنة '+toAr(inf.yr):'')+(inf.pl?' - '+inf.pl:'');
+const caseTitle=inf=>toAr(inf.no)+(inf.yr?' لسنة '+toAr(inf.yr):'')+(inf.pl?' - '+inf.pl:'')+(inf.mem?' - عضو '+toAr(inf.mem):'');
 // ===== فلتر نهايات الدعاوى: أكتر من نهاية، بتتضاف بزرار إضافة وتظهر كشرائح =====
 const toEnD=v=>String(v).replace(/[٠-٩]/g,d=>d.charCodeAt(0)-1632).replace(/[۰-۹]/g,d=>d.charCodeAt(0)-1776);
 let SUF=[];try{SUF=JSON.parse(localStorage.getItem('suf_sp')||'[]').filter(x=>/^\d+$/.test(x))}catch(e){SUF=[]}
@@ -4043,14 +4107,25 @@ button.fx{padding:2px 9px;font-size:1.1rem;line-height:1.2}
 @media print{.sheet2{break-after:page;page-break-after:always}.sheet2:last-child{break-after:auto;page-break-after:auto}.sheet2+.sheet2{margin-top:0}}
 
 #scaler{transform-origin:top right}
+select.actsel{font:inherit;font-size:11pt;font-weight:700;width:100%;padding:2px 1px;border:1px solid #888;border-radius:4px;background:#fff;color:#000}
+select.actsel.on{background:#d9f2e3;border-color:#1d7a46}
+td.actc,th.actc{background:#f4f4f4}
+.aw .nocp{display:none;font-size:.8rem;font-weight:700;margin-top:3px;cursor:pointer;white-space:nowrap}
+.aw.memo .nocp{display:block}
+.aw .nocp input{width:18px;height:18px;vertical-align:middle;margin-left:4px}
+body.big .panel,body.big #revbar{display:none!important}
+#bigbar{display:none;position:sticky;top:0;z-index:60;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 8px;margin-bottom:8px}
+body.big #bigbar{display:flex}
+#bigbar button{padding:8px 14px}#bigbar .sp{flex:1}
+@media print{select.actsel{-webkit-appearance:none;appearance:none;border:0!important;background:transparent!important;text-align:center;text-align-last:center;padding:0}select.actsel:not(.on){color:transparent!important}td.actc,th.actc{background:#fff}th.actc{background:#9DC3E6}}
 
 .sheet2{width:194mm;background:#fff;color:#000;padding:2mm 0}
 .sheet2 *{color:#000}
-.t2{font-size:16pt;font-weight:700;text-align:center;margin-bottom:3mm}
-table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:9pt;font-weight:700}
-table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.2mm .8mm;word-break:break-word}
-table.s2 th{background:#9DC3E6}
-table.s2 td.sec{background:#FFE699;font-size:13pt}
+.t2{font-size:20pt;font-weight:700;text-align:center;margin-bottom:3mm}
+table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:12.5pt;font-weight:700}
+table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}
+table.s2 th{background:#9DC3E6;font-size:10.5pt}
+table.s2 td.sec{background:#FFE699;font-size:16pt}
 table.s2 tr.gap td{border:0;height:9mm}
 table.s2 tr{break-inside:avoid}
 /* ===== صفحة الأجندة ===== */
@@ -4117,12 +4192,13 @@ details#cs .addrow{margin-top:6px}
   <input id="sdate" type="hidden">
   <div class="actions">
    <button id="go" type="button">تطبيق</button>
-   <div id="exp" class="actions" hidden><button id="prt" type="button" class="sec">طباعة ▾</button><button id="xl" type="button" class="sec">Excel</button><button id="wd" type="button" class="sec">Word</button></div>
+   <div id="exp" class="actions" hidden><button id="prt" type="button" class="sec">طباعة ▾</button><button id="xl" type="button" class="sec">Excel</button><button id="wd" type="button" class="sec">Word</button><button id="big" type="button" class="sec">⤢ توسيع</button></div>
   </div>
   <div id="sesbar" class="actions" hidden></div>
   <p id="msg" class="hint"></p>
  </div>
  <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="eddone" type="button">تم</button></div></div></div>
+  <div id="bigbar" class="noprint"><button id="bsm" type="button" class="sec" aria-label="تصغير">−</button><button id="blg" type="button" class="sec" aria-label="تكبير">+</button><span class="sp"></span><button id="bpr" type="button" class="sec">🖨 طباعة</button><button id="bcl" type="button">✕ إغلاق</button></div>
   <div id="view"><div id="scaler"></div></div>
 </div>
 <script>
@@ -4639,14 +4715,24 @@ window.addEventListener('afterprint',clearOne);
 function fit(){
  const sc=$('scaler'),v=$('view'),s=sc.firstElementChild;
  if(!s){return}
+ if(document.body.classList.contains('big')){sc.style.transform='none';sc.style.width='194mm';sc.style.zoom=BZ;v.style.height='auto';v.style.overflow='auto';return}
+ sc.style.zoom='';v.style.overflow='';
  sc.style.transform='none';sc.style.width='194mm';
  const w=sc.getBoundingClientRect().width,avail=v.clientWidth;
  const k=Math.min(1,avail/w);
  sc.style.transform='scale('+k+')';
  v.style.height=(sc.getBoundingClientRect().height)+'px';
 }
+let BZ=1;
 window.addEventListener('resize',fit);
-window.addEventListener('beforeprint',()=>{$('scaler').style.transform='none';$('view').style.height='auto'});
+function setBig(on){document.body.classList.toggle('big',on);BZ=1;fit();if(on)window.scrollTo(0,0)}
+$('big').addEventListener('click',()=>setBig(true));
+$('bcl').addEventListener('click',()=>setBig(false));
+$('blg').addEventListener('click',()=>{BZ=Math.min(2.5,BZ+.25);fit()});
+$('bsm').addEventListener('click',()=>{BZ=Math.max(.4,BZ-.25);fit()});
+$('bpr').addEventListener('click',()=>{clearOne();window.print()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('big')&&!EDC)setBig(false)});
+window.addEventListener('beforeprint',()=>{$('scaler').style.transform='none';$('scaler').style.zoom='';$('view').style.height='auto'});
 window.addEventListener('afterprint',fit);
 
 // ===== الجلسات: كل ملف له تاريخ، والملفات اللي ليها نفس التاريخ بتتجمع في جلسة لوحدها =====
@@ -4672,15 +4758,15 @@ function renderFiles(){
 }
 $('flist').addEventListener('change',e=>{
  const d=e.target.closest('.fdate'),k=e.target.closest('.fkind');
- if(d){const f=state.files[+d.dataset.i];if(f){f.date=sessDate(d.value);d.value=f.date;build()}}
+ if(d){const f=state.files[+d.dataset.i];if(f){f.date=sessDate(d.value);d.value=f.date;saveFiles();build()}}
  else if(k){const f=state.files[+k.dataset.i];if(f){f.kind=k.value;renderFiles();build()}}
 });
 $('flist').addEventListener('click',e=>{
  const b=e.target.closest('button[data-x]');if(!b)return;
- state.files.splice(+b.dataset.x,1);renderFiles();
+ state.files.splice(+b.dataset.x,1);renderFiles();saveFiles();
  if(state.files.length)build();else{clearResult();say('')}
 });
-$('clrf').addEventListener('click',()=>{state.files=[];renderFiles();clearResult();say('')});
+$('clrf').addEventListener('click',()=>{state.files=[];renderFiles();saveFiles();clearResult();say('')});
 $('files').addEventListener('change',async e=>{
  const fl=[...e.target.files];e.target.value='';
  if(!fl.length)return;
@@ -4694,7 +4780,7 @@ $('files').addEventListener('change',async e=>{
    state.files.push(p);
   }catch(err){console.error(err);bad.push(f.name+' ('+err.message+')')}
  }
- renderFiles();
+ renderFiles();saveFiles();
  if(state.files.length){window.__files=state.files;build()}
  if(bad.length){const m=$('msg').textContent;say((m?m+' — ':'')+'تعذّر: '+bad.join('، '),'err')}
 });
@@ -4831,16 +4917,72 @@ const FXK='fix_xm';let FX={};try{FX=JSON.parse(localStorage.getItem(FXK)||'{}')}
 const FXF={pl:1,df:1,dec:1,note:1};
 function fxApply(r){if(r.__o)return;r.__o={};for(const f in FXF){const v=r[f];if(typeof v!=='string'||!v)continue;r.__o[f]=v;const x=FX[f+'|'+v];if(x){r[f]=x;if(r.fl)r.fl[f]=false}}}
 function fxSave(r,f,w){if(!FXF[f]||!r.__o||r.__o[f]===undefined)return;const k=f+'|'+r.__o[f];if(w&&w!==r.__o[f])FX[k]=w;else delete FX[k];try{localStorage.setItem(FXK,JSON.stringify(FX))}catch(e){}}
+// ===== إجراء كل دعوى + كشف النسخ (مشترك مع تبويب النسخ عبر localStorage) =====
+const ACTS=['أجل للاطلاع','مذكرة','مذكرة + حافظة','حافظة','إحالة','جاهزة','لا شأن','قضية هامة'];
+const isMemo=v=>v==='مذكرة'||v==='مذكرة + حافظة';
+const SKK='skp_xm';let SKP={};try{SKP=JSON.parse(localStorage.getItem(SKK)||'{}')}catch(e){SKP={}}
+const NKI='nk1:items';
+const ACTK='act_xm';let ACT={};try{ACT=JSON.parse(localStorage.getItem(ACTK)||'{}')}catch(e){ACT={}}
+const rkey=r=>[sessDate(r.date),String(r.no),String(r.yr)].join('|');
+function actSel(r,s,k,i){
+ const v=ACT[rkey(r)]||'';
+ return `<div class="aw${isMemo(v)?' memo':''}"><select class="actsel${v?' on':''}" data-s="${s}" data-k="${esc(k)}" data-i="${i}" aria-label="الإجراء"><option value="">— اختر —</option>${ACTS.map(a=>`<option${a===v?' selected':''}>${a}</option>`).join('')}</select><label class="nocp noprint"><input type="checkbox" class="skipchk"${SKP[rkey(r)]?' checked':''}>بدون نسخ</label></div>`;
+}
+function nkLoad(){try{const a=JSON.parse(localStorage.getItem(NKI)||'[]');return Array.isArray(a)?a:[]}catch(e){return[]}}
+function nkSave(a){try{localStorage.setItem(NKI,JSON.stringify(a))}catch(e){}}
+function nkSync(r,v){
+ const key=rkey(r),a=nkLoad(),i=a.findIndex(z=>z.id===key),want=isMemo(v)&&!SKP[key];
+ if(want){
+  const it={id:key,no:String(r.no),yr:String(r.yr),pl:r.pl||'',df:r.df||'',date:sessDate(r.date),act:v};
+  if(i>=0)a[i]=Object.assign({},a[i],it);else a.push(it);
+ }else if(i>=0)a.splice(i,1);
+ nkSave(a);
+}
+$('scaler').addEventListener('change',e=>{
+ const ck=e.target.closest('input.skipchk');
+ if(ck){const sl=ck.closest('.aw').querySelector('select'),r0=rowOf(sl);if(!r0)return;const k0=rkey(r0);
+  if(ck.checked)SKP[k0]=1;else delete SKP[k0];
+  try{localStorage.setItem(SKK,JSON.stringify(SKP))}catch(_){}
+  nkSync(r0,sl.value);say(ck.checked?'المذكرة دي مش هتتنسخ في الكشف':'المذكرة رجعت لكشف النسخ','ok');return}
+ const sel=e.target.closest('select.actsel');if(!sel)return;
+ const r=rowOf(sel);if(!r)return;
+ const v=sel.value,k=rkey(r);
+ if(v)ACT[k]=v;else delete ACT[k];
+ try{localStorage.setItem(ACTK,JSON.stringify(ACT))}catch(_){}
+ sel.classList.toggle('on',!!v);sel.closest('.aw').classList.toggle('memo',isMemo(v));nkSync(r,v);
+ say(v?('تم تسجيل «'+v+'»'+((isMemo(v)&&!SKP[k])?' ونقلها لتبويب النسخ':'')):'تم إلغاء الإجراء','ok');
+});
+// ===== حفظ الرول في المتصفح عشان ما يتحملش كل مرة =====
+const FLK='xm1:files';
+function saveFiles(){
+ try{
+  const o=state.files.map(f=>({name:f.name,size:f.size,mod:f.mod,date:f.date,secs:f.secs,nsheets:f.nsheets,
+   rows:f.rows.map(r=>[r.m,r.no,r.yr,r.pl,r.df,r.prev,r.dec,r.next,r.date,r.sec])}));
+  localStorage.setItem(FLK,JSON.stringify(o));
+ }catch(e){console.error(e);try{say('الرول كبير ومقدرتش أحفظه في المتصفح.','err')}catch(_){}}
+}
+function restoreFiles(){
+ try{
+  const o=JSON.parse(localStorage.getItem(FLK)||'[]');if(!Array.isArray(o)||!o.length)return;
+  for(const f of o){
+   const out={name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,notes:false,rows:[]};
+   for(const a of f.rows)out.rows.push({m:a[0],no:a[1],yr:a[2],pl:a[3],df:a[4],prev:a[5],dec:a[6],next:a[7],date:a[8],sec:a[9],file:out});
+   state.files.push(out);
+  }
+  renderFiles();window.__files=state.files;build();
+  say('تم استرجاع الرول المحفوظ ('+toAr(state.files.length)+' ملف)','ok');
+ }catch(e){console.error(e)}
+}
 function tableHtml2(kind,rows){
  rows.forEach(fxApply);
- return `<tr><td class="sec" colspan="9">${esc(secTitle(kind))}</td></tr><tr>${HD.map(h=>`<th>${h}</th>`).join('')}</tr>`+
-  rows.map((r,i)=>{const E=f=>`class="ed${r.fl&&r.fl[f]?' flag':''}" tabindex="0" data-s="${CURS}" data-k="${esc(kind)}" data-i="${i}" data-f="${f}"`;return `<tr><td ${E('ser')}>${SER(r,i)}</td><td ${E('m')}>${esc(r.m)}</td><td ${E('no')}>${esc(r.no)}</td><td ${E('yr')}>${esc(r.yr)}</td><td ${E('pl')}>${esc(r.pl)}</td><td ${E('df')}>${esc(r.df)}</td><td ${E('prev')}>${dcell(r.prev)}</td><td ${E('dec')}>${esc(r.dec)}</td><td ${E('next')}>${dcell(r.next)}</td></tr>`}).join('');
+ return `<tr><td class="sec" colspan="10">${esc(secTitle(kind))}</td></tr><tr>${HD.map(h=>`<th>${h}</th>`).join('')}<th class="actc">الإجراء</th></tr>`+
+  rows.map((r,i)=>{const E=f=>`class="ed${r.fl&&r.fl[f]?' flag':''}" tabindex="0" data-s="${CURS}" data-k="${esc(kind)}" data-i="${i}" data-f="${f}"`;return `<tr><td ${E('ser')}>${SER(r,i)}</td><td ${E('m')}>${esc(r.m)}</td><td ${E('no')}>${esc(r.no)}</td><td ${E('yr')}>${esc(r.yr)}</td><td ${E('pl')}>${esc(r.pl)}</td><td ${E('df')}>${esc(r.df)}</td><td ${E('prev')}>${dcell(r.prev)}</td><td ${E('dec')}>${esc(r.dec)}</td><td ${E('next')}>${dcell(r.next)}</td><td class="actc">${actSel(r,CURS,kind,i)}</td></tr>`}).join('');
 }
 function sheetHtml(by){
  closeEd();
- let t=`<section class="sheet2"><div class="t2">${esc(titleTxt())}</div><table class="s2"><colgroup>${[5,5,10,8,21,17,12,11,11].map(w=>`<col style="width:${w}%">`).join('')}</colgroup><tbody>`;
+ let t=`<section class="sheet2"><div class="t2">${esc(titleTxt())}</div><table class="s2"><colgroup>${[6,5,10,7,13,11,8,10,16].map(w=>`<col style="width:${w}%">`).join('')}<col class="actc" style="width:14%"></colgroup><tbody>`;
  const ks=Object.keys(by);
- ks.forEach((k,i)=>{t+=tableHtml2(k,by[k]);if(i<ks.length-1)t+='<tr class="gap"><td colspan="9"></td></tr>'});
+ ks.forEach((k,i)=>{t+=tableHtml2(k,by[k]);if(i<ks.length-1)t+='<tr class="gap"><td colspan="10"></td></tr>'});
  return t+'</tbody></table></section>';
 }
 function xlsxPart(by){
@@ -4924,6 +5066,7 @@ const fname=ext=>{const ds=((window.__result&&window.__result.sessions)||[]).map
  return 'فلتر_مرافعة_'+(ds.length>1?'جلسات_'+ds.join('_و_'):'جلسة_'+(ds[0]||'مفلترة'))+'.'+ext};
 $('xl').addEventListener('click',()=>{try{save(exportXlsxMulti(window.__result.sessions),fname('xlsx'))}catch(e){console.error(e);say('تعذر عمل ملف Excel: '+e.message,'err')}});
 $('wd').addEventListener('click',()=>{try{save(exportDocxMulti(window.__result.sessions),fname('docx'))}catch(e){console.error(e);say('تعذر عمل ملف Word: '+e.message,'err')}});
+restoreFiles();
 })();
 <@@/script>
 <script>
@@ -5021,11 +5164,11 @@ button.fx{padding:2px 9px;font-size:1.1rem;line-height:1.2}
 
 .sheet2{width:194mm;background:#fff;color:#000;padding:2mm 0}
 .sheet2 *{color:#000}
-.t2{font-size:16pt;font-weight:700;text-align:center;margin-bottom:3mm}
-table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:9pt;font-weight:700}
-table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.2mm .8mm;word-break:break-word}
-table.s2 th{background:#9DC3E6}
-table.s2 td.sec{background:#FFE699;font-size:13pt}
+.t2{font-size:20pt;font-weight:700;text-align:center;margin-bottom:3mm}
+table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:12.5pt;font-weight:700}
+table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}
+table.s2 th{background:#9DC3E6;font-size:10.5pt}
+table.s2 td.sec{background:#FFE699;font-size:16pt}
 table.s2 tr.gap td{border:0;height:9mm}
 table.s2 tr{break-inside:avoid}
 /* ===== صفحة الأجندة ===== */
@@ -5069,6 +5212,12 @@ td[contenteditable]{cursor:text}td[contenteditable]:hover{background:rgba(255,21
 details#cs{display:block}
 details#cs>summary{font-weight:700;cursor:pointer;padding:4px 0}
 details#cs .addrow{margin-top:6px}
+
+.panel,#revbar{}
+body.big .panel,body.big #revbar{display:none!important}
+#bigbar{display:none;position:sticky;top:0;z-index:60;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 8px;margin-bottom:8px}
+body.big #bigbar{display:flex}
+#bigbar button{padding:8px 14px}#bigbar .sp{flex:1}
 </style>
 </head>
 <body>
@@ -5092,12 +5241,13 @@ details#cs .addrow{margin-top:6px}
   <input id="sdate" type="hidden">
   <div class="actions">
    <button id="go" type="button">تطبيق</button>
-   <div id="exp" class="actions" hidden><style>#prtw [hidden]{display:none!important}</style><div id="prtw" style="display:inline-flex;flex-direction:column;gap:6px;align-items:stretch"><button id="prt" type="button" class="sec">🖨 طباعة ▾</button><div id="prtm" hidden style="display:flex;flex-direction:column;gap:6px;padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--card)"><button type="button" class="sec" data-p="all">طباعة الكل</button><button type="button" id="sesT" class="sec">طباعة الجلسات ◂</button><div id="sesbar" class="actions" hidden></div></div></div><button id="xl" type="button" class="sec">Excel</button><button id="wd" type="button" class="sec">Word</button></div>
+   <div id="exp" class="actions" hidden><button id="big" type="button" class="sec">⤢ توسيع</button><style>#prtw [hidden]{display:none!important}</style><div id="prtw" style="display:inline-flex;flex-direction:column;gap:6px;align-items:stretch"><button id="prt" type="button" class="sec">🖨 طباعة ▾</button><div id="prtm" hidden style="display:flex;flex-direction:column;gap:6px;padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--card)"><button type="button" class="sec" data-p="all">طباعة الكل</button><button type="button" id="sesT" class="sec">طباعة الجلسات ◂</button><div id="sesbar" class="actions" hidden></div></div></div><button id="xl" type="button" class="sec">Excel</button><button id="wd" type="button" class="sec">Word</button></div>
   </div>
   
   <p id="msg" class="hint"></p>
  </div>
  <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="eddone" type="button">تم</button></div></div></div>
+  <div id="bigbar" class="noprint"><button id="bsm" type="button" class="sec" aria-label="تصغير">−</button><button id="blg" type="button" class="sec" aria-label="تكبير">+</button><span class="sp"></span><button id="bpr" type="button" class="sec">🖨 طباعة</button><button id="bcl" type="button">✕ إغلاق</button></div>
   <div id="view"><div id="scaler"></div></div>
 </div>
 <script>
@@ -5615,14 +5765,24 @@ window.addEventListener('afterprint',clearOne);
 function fit(){
  const sc=$('scaler'),v=$('view'),s=sc.firstElementChild;
  if(!s){return}
+ if(document.body.classList.contains('big')){sc.style.transform='none';sc.style.width='194mm';sc.style.zoom=BZ;v.style.height='auto';v.style.overflow='auto';return}
+ sc.style.zoom='';v.style.overflow='';
  sc.style.transform='none';sc.style.width='194mm';
  const w=sc.getBoundingClientRect().width,avail=v.clientWidth;
  const k=Math.min(1,avail/w);
  sc.style.transform='scale('+k+')';
  v.style.height=(sc.getBoundingClientRect().height)+'px';
 }
+let BZ=1;
 window.addEventListener('resize',fit);
-window.addEventListener('beforeprint',()=>{$('scaler').style.transform='none';$('view').style.height='auto'});
+function setBig(on){document.body.classList.toggle('big',on);BZ=1;fit();if(on)window.scrollTo(0,0)}
+$('big').addEventListener('click',()=>setBig(true));
+$('bcl').addEventListener('click',()=>setBig(false));
+$('blg').addEventListener('click',()=>{BZ=Math.min(2.5,BZ+.25);fit()});
+$('bsm').addEventListener('click',()=>{BZ=Math.max(.4,BZ-.25);fit()});
+$('bpr').addEventListener('click',()=>window.print());
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('big')&&!EDC)setBig(false)});
+window.addEventListener('beforeprint',()=>{$('scaler').style.transform='none';$('scaler').style.zoom='';$('view').style.height='auto'});
 window.addEventListener('afterprint',fit);
 
 // ===== الجلسات: كل ملف له تاريخ، والملفات اللي ليها نفس التاريخ بتتجمع في جلسة لوحدها =====
@@ -5956,6 +6116,147 @@ if(eb&&ta){
 </body>
 </html>
 </script>
+<script id="tpl-nk" type="text/plain"><!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>النسخ</title>
+<style>
+:root{--bg:#f3f4f6;--card:#fff;--fg:#1c2530;--mut:#5d6b7a;--line:#cfd6de;--acc:#1f5f8b;--accfg:#fff;--head:#dfe5ec;--ok:#1d7a46;--bad:#c0392b}
+@media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--mut:#9aa8b7;--line:#35414e;--acc:#5aa6d6;--accfg:#0b1620;--head:#2a3542;--ok:#5ccf92;--bad:#ff8a7a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Segoe UI",Tahoma,Arial,sans-serif;font-size:16px;line-height:1.5;padding:16px max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+label{font-weight:700;font-size:.9rem;display:block;margin-bottom:3px}
+input[type=text]{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+button{font:inherit;font-weight:700;border:0;border-radius:6px;padding:10px 16px;background:var(--acc);color:var(--accfg);cursor:pointer}
+button.sec{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+button.bad{background:transparent;color:var(--bad);border:1px solid var(--bad)}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.hint{color:var(--mut);font-size:.88rem;margin:0}
+#msg{font-weight:700}#msg.ok{color:var(--ok)}
+#view{overflow:hidden}#scaler{transform-origin:top right}
+.pg{width:194mm;min-height:281mm;background:#fff;color:#000;padding:4mm 3mm;margin:0 0 16px;position:relative;break-after:page;page-break-after:always;display:flex;flex-direction:column}
+.pg:last-child{break-after:auto;page-break-after:auto}
+.pg *{color:#000}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;font-weight:700;font-size:11pt;line-height:1.7;margin-bottom:3mm}
+.hd .r div{white-space:nowrap}
+.ttl{text-align:center;font-weight:800;font-size:17pt;margin:2mm 0 4mm;text-decoration:underline;text-underline-offset:3px}
+table.nk{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:12pt;font-weight:700;border:.5mm solid #000}
+table.nk th,table.nk td{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:0 1mm;overflow:hidden;line-height:1.1;word-break:break-word}
+table.nk th{background:#e4e4e4;font-size:11.5pt;height:7.5mm}
+table.nk td{height:9.3mm}
+table.nk input.reg{width:100%;border:0;background:transparent;font:inherit;text-align:center;padding:0;color:#000}
+table.nk input.reg:focus{outline:2px solid #4a90d9;background:#fffbe6}
+.sig{margin-top:auto;display:flex;justify-content:space-between;font-weight:800;font-size:12pt;padding:6mm 8mm 0}
+.sig div{text-align:center;min-width:42mm}.sig div span{display:block;margin-top:12mm;font-weight:400}
+.pn{text-align:center;font-size:9pt;margin-top:2mm}
+button.x{padding:0 6px;font-size:1rem;line-height:1.3;border-radius:4px}
+@page{size:A4 portrait;margin:6.5mm}
+@media print{
+ html,body{background:#fff!important;padding:0!important}
+ .noprint,.dcol,col.dcol{display:none!important}
+ .wrap{max-width:none;display:block}
+ #view{overflow:visible!important;height:auto!important}
+ #scaler{transform:none!important;width:auto!important}
+ .pg{margin:0;height:281mm;min-height:0;padding:0 3mm;overflow:hidden}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="panel noprint">
+  <div class="row">
+   <div><label for="h_br">فرع / قسم</label><input id="h_br" type="text"></div>
+   <div><label for="h_yr">لسنة</label><input id="h_yr" type="text" inputmode="numeric"></div>
+   <div><label for="h_mem">اختصاص العضو</label><input id="h_mem" type="text"></div>
+   <div><label for="h_gr">الدرجة</label><input id="h_gr" type="text"></div>
+   <div><label for="h_mo">الشهر (اختياري)</label><input id="h_mo" type="text" placeholder="مثال: نوفمبر ٢٠٢٦"></div>
+  </div>
+  <div class="actions">
+   <button id="prt" type="button">🖨 طباعة الكشف</button>
+   <button id="add" type="button" class="sec">+ إضافة دعوى يدويًا</button>
+   <button id="fresh" type="button" class="bad">ابدأ كشف جديد</button>
+  </div>
+  <p class="hint">أي دعوى تختار لها «مذكرة» أو «مذكرة + حافظة» في فلتر المرافعة بتنتقل هنا لوحدها، وبتفضل متراكمة لحد ما تدوس «ابدأ كشف جديد». رقم القيد بسجل النسخ تكتبه في الخانة مباشرة.</p>
+  <p id="msg" class="hint"></p>
+ </div>
+ <div id="view"><div id="scaler"></div></div>
+</div>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const AR='٠١٢٣٤٥٦٧٨٩';
+const toAr=s=>String(s==null?'':s).replace(/\d/g,d=>AR[d]);
+const toEn=s=>String(s).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const IK='nk1:items',HK='nk1:head',PER=20;
+let items=[];
+const load=()=>{try{const a=JSON.parse(localStorage.getItem(IK)||'[]');items=Array.isArray(a)?a:[]}catch(e){items=[]}};
+const save=()=>{try{localStorage.setItem(IK,JSON.stringify(items))}catch(e){}};
+const HF=['h_br','h_yr','h_mem','h_gr','h_mo'];
+let H={};try{H=JSON.parse(localStorage.getItem(HK)||'{}')}catch(e){H={}}
+HF.forEach(id=>{$(id).value=H[id]||'';$(id).addEventListener('input',()=>{H[id]=$(id).value;try{localStorage.setItem(HK,JSON.stringify(H))}catch(e){}draw()})});
+function say(t,c){const m=$('msg');m.textContent=t;m.className='hint '+(c||'')}
+function dateAr(d){return toAr(String(d||'').replace(/\//g,' / '))}
+function page(chunk,pi,np){
+ const rows=[];
+ for(let i=0;i<PER;i++){
+  const it=chunk[i],n=pi*PER+i+1;
+  rows.push(it?`<tr><td>${toAr(n)}</td><td>${toAr(it.no)} / ${toAr(it.yr)}</td><td>${esc(it.pl)}</td><td>${esc(it.df)}</td><td><input class="reg" data-id="${esc(it.id)}" value="${esc(it.reg||'')}" aria-label="رقم القيد" inputmode="numeric"></td><td><bdi dir="ltr">${dateAr(it.date)}</bdi></td><td class="dcol noprint"><button type="button" class="x bad" data-del="${esc(it.id)}" aria-label="حذف">×</button></td></tr>`
+   :`<tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="dcol noprint"></td></tr>`);
+ }
+ const v=id=>esc(H[id]||'');
+ return `<section class="pg"><div class="hd"><div class="r"><div>هيئة قضايا الدولة</div><div>فرع / قسم : ${v('h_br')}</div><div>لسنة : ${toAr(v('h_yr'))}</div></div><div class="l"><div>اختصاص العضو : ${v('h_mem')}</div><div>الدرجة : ${v('h_gr')}</div></div></div>
+ <div class="ttl">كشف بمذكرات الدفاع المحررة خلال الشهر${H.h_mo?' — '+esc(toAr(H.h_mo)):''}</div>
+ <table class="nk"><colgroup><col style="width:7%"><col style="width:16%"><col style="width:24%"><col style="width:24%"><col style="width:14%"><col style="width:15%"><col class="dcol" style="width:36px"></colgroup>
+ <thead><tr><th rowspan="2">م</th><th rowspan="2">رقم الدعوى</th><th colspan="2">أسماء الخصوم</th><th rowspan="2">رقم القيد<br>بسجل النسخ</th><th rowspan="2">تاريخ الجلسة<br>المقدمة فيها</th><th rowspan="2" class="dcol noprint"></th></tr><tr><th>المدعي</th><th>المدعي عليه</th></tr></thead>
+ <tbody>${rows.join('')}</tbody></table>
+ <div class="sig"><div>العضو المختص<span>……………………</span></div><div>المستشار المشرف<span>……………………</span></div><div>نائب رئيس الهيئة<span>……………………</span></div></div>
+ <div class="pn noprint">صفحة ${toAr(pi+1)} من ${toAr(np)}</div></section>`;
+}
+function draw(){
+ const np=Math.max(1,Math.ceil(items.length/PER));let h='';
+ for(let p=0;p<np;p++)h+=page(items.slice(p*PER,(p+1)*PER),p,np);
+ $('scaler').innerHTML=h;fit();
+ say(items.length?toAr(items.length)+' مذكرة في الكشف':'الكشف فاضي — اختار «مذكرة» لأي دعوى في فلتر المرافعة.',items.length?'ok':'');
+}
+function fit(){
+ const sc=$('scaler'),v=$('view');if(!sc.firstElementChild)return;
+ sc.style.transform='none';sc.style.width='194mm';
+ const w=sc.getBoundingClientRect().width,k=Math.min(1,v.clientWidth/w);
+ sc.style.transform='scale('+k+')';v.style.height=sc.getBoundingClientRect().height*1+'px';
+}
+window.addEventListener('resize',fit);
+window.addEventListener('beforeprint',()=>{$('scaler').style.transform='none';$('view').style.height='auto'});
+window.addEventListener('afterprint',fit);
+$('scaler').addEventListener('input',e=>{const i=e.target.closest('input.reg');if(!i)return;const it=items.find(z=>z.id===i.dataset.id);if(it){it.reg=i.value;save()}});
+$('scaler').addEventListener('click',e=>{const b=e.target.closest('button[data-del]');if(!b)return;items=items.filter(z=>z.id!==b.dataset.del);save();draw()});
+$('prt').addEventListener('click',()=>{if(!items.length){say('الكشف فاضي.','');return}window.print()});
+$('fresh').addEventListener('click',()=>{
+ if(!items.length){say('الكشف فاضي أصلًا.','');return}
+ if(!confirm('هتبدأ كشف جديد وهيتمسح الكشف الحالي ('+items.length+' مذكرة). متأكد؟'))return;
+ items=[];save();draw();say('تم بدء كشف جديد.','ok');
+});
+$('add').addEventListener('click',()=>{
+ const no=prompt('رقم الدعوى؟');if(!no)return;const yr=prompt('السنة القضائية؟')||'';
+ const pl=prompt('المدعي؟')||'',df=prompt('المدعي عليه؟')||'',dt=prompt('تاريخ الجلسة؟ (مثال 3/11/2026)')||'';
+ items.push({id:'m|'+Date.now(),no:toEn(no).trim(),yr:toEn(yr).trim(),pl,df,date:toEn(dt).trim(),act:'مذكرة',reg:''});save();draw();
+});
+function refresh(){const a=document.activeElement;if(a&&a.classList&&a.classList.contains('reg'))return;load();draw()}
+window.addEventListener('storage',e=>{if(e.key===IK||e.key===null)refresh()});
+window.addEventListener('message',e=>{if(e.data==='nk-refresh')refresh()});
+window.addEventListener('focus',refresh);
+load();draw();
+})();
+<@@/script>
+</body>
+</html>
+</script>
 <script>
 (function(){
 'use strict';
@@ -5974,7 +6275,8 @@ function show(k){
   sub.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.k===k)));
   document.querySelectorAll('#views iframe').forEach(f=>{
     const on=f.dataset.k===k;f.classList.toggle('on',on);
-    if(on&&!loaded[k]){loaded[k]=1;f.srcdoc=build(k)}   // كل تبويب بيتحمّل أول مرة تفتحه وبيفضل شغال لحد ما ترجعله
+    if(on&&!loaded[k]){loaded[k]=1;f.srcdoc=build(k)}
+    else if(on&&k==='nk'){try{f.contentWindow.postMessage('nk-refresh','*')}catch(e){}}   // كل تبويب بيتحمّل أول مرة تفتحه وبيفضل شغال لحد ما ترجعله
   });
   try{localStorage.setItem('combined_tab',k);if(top==='xl')localStorage.setItem('xl_sub',k)}catch(e){}
 }
