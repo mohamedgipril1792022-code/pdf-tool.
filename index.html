@@ -41,7 +41,7 @@ body{display:flex;flex-direction:column}
 <button role="tab" data-k="sp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/></svg><span>تقسيم الأحكام</span></button>
 <button role="tab" data-k="nk" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="12" height="15" rx="1"/><path d="M4 7v14h12M11 8h6M11 12h6"/></svg><span>النسخ</span></button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ١٥</b><i>·</i>٤ نوفمبر ٢٠٢٦</span></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ١٦</b><i>·</i>٤ نوفمبر ٢٠٢٦</span></div>
 <div id="sub" hidden><button data-k="xm" aria-selected="false">فلتر المرافعة</button><button data-k="xa" aria-selected="false">فلتر الأحكام</button></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -1690,6 +1690,9 @@ table.s2 td.cls.ag{background:#f4b6b6}table.s2 td.cls.ok{background:#c6e8c6}tabl
 .clsbig .b b{font-size:1.6rem}
 .clsbig .ag{background:#f4b6b6}.clsbig .ok{background:#c6e8c6}.clsbig .un{background:#e2e2e2}
 .clsline{text-align:center;font-weight:800;font-size:12pt;margin:0 0 3mm}
+
+#clsSes{gap:6px}#clsSes button{padding:7px 10px;font-size:.85rem;text-align:center;line-height:1.35}
+#clsSes button.on{background:var(--acc);color:var(--accfg)}
 </style>
 </head>
 <body>
@@ -1716,6 +1719,7 @@ table.s2 td.cls.ag{background:#f4b6b6}table.s2 td.cls.ok{background:#c6e8c6}tabl
     <p class="hint">أي قرار تاني = «صالح». القرار الفاضي = «غير معروف».</p>
     <label class="opt"><input type="checkbox" id="cls_on"> إظهار عمود التصنيف في الجدول</label>
     <div><label for="cls_f">عرض</label><select id="cls_f" class="fkind"><option value="">كل الأحكام</option><option value="ag">ضد فقط</option><option value="ok">صالح فقط</option><option value="un">غير معروف فقط</option></select></div>
+    <div id="clsSes" class="actions"></div>
     <div id="clsSum"></div>
    </div></details>
   <div class="actions">
@@ -1998,17 +2002,19 @@ function build(){
  if(!state.files.length){say('اختار ملف PDF الأول.','err');return}
  const sel=new Set([...document.querySelectorAll('#secs input:checked')].map(x=>x.dataset.sec));
  if(!sel.size){say('اختار قسم واحد على الأقل.','err');return}
- let total=0,kept=0;const info=[],res=[];
+ let total=0,kept=0;const info=[],res=[];SL=[];
  const labels=secList().filter(s=>sel.has(s.label));
  labels.forEach(s=>{SECK[s.label]=s.kind});
  for(const ss of sessionsOf()){
-  const by={};labels.forEach(s=>{by[s.label]=[]});
-  for(const f of ss.files)for(const r of f.rows){total++;if(by[r.sec]&&(!sf.length||pass(r.no,sf))&&(!CLF||clsOf(r.dec).c===CLF)){by[r.sec].push(fixRow(r));kept++}}
+  const by={};labels.forEach(s=>{by[s.label]=[]});const cnt={ag:0,ok:0,un:0};SL.push({date:ss.date||'',cnt});
+  for(const f of ss.files)for(const r of f.rows){total++;if(by[r.sec]&&(!sf.length||pass(r.no,sf))){cnt[clsOf(r.dec).c]++;if(!CLF||clsOf(r.dec).c===CLF){by[r.sec].push(fixRow(r));kept++}}}
   const parts=[];
   for(const k of Object.keys(by)){if(by[k].length)parts.push(k+' '+toAr(by[k].length));else delete by[k]}
   info.push((ss.date||'بدون تاريخ')+(parts.length?' ('+parts.join('، ')+')':' (لا يوجد)'));
-  if(parts.length)res.push({date:ss.date,by});
+  if(parts.length&&(!SESF||(ss.date||'')===SESF))res.push({date:ss.date,by});
  }
+ drawSesCls();kept=res.reduce((n,s)=>n+Object.values(s.by).reduce((m,a)=>m+a.length,0),0);
+ if(!res.length&&SESF&&!SL.some(z=>z.date===SESF)){SESF='';return build()}
  if(!res.length){clearResult();say('مفيش دعاوى مطابقة للنهايات والأقسام المختارة.','err');return}
  closeEd();
  $('scaler').innerHTML=res.map((s,i)=>{CURD=s.date;CURS=i;return sheetHtml(s.by)}).join('');CURD=null;
@@ -2223,7 +2229,7 @@ const SECK={};
 const secTitle=k=>k+(SECK[k]?' — '+SECK[k]:'');
 let NC=7;
 const HD0=['مسلسل','رول','رقم الدعوى','السنة القضائية','المدعي','المدعي عليه','القرار'];
-let NOTE=false,CLSON=true,CLF='';
+let NOTE=false,CLSON=true,CLF='',SESF='',SL=[];
 const CLK='cls1:cfg';
 let CLC={ag:'الغاء، ثبوت، جنسية',un:'اعادة، احالة، مد اجل',on:true};
 try{Object.assign(CLC,JSON.parse(localStorage.getItem(CLK)||'{}'))}catch(e){}
@@ -2246,6 +2252,12 @@ function drawCls(res){
  el.innerHTML=`<div class="clsbig"><span class="b ag">ضد<b>${toAr(T.ag)}</b></span><span class="b ok">صالح<b>${toAr(T.ok)}</b></span><span class="b un">غير معروف<b>${toAr(T.un)}</b></span></div>`+
   (res.length>1?res.map(s=>`<div class="hint">جلسة ${esc(toAr(s.date||'بدون تاريخ'))}: ${clsLine(clsCount(s.by))}</div>`).join(''):'');
 }
+function drawSesCls(){
+ const el=$('clsSes');if(!el)return;
+ if(SL.length<2){el.innerHTML='';return}
+ el.innerHTML=`<button type="button" class="sec${SESF?'':' on'}" data-d="">كل الجلسات</button>`+SL.map(z=>`<button type="button" class="sec${SESF===z.date?' on':''}" data-d="${esc(z.date)}">جلسة ${esc(toAr(z.date||'بدون تاريخ'))}<br>ضد ${toAr(z.cnt.ag)} · صالح ${toAr(z.cnt.ok)} · غير معروف ${toAr(z.cnt.un)}</button>`).join('');
+}
+$('clsSes')&&$('clsSes').addEventListener('click',e=>{const b=e.target.closest('button[data-d]');if(!b)return;SESF=b.dataset.d;if(state.files.length)build()});
 (function(){
  const ag=$('cls_ag'),un=$('cls_un'),on=$('cls_on'),f=$('cls_f');if(!ag)return;
  ag.value=CLC.ag;un.value=CLC.un;on.checked=CLC.on!==false;
@@ -5313,6 +5325,9 @@ table.s2 td.cls.ag{background:#f4b6b6}table.s2 td.cls.ok{background:#c6e8c6}tabl
 .clsbig .b b{font-size:1.6rem}
 .clsbig .ag{background:#f4b6b6}.clsbig .ok{background:#c6e8c6}.clsbig .un{background:#e2e2e2}
 .clsline{text-align:center;font-weight:800;font-size:12pt;margin:0 0 3mm}
+
+#clsSes{gap:6px}#clsSes button{padding:7px 10px;font-size:.85rem;text-align:center;line-height:1.35}
+#clsSes button.on{background:var(--acc);color:var(--accfg)}
 </style>
 </head>
 <body>
@@ -5341,6 +5356,7 @@ table.s2 td.cls.ag{background:#f4b6b6}table.s2 td.cls.ok{background:#c6e8c6}tabl
     <p class="hint">أي قرار تاني = «صالح». القرار الفاضي = «غير معروف».</p>
     <label class="opt"><input type="checkbox" id="cls_on"> إظهار عمود التصنيف في الجدول</label>
     <div><label for="cls_f">عرض</label><select id="cls_f" class="fkind"><option value="">كل الأحكام</option><option value="ag">ضد فقط</option><option value="ok">صالح فقط</option><option value="un">غير معروف فقط</option></select></div>
+    <div id="clsSes" class="actions"></div>
     <div id="clsSum"></div>
    </div></details>
   <div class="actions">
@@ -5831,24 +5847,27 @@ function build(){
  if(!state.files.length){say('اختار ملف إكسيل الأول.','err');return}
  const sel=new Set([...document.querySelectorAll('#secs input:checked')].map(x=>x.dataset.sec));
  if(!sel.size){say('اختار قسم واحد على الأقل.','err');return}
- let total=0,kept=0;const info=[],res=[];
+ let total=0,kept=0;const info=[],res=[];SL=[];
  const labels=secList().filter(s=>sel.has(s.label));
  labels.forEach(s=>{SECK[s.label]=s.kind});
  for(const ss of sessionsOf()){
-  const by={};labels.forEach(s=>{by[s.label]=[]});
+  const by={};labels.forEach(s=>{by[s.label]=[]});const cnt={ag:0,ok:0,un:0};SL.push({date:ss.date||'',cnt});
   for(const r of ss.rows){
    total++;
    if(!by[r.sec])continue;
    if(sf.length&&!pass(r.no,sf))continue;
    if(toks.length&&!hit(r,toks))continue;
+   cnt[clsOf(r.dec).c]++;
    if(CLF&&clsOf(r.dec).c!==CLF)continue;
    by[r.sec].push(fixRow(r));kept++;
   }
   const parts=[];
   for(const k of Object.keys(by)){if(by[k].length)parts.push(k+' '+toAr(by[k].length));else delete by[k]}
   info.push((ss.date||'بدون تاريخ')+(parts.length?' ('+parts.join('، ')+')':' (لا يوجد)'));
-  if(parts.length)res.push({date:ss.date,by});
+  if(parts.length&&(!SESF||(ss.date||'')===SESF))res.push({date:ss.date,by});
  }
+ drawSesCls();kept=res.reduce((n,s)=>n+Object.values(s.by).reduce((m,a)=>m+a.length,0),0);
+ if(!res.length&&SESF&&!SL.some(z=>z.date===SESF)){SESF='';return build()}
  if(!res.length){clearResult();say('مفيش دعاوى مطابقة.','err');return}
  closeEd();clearOne();
  $('scaler').innerHTML=res.map((s,i)=>{CURD=s.date;CURS=i;return sheetHtml(s.by)}).join('');CURD=null;
@@ -6069,7 +6088,7 @@ const SECK={};
 const secTitle=k=>k+(SECK[k]?' — '+SECK[k]:'');
 let NC=7;
 const HD0=['مسلسل','رول','رقم الدعوى','السنة القضائية','المدعي','المدعي عليه','القرار'];
-let NOTE=false,CLSON=true,CLF='';
+let NOTE=false,CLSON=true,CLF='',SESF='',SL=[];
 const CLK='cls1:cfg';
 let CLC={ag:'الغاء، ثبوت، جنسية',un:'اعادة، احالة، مد اجل',on:true};
 try{Object.assign(CLC,JSON.parse(localStorage.getItem(CLK)||'{}'))}catch(e){}
@@ -6092,6 +6111,12 @@ function drawCls(res){
  el.innerHTML=`<div class="clsbig"><span class="b ag">ضد<b>${toAr(T.ag)}</b></span><span class="b ok">صالح<b>${toAr(T.ok)}</b></span><span class="b un">غير معروف<b>${toAr(T.un)}</b></span></div>`+
   (res.length>1?res.map(s=>`<div class="hint">جلسة ${esc(toAr(s.date||'بدون تاريخ'))}: ${clsLine(clsCount(s.by))}</div>`).join(''):'');
 }
+function drawSesCls(){
+ const el=$('clsSes');if(!el)return;
+ if(SL.length<2){el.innerHTML='';return}
+ el.innerHTML=`<button type="button" class="sec${SESF?'':' on'}" data-d="">كل الجلسات</button>`+SL.map(z=>`<button type="button" class="sec${SESF===z.date?' on':''}" data-d="${esc(z.date)}">جلسة ${esc(toAr(z.date||'بدون تاريخ'))}<br>ضد ${toAr(z.cnt.ag)} · صالح ${toAr(z.cnt.ok)} · غير معروف ${toAr(z.cnt.un)}</button>`).join('');
+}
+$('clsSes')&&$('clsSes').addEventListener('click',e=>{const b=e.target.closest('button[data-d]');if(!b)return;SESF=b.dataset.d;if(state.files.length)build()});
 (function(){
  const ag=$('cls_ag'),un=$('cls_un'),on=$('cls_on'),f=$('cls_f');if(!ag)return;
  ag.value=CLC.ag;un.value=CLC.un;on.checked=CLC.on!==false;
