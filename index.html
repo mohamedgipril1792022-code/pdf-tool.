@@ -31,6 +31,46 @@ body{display:flex;flex-direction:column}
 #verBar .vb{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.2px;color:#fff;background:linear-gradient(135deg,#1f5f8b,#2f86c0);border-radius:999px;padding:2px 12px;box-shadow:0 1px 3px rgba(0,0,0,.25)}
 #verBar .vb b{font-weight:800}#verBar .vb i{font-style:normal;opacity:.7}
 </style>
+
+<style>
+:root{--bg:#f3f4f6;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1f5f8b;--accfg:#fff;--head:#dfe5ec}
+@media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#5aa6d6;--accfg:#0b1620;--head:#2a3542}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:"Segoe UI",Tahoma,Arial,sans-serif}
+body{display:flex;flex-direction:column}
+#tabs{display:flex;gap:6px;padding:8px 10px;padding-top:max(8px,env(safe-area-inset-top,0px));padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px));background:var(--card);border-bottom:1px solid var(--line);flex:none}
+#tabs button{flex:1;min-width:0;font:inherit;font-size:.82rem;font-weight:700;padding:6px 2px;min-height:54px;border-radius:10px;border:1px solid var(--line);background:var(--head);color:var(--fg);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;line-height:1.15;text-align:center}
+#tabs button svg{flex:none}
+#tabs button[aria-selected="true"]{background:var(--acc);color:var(--accfg);border-color:var(--acc)}
+@media (max-width:560px){#tabs{gap:4px}#tabs button{font-size:.7rem;padding:5px 1px;min-height:50px}#tabs button svg{width:20px;height:20px}}
+#views{flex:1;min-height:0;position:relative}
+#views iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg);display:none}
+#views iframe.on{display:block}
+#sub{display:flex;gap:6px;padding:6px 10px;background:var(--card);border-bottom:1px solid var(--line);flex:none}#sub[hidden]{display:none}#sub button{flex:1;font:inherit;font-weight:700;padding:7px 4px;border-radius:8px;border:1px solid var(--line);background:var(--head);color:var(--fg);cursor:pointer}#sub button[aria-selected="true"]{background:var(--acc);color:var(--accfg);border-color:var(--acc)}@media (max-width:420px){#tabs button{font-size:.74rem}}
+#verBar{flex:none;display:flex;justify-content:center;padding:4px 10px 0;pointer-events:none}
+#verBar .vb{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.2px;color:#fff;background:linear-gradient(135deg,#1f5f8b,#2f86c0);border-radius:999px;padding:2px 12px;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+#verBar .bk{pointer-events:auto;display:inline-flex;gap:6px;margin-inline-start:8px}#verBar .bk button{font:inherit;font-size:11.5px;font-weight:700;border:1px solid #1f5f8b;color:#1f5f8b;background:#fff;border-radius:999px;padding:1px 10px;cursor:pointer}#verBar .vb b{font-weight:800}#verBar .vb i{font-style:normal;opacity:.7}
+</style>
+
+<style>
+:root{--bg:#f3f4f6;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1f5f8b;--accfg:#fff;--head:#dfe5ec}
+@media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#5aa6d6;--accfg:#0b1620;--head:#2a3542}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:"Segoe UI",Tahoma,Arial,sans-serif}
+body{display:flex;flex-direction:column}
+#tabs{display:flex;gap:6px;padding:8px 10px;padding-top:max(8px,env(safe-area-inset-top,0px));padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px));background:var(--card);border-bottom:1px solid var(--line);flex:none}
+#tabs button{flex:1;min-width:0;font:inherit;font-size:.82rem;font-weight:700;padding:6px 2px;min-height:54px;border-radius:10px;border:1px solid var(--line);background:var(--head);color:var(--fg);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;line-height:1.15;text-align:center}
+#tabs button svg{flex:none}
+#tabs button[aria-selected="true"]{background:var(--acc);color:var(--accfg);border-color:var(--acc)}
+@media (max-width:560px){#tabs{gap:4px}#tabs button{font-size:.7rem;padding:5px 1px;min-height:50px}#tabs button svg{width:20px;height:20px}}
+#views{flex:1;min-height:0;position:relative}
+#views iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg);display:none}
+#views iframe.on{display:block}
+#sub{display:flex;gap:6px;padding:6px 10px;background:var(--card);border-bottom:1px solid var(--line);flex:none}#sub[hidden]{display:none}#sub button{flex:1;font:inherit;font-weight:700;padding:7px 4px;border-radius:8px;border:1px solid var(--line);background:var(--head);color:var(--fg);cursor:pointer}#sub button[aria-selected="true"]{background:var(--acc);color:var(--accfg);border-color:var(--acc)}@media (max-width:420px){#tabs button{font-size:.74rem}}
+#verBar{flex:none;display:flex;justify-content:center;padding:4px 10px 0;pointer-events:none}
+#verBar .vb{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.2px;color:#fff;background:linear-gradient(135deg,#1f5f8b,#2f86c0);border-radius:999px;padding:2px 12px;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+#verBar .bk{pointer-events:auto;display:inline-flex;gap:6px;margin-inline-start:8px}#verBar .bk button{font:inherit;font-size:11.5px;font-weight:700;border:1px solid #1f5f8b;color:#1f5f8b;background:#fff;border-radius:999px;padding:1px 10px;cursor:pointer}#verBar .vb b{font-weight:800}#verBar .vb i{font-style:normal;opacity:.7}
+</style>
 </head>
 <body>
 <div id="tabs" role="tablist">
@@ -41,7 +81,7 @@ body{display:flex;flex-direction:column}
 <button role="tab" data-k="sp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/></svg><span>تقسيم الأحكام</span></button>
 <button role="tab" data-k="nk" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="12" height="15" rx="1"/><path d="M4 7v14h12M11 8h6M11 12h6"/></svg><span>النسخ</span></button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ٢٤</b><i>·</i>٤ نوفمبر ٢٠٢٦</span></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ٢٦</b><i>·</i>٤ نوفمبر ٢٠٢٦</span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span></div>
 <div id="sub" hidden><button data-k="xm" aria-selected="false">فلتر المرافعة</button><button data-k="xa" aria-selected="false">فلتر الأحكام</button></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -2052,6 +2092,7 @@ function build(){
   info.push(dFmt(ss.date)+(parts.length?' ('+parts.join('، ')+')':' (لا يوجد)'));
   if(parts.length&&(!SESF||(ss.date||'')===SESF))res.push({date:ss.date,by});
  }
+ try{const H=JSON.parse(localStorage.getItem('cls1:hist')||'{}');SL.forEach(z=>{if(/^\d+\/\d+\/\d{4}$/.test(z.date))H[z.date]={ag:z.cnt.ag,ok:z.cnt.ok,un:z.cnt.un}});localStorage.setItem('cls1:hist',JSON.stringify(H))}catch(e){}
  drawSesCls();kept=res.reduce((n,s)=>n+Object.values(s.by).reduce((m,a)=>m+a.length,0),0);
  if(!res.length&&SESF&&!SL.some(z=>z.date===SESF)){SESF='';return build()}
  if(!res.length){clearResult();say('مفيش دعاوى مطابقة للنهايات والأقسام المختارة.','err');return}
@@ -4309,6 +4350,7 @@ details#cs .addrow{margin-top:6px}
    <div id="exp" class="actions" hidden><button id="prt" type="button" class="sec">طباعة ▾</button><button id="xl" type="button" class="sec">Excel</button><button id="wd" type="button" class="sec">Word</button><button id="big" type="button" class="sec">⤢ توسيع</button></div>
   </div>
   <div id="sesbar" class="actions" hidden></div>
+  <details id="hist" class="noprint" style="border:1px solid var(--line);border-radius:8px;padding:6px 10px"><summary style="font-weight:700;cursor:pointer">سجل دعوى (كل جلساتها في الرول)</summary><div class="actions" style="margin-top:8px"><input id="hq" type="text" dir="ltr" inputmode="numeric" placeholder="رقم الدعوى أو 1234/2020" style="padding:8px;border:1px solid var(--line);border-radius:6px"><button id="hgo" type="button" class="sec">بحث</button></div><div id="hout" style="margin-top:8px"></div></details>
   <div id="bulk" class="actions" hidden style="align-items:center;border:1px dashed var(--line);border-radius:8px;padding:8px"><b>الإجراء للكل:</b><select id="bulks" class="fkind" aria-label="الجلسة"></select><select id="bulkk" class="fkind" aria-label="القسم"></select><select id="bulksel" class="fkind" aria-label="الإجراء للكل"></select><label class="opt"><input type="checkbox" id="bulkE" checked> اللي ملوش إجراء بس</label><button id="bulkgo" type="button">تطبيق على الكل</button><button id="undo" type="button" class="sec" disabled>↶ تراجع</button></div>
   <p id="msg" class="hint"></p>
  </div>
@@ -5234,6 +5276,30 @@ const fname=ext=>{const ds=((window.__result&&window.__result.sessions)||[]).map
  return 'فلتر_مرافعة_'+(ds.length>1?'جلسات_'+ds.join('_و_'):'جلسة_'+(ds[0]||'مفلترة'))+'.'+ext};
 $('xl').addEventListener('click',()=>{try{save(exportXlsxMulti(window.__result.sessions),fname('xlsx'))}catch(e){console.error(e);say('تعذر عمل ملف Excel: '+e.message,'err')}});
 $('wd').addEventListener('click',()=>{try{save(exportDocxMulti(window.__result.sessions),fname('docx'))}catch(e){console.error(e);say('تعذر عمل ملف Word: '+e.message,'err')}});
+
+// ===== سجل دعوى =====
+(function(){
+ const q=$('hq'),o=$('hout');if(!q)return;
+ const N=x=>toEn(String(x==null?'':x)).replace(/[\u200e\u200f]/g,'');
+ function go(){
+  const v=N(q.value).trim();if(!v){o.innerHTML='';return}
+  const pt=v.split(/[\/\\\-\s]+/).filter(Boolean),n=(pt[0]||'').replace(/\D/g,''),y=(pt[1]||'').replace(/\D/g,'');
+  if(!n){o.innerHTML='<span class="hint">اكتب رقم الدعوى.</span>';return}
+  if(!state.files.length){o.innerHTML='<span class="hint">ضيف الرول الأول.</span>';return}
+  let items=[],arch=[];try{items=JSON.parse(localStorage.getItem('nk1:items')||'[]')}catch(e){}try{arch=JSON.parse(localStorage.getItem('nk1:arch')||'[]')}catch(e){}
+  const inNk=(r)=>{const k=rkey(r);return items.some(x=>x.id===k)};
+  const inArch=(r)=>{const k=rkey(r);return arch.some(a=>(a.items||[]).some(x=>x.id===k))};
+  const hits=[];
+  for(const f of state.files)for(const r of f.rows)if(N(r.no)===n&&(!y||N(r.yr)===y))hits.push(r);
+  hits.sort((a,b)=>dateKey(sessDate(a.date))-dateKey(sessDate(b.date)));
+  if(!hits.length){o.innerHTML='<span class="hint">مفيش الدعوى دي في الرول المضاف.</span>';return}
+  o.innerHTML='<table style="border-collapse:collapse;width:100%;font-size:.9rem"><tr>'+['الجلسة','القسم','المدعي','المدعي عليه','القرار','الجلسة القادمة','الإجراء','الكشف'].map(h=>'<th style="border:1px solid var(--line);padding:4px">'+h+'</th>').join('')+'</tr>'+
+   hits.map(r=>{const a=ACT[rkey(r)]||'';const k=inNk(r)?'في الكشف الحالي':(inArch(r)?'في كشف مؤرشف':'—');
+    return '<tr>'+[dB(toAr(dShow(sessDate(r.date)))),r.sec||'',r.pl,r.df,r.dec,r.next||'',a,k].map(c=>'<td style="border:1px solid var(--line);padding:4px">'+esc(c)+'</td>').join('')+'</tr>'}).join('')+'</table>'+
+   '<p class="hint">'+toAr(hits.length)+' ظهور للدعوى '+toAr(n)+(y?'/'+toAr(y):'')+'</p>';
+ }
+ $('hgo').addEventListener('click',go);q.addEventListener('keydown',e=>{if(e.key==='Enter')go()});
+})();
 restoreFiles();
 })();
 <@@/script>
@@ -5946,6 +6012,7 @@ function build(){
   info.push(dFmt(ss.date)+(parts.length?' ('+parts.join('، ')+')':' (لا يوجد)'));
   if(parts.length&&(!SESF||(ss.date||'')===SESF))res.push({date:ss.date,by});
  }
+ try{const H=JSON.parse(localStorage.getItem('cls1:hist')||'{}');SL.forEach(z=>{if(/^\d+\/\d+\/\d{4}$/.test(z.date))H[z.date]={ag:z.cnt.ag,ok:z.cnt.ok,un:z.cnt.un}});localStorage.setItem('cls1:hist',JSON.stringify(H))}catch(e){}
  drawSesCls();kept=res.reduce((n,s)=>n+Object.values(s.by).reduce((m,a)=>m+a.length,0),0);
  if(!res.length&&SESF&&!SL.some(z=>z.date===SESF)){SESF='';return build()}
  if(!res.length){clearResult();say('مفيش دعاوى مطابقة.','err');return}
@@ -6383,18 +6450,33 @@ if(eb&&ta){
 :root{--bg:#f3f4f6;--card:#fff;--fg:#1c2530;--mut:#5d6b7a;--line:#cfd6de;--acc:#1f5f8b;--accfg:#fff;--head:#dfe5ec;--ok:#1d7a46;--bad:#c0392b}
 @media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--mut:#9aa8b7;--line:#35414e;--acc:#5aa6d6;--accfg:#0b1620;--head:#2a3542;--ok:#5ccf92;--bad:#ff8a7a}}
 *{box-sizing:border-box}
+html,body{overflow-x:hidden}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:"Segoe UI",Tahoma,Arial,sans-serif;font-size:16px;line-height:1.5;padding:16px max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px))}
-.wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:16px;min-width:0}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
 .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
 label{font-weight:700;font-size:.9rem;display:block;margin-bottom:3px}
-input[type=text]{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+input[type=text],select{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
 button{font:inherit;font-weight:700;border:0;border-radius:6px;padding:10px 16px;background:var(--acc);color:var(--accfg);cursor:pointer}
 button.sec{background:transparent;color:var(--acc);border:1px solid var(--acc)}
 button.bad{background:transparent;color:var(--bad);border:1px solid var(--bad)}
 .actions{display:flex;gap:10px;flex-wrap:wrap}
 .hint{color:var(--mut);font-size:.88rem;margin:0}
 #msg{font-weight:700}#msg.ok{color:var(--ok)}
+details.box{border:1.5px solid var(--acc);border-radius:12px;padding:8px 14px;background:var(--card)}
+details.box>summary{cursor:pointer;font-weight:800;padding:4px 0;list-style:none;display:flex;align-items:center;gap:8px}
+details.box>summary::-webkit-details-marker{display:none}
+details.box>summary::before{content:"▸";color:var(--acc);transition:transform .15s}
+details.box[open]>summary::before{transform:rotate(90deg)}
+details.box[open]>summary{border-bottom:1px solid var(--line);margin-bottom:10px;padding-bottom:8px}
+table.st{width:100%;border-collapse:collapse}
+table.st td,table.st th{border:1px solid var(--line);padding:6px 8px;text-align:center}
+table.st th{background:var(--head)}
+.al{display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-bottom:1px dashed var(--line);padding:6px 0}
+.al .t{flex:1 1 160px;font-weight:700}
+.al button{padding:6px 12px;font-size:.85rem}
+#viewbar{display:none;align-items:center;justify-content:space-between;gap:10px;background:#fff3cd;color:#000;border:1px solid #e0b800;border-radius:8px;padding:8px 12px;font-weight:700}
+#viewbar.on{display:flex}
 #view{overflow:hidden}#scaler{transform-origin:top right}
 .pg{width:194mm;min-height:281mm;background:#fff;color:#000;padding:4mm 3mm;margin:0 0 16px;position:relative;break-after:page;page-break-after:always;display:flex;flex-direction:column}
 .pg:last-child{break-after:auto;page-break-after:auto}
@@ -6434,13 +6516,21 @@ button.x{padding:0 6px;font-size:1rem;line-height:1.3;border-radius:4px}
    <div><label for="h_mo">الشهر (اختياري)</label><input id="h_mo" type="text" placeholder="مثال: نوفمبر ٢٠٢٦"></div>
   </div>
   <div class="actions">
-   <button id="prt" type="button">🖨 طباعة الكشف</button>
+   <button id="prt" type="button">🖨 طباعة</button>
+   <button id="xlsx" type="button" class="sec">Excel</button>
+   <button id="docx" type="button" class="sec">Word</button>
    <button id="add" type="button" class="sec">+ إضافة دعوى يدويًا</button>
    <button id="fresh" type="button" class="bad">ابدأ كشف جديد</button>
   </div>
-  <p class="hint">أي دعوى تختار لها «مذكرة» أو «مذكرة + حافظة» في فلتر المرافعة بتنتقل هنا لوحدها، وبتفضل متراكمة لحد ما تدوس «ابدأ كشف جديد». رقم القيد بسجل النسخ تكتبه في الخانة مباشرة.</p>
+  <p class="hint">أي دعوى تختار لها «مذكرة» أو «مذكرة + حافظة» في فلتر المرافعة بتنتقل هنا لوحدها وبتفضل متراكمة. «ابدأ كشف جديد» بيحفظ الكشف الحالي في الأرشيف الأول وبعدين يفضّي الكشف.</p>
   <p id="msg" class="hint"></p>
  </div>
+ <details class="box noprint" id="arch"><summary>أرشيف الكشوف <span class="hint" id="archN"></span></summary><div id="archL"></div></details>
+ <details class="box noprint" id="stat" hidden style="display:none"><summary>إحصائية الشهر</summary>
+  <div><label for="stm">الشهر</label><select id="stm"></select></div>
+  <div id="stb" style="margin-top:10px"></div>
+ </details>
+ <div id="viewbar" class="noprint"><span id="vbt"></span><button id="vbx" type="button" class="sec">رجوع للكشف الحالي</button></div>
  <div id="view"><div id="scaler"></div></div>
 </div>
 <script>
@@ -6451,29 +6541,34 @@ const AR='٠١٢٣٤٥٦٧٨٩';
 const toAr=s=>String(s==null?'':s).replace(/\d/g,d=>AR[d]);
 const toEn=s=>String(s).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const IK='nk1:items',HK='nk1:head',PER=20;
-let items=[];
-const load=()=>{try{const a=JSON.parse(localStorage.getItem(IK)||'[]');items=Array.isArray(a)?a:[]}catch(e){items=[]}};
-const save=()=>{try{localStorage.setItem(IK,JSON.stringify(items))}catch(e){}};
+const IK='nk1:items',HK='nk1:head',AK='nk1:arch',PER=20;
+const MON=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+let items=[],ARCH=[],VIEW=-1;
+const jget=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k)||'null');return v==null?d:v}catch(e){return d}};
+const jset=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const load=()=>{const a=jget(IK,[]);items=Array.isArray(a)?a:[];const r=jget(AK,[]);ARCH=Array.isArray(r)?r:[]};
+const save=()=>jset(IK,items);
 const HF=['h_br','h_yr','h_mem','h_gr','h_mo'];
-let H={};try{H=JSON.parse(localStorage.getItem(HK)||'{}')}catch(e){H={}}
-const saveH=()=>{HF.forEach(id=>{H[id]=$(id).value});try{localStorage.setItem(HK,JSON.stringify(H))}catch(e){}};
+let H=jget(HK,{});
+const saveH=()=>{HF.forEach(id=>{H[id]=$(id).value});jset(HK,H)};
 HF.forEach(id=>{$(id).value=H[id]||'';['input','change','blur'].forEach(ev=>$(id).addEventListener(ev,()=>{saveH();if(ev==='input')draw()}))});
 window.addEventListener('pagehide',saveH);document.addEventListener('visibilitychange',()=>{if(document.hidden)saveH()});
 try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
 function say(t,c){const m=$('msg');m.textContent=t;m.className='hint '+(c||'')}
-function dateAr(d){const m=String(d||'').match(/^(\d+)\/(\d+)\/(\d{4})$/);return '\u2066'+toAr(m?m[3]+'_'+(+m[2])+'_'+(+m[1]):String(d||'')).replace(/_/g,'_\u200E')+'\u2069'}
-function normD(s){s=toEn(s||'').trim();let m=s.match(/^(\d{4})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})$/);if(m)return (+m[3])+'/'+(+m[2])+'/'+m[1];m=s.match(/^(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})$/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s}
-function page(chunk,pi,np){
+const dm=d=>{const m=String(d||'').match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?{d:+m[1],m:+m[2],y:+m[3]}:null};
+const dsp=d=>{const x=dm(d);return toAr(x?x.y+'/'+x.m+'/'+x.d:String(d||''))};
+const dfile=d=>{const x=dm(d);return x?x.d+'_'+x.m+'_'+x.y:'بدون_تاريخ'};
+const curSet=()=>VIEW>=0&&ARCH[VIEW]?{items:ARCH[VIEW].items,head:ARCH[VIEW].head||{},ro:true}:{items,head:H,ro:false};
+function page(chunk,pi,np,head,ro){
  const rows=[];
  for(let i=0;i<PER;i++){
   const it=chunk[i],n=pi*PER+i+1;
-  rows.push(it?`<tr><td>${toAr(n)}</td><td>${toAr(it.no)} / ${toAr(it.yr)}</td><td>${esc(it.pl)}</td><td>${esc(it.df)}</td><td><input class="reg" data-id="${esc(it.id)}" value="${esc(it.reg||'')}" aria-label="رقم القيد" inputmode="numeric"></td><td><bdi dir="ltr">${dateAr(it.date)}</bdi></td><td class="dcol noprint"><button type="button" class="x bad" data-del="${esc(it.id)}" aria-label="حذف">×</button></td></tr>`
+  rows.push(it?`<tr><td>${toAr(n)}</td><td>${toAr(it.no)} / ${toAr(it.yr)}</td><td>${esc(it.pl)}</td><td>${esc(it.df)}</td><td><input class="reg" data-id="${esc(it.id)}" value="${esc(it.reg||'')}" aria-label="رقم القيد" inputmode="numeric"${ro?' disabled':''}></td><td><bdi dir="ltr">${dsp(it.date)}</bdi></td><td class="dcol noprint">${ro?'':`<button type="button" class="x bad" data-del="${esc(it.id)}" aria-label="حذف">×</button>`}</td></tr>`
    :`<tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="dcol noprint"></td></tr>`);
  }
- const v=id=>esc(H[id]||'');
+ const v=id=>esc(head[id]||'');
  return `<section class="pg"><div class="hd"><div class="r"><div>هيئة قضايا الدولة</div><div>فرع / قسم : ${v('h_br')}</div><div>لسنة : ${toAr(v('h_yr'))}</div></div><div class="l"><div>اختصاص العضو : ${v('h_mem')}</div><div>الدرجة : ${v('h_gr')}</div></div></div>
- <div class="ttl">كشف بمذكرات الدفاع المحررة خلال الشهر${H.h_mo?' — '+esc(toAr(H.h_mo)):''}</div>
+ <div class="ttl">كشف بمذكرات الدفاع المحررة خلال الشهر${head.h_mo?' — '+esc(toAr(head.h_mo)):''}</div>
  <table class="nk"><colgroup><col style="width:7%"><col style="width:16%"><col style="width:24%"><col style="width:24%"><col style="width:14%"><col style="width:15%"><col class="dcol" style="width:36px"></colgroup>
  <thead><tr><th rowspan="2">م</th><th rowspan="2">رقم الدعوى</th><th colspan="2">أسماء الخصوم</th><th rowspan="2">رقم القيد<br>بسجل النسخ</th><th rowspan="2">تاريخ الجلسة<br>المقدمة فيها</th><th rowspan="2" class="dcol noprint"></th></tr><tr><th>المدعي</th><th>المدعي عليه</th></tr></thead>
  <tbody>${rows.join('')}</tbody></table>
@@ -6481,10 +6576,13 @@ function page(chunk,pi,np){
  <div class="pn noprint">صفحة ${toAr(pi+1)} من ${toAr(np)}</div></section>`;
 }
 function draw(){
- const np=Math.max(1,Math.ceil(items.length/PER));let h='';
- for(let p=0;p<np;p++)h+=page(items.slice(p*PER,(p+1)*PER),p,np);
+ const c=curSet(),np=Math.max(1,Math.ceil(c.items.length/PER));let h='';
+ for(let p=0;p<np;p++)h+=page(c.items.slice(p*PER,(p+1)*PER),p,np,c.head,c.ro);
  $('scaler').innerHTML=h;fit();
- say(items.length?toAr(items.length)+' مذكرة في الكشف':'الكشف فاضي — اختار «مذكرة» لأي دعوى في فلتر المرافعة.',items.length?'ok':'');
+ $('viewbar').classList.toggle('on',VIEW>=0);
+ if(VIEW>=0&&ARCH[VIEW])$('vbt').textContent='عرض كشف مؤرشف: '+archLabel(ARCH[VIEW]);
+ say(VIEW>=0?'':(items.length?toAr(items.length)+' مذكرة في الكشف':'الكشف فاضي — اختار «مذكرة» لأي دعوى في فلتر المرافعة.'),items.length?'ok':'');
+ drawArch();drawStat();
 }
 function fit(){
  const sc=$('scaler'),v=$('view');if(!sc.firstElementChild)return;
@@ -6495,21 +6593,141 @@ function fit(){
 window.addEventListener('resize',fit);
 window.addEventListener('beforeprint',()=>{$('scaler').style.transform='none';$('view').style.height='auto'});
 window.addEventListener('afterprint',fit);
-$('scaler').addEventListener('input',e=>{const i=e.target.closest('input.reg');if(!i)return;const it=items.find(z=>z.id===i.dataset.id);if(it){it.reg=i.value;save()}});
-$('scaler').addEventListener('click',e=>{const b=e.target.closest('button[data-del]');if(!b)return;items=items.filter(z=>z.id!==b.dataset.del);save();draw()});
-$('prt').addEventListener('click',()=>{if(!items.length){say('الكشف فاضي.','');return}window.print()});
+$('scaler').addEventListener('input',e=>{const i=e.target.closest('input.reg');if(!i||VIEW>=0)return;const it=items.find(z=>z.id===i.dataset.id);if(it){it.reg=i.value;save()}});
+$('scaler').addEventListener('click',e=>{const b=e.target.closest('button[data-del]');if(!b||VIEW>=0)return;items=items.filter(z=>z.id!==b.dataset.del);save();draw()});
+$('prt').addEventListener('click',()=>{if(!curSet().items.length){say('الكشف فاضي.','');return}window.print()});
+// ===== الأرشيف =====
+const archLabel=a=>((a.head&&a.head.h_mo)?toAr(a.head.h_mo):'كشف')+' — '+toAr(a.items.length)+' مذكرة — اتأرشف '+dsp(a.at);
+function drawArch(){
+ $('archN').textContent=ARCH.length?'('+toAr(ARCH.length)+')':'';
+ $('archL').innerHTML=ARCH.length?ARCH.map((a,i)=>`<div class="al"><span class="t">${esc(archLabel(a))}</span><button type="button" class="sec" data-v="${i}">عرض</button><button type="button" class="sec" data-x="${i}" data-t="xlsx">Excel</button><button type="button" class="sec" data-x="${i}" data-t="docx">Word</button><button type="button" class="bad" data-r="${i}">حذف</button></div>`).join(''):'<p class="hint">مفيش كشوف مؤرشفة لسه.</p>';
+}
+$('archL').addEventListener('click',e=>{
+ const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.v!=null){VIEW=+b.dataset.v;draw();window.scrollTo(0,document.body.scrollHeight)}
+ else if(b.dataset.x!=null){const a=ARCH[+b.dataset.x];if(a)doExport(b.dataset.t,{items:a.items,head:a.head||{}})}
+ else if(b.dataset.r!=null){const a=ARCH[+b.dataset.r];if(a&&confirm('حذف الكشف المؤرشف نهائيًا؟')){ARCH.splice(+b.dataset.r,1);jset(AK,ARCH);if(VIEW>=0)VIEW=-1;draw()}}
+});
+$('vbx').addEventListener('click',()=>{VIEW=-1;draw()});
 $('fresh').addEventListener('click',()=>{
  if(!items.length){say('الكشف فاضي أصلًا.','');return}
- if(!confirm('هتبدأ كشف جديد وهيتمسح الكشف الحالي ('+items.length+' مذكرة). متأكد؟'))return;
- items=[];save();draw();say('تم بدء كشف جديد.','ok');
+ if(!confirm('هيتحفظ الكشف الحالي ('+items.length+' مذكرة) في الأرشيف وتبدأ كشف جديد فاضي. متأكد؟'))return;
+ const t=new Date();
+ ARCH.unshift({at:t.getDate()+'/'+(t.getMonth()+1)+'/'+t.getFullYear(),head:Object.assign({},H),items:items.slice()});
+ jset(AK,ARCH);items=[];save();VIEW=-1;draw();say('اتحفظ في الأرشيف وبدأ كشف جديد.','ok');
 });
 $('add').addEventListener('click',()=>{
  const no=prompt('رقم الدعوى؟');if(!no)return;const yr=prompt('السنة القضائية؟')||'';
  const pl=prompt('المدعي؟')||'',df=prompt('المدعي عليه؟')||'',dt=prompt('تاريخ الجلسة؟ (مثال 3/11/2026)')||'';
- items.push({id:'m|'+Date.now(),no:toEn(no).trim(),yr:toEn(yr).trim(),pl,df,date:normD(dt),act:'مذكرة',reg:''});save();draw();
+ items.push({id:'m|'+Date.now(),no:toEn(no).trim(),yr:toEn(yr).trim(),pl,df,date:normD(dt),act:'مذكرة',reg:''});save();VIEW=-1;draw();
 });
+function normD(s){s=toEn(s||'').trim();let m=s.match(/^(\d{4})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})$/);if(m)return (+m[3])+'/'+(+m[2])+'/'+m[1];m=s.match(/^(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})$/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s}
+// ===== تصدير Excel / Word =====
+const enc=new TextEncoder();
+const CRC=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(b){let c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=CRC[(c^b[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
+function zip(files){
+ const parts=[],cd=[];let off=0;
+ const u16=v=>[v&255,(v>>8)&255],u32=v=>[v&255,(v>>8)&255,(v>>16)&255,(v>>>24)&255];
+ for(const [name,str] of files){
+  const nb=enc.encode(name),db=enc.encode(str),crc=crc32(db);
+  const lh=new Uint8Array([0x50,0x4b,3,4,...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(0x21),...u32(crc),...u32(db.length),...u32(db.length),...u16(nb.length),...u16(0)]);
+  parts.push(lh,nb,db);
+  cd.push(new Uint8Array([0x50,0x4b,1,2,...u16(20),...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(0x21),...u32(crc),...u32(db.length),...u32(db.length),...u16(nb.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(off)]),nb);
+  off+=lh.length+nb.length+db.length;
+ }
+ let cdl=0;for(const p of cd)cdl+=p.length;
+ const end=new Uint8Array([0x50,0x4b,5,6,0,0,0,0,...u16(files.length),...u16(files.length),...u32(cdl),...u32(off),0,0]);
+ return new Blob([...parts,...cd,end],{type:'application/octet-stream'});
+}
+function saveBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000)}
+const X=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const XH='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+const TT='كشف بمذكرات الدفاع المحررة خلال الشهر';
+const HDR=['م','رقم الدعوى','المدعي','المدعي عليه','رقم القيد بسجل النسخ','تاريخ الجلسة المقدمة فيها'];
+const infoL=h=>['هيئة قضايا الدولة','فرع / قسم : '+(h.h_br||'')+'   —   لسنة : '+toAr(h.h_yr||''),'اختصاص العضو : '+(h.h_mem||'')+'   —   الدرجة : '+(h.h_gr||'')];
+const rowsOf=its=>its.map((it,i)=>[toAr(i+1),toAr(it.no)+' / '+toAr(it.yr),it.pl||'',it.df||'',it.reg||'',dsp(it.date)]);
+function xlsxBlob(set){
+ const h=set.head,L=infoL(h),R=rowsOf(set.items);let r=1,sd='';const mg=[];
+ const colL=n=>String.fromCharCode(64+n);
+ const c=(ci,v,s)=>v===''||v==null?`<c r="${colL(ci)}${r}" s="${s}"/>`:`<c r="${colL(ci)}${r}" s="${s}" t="inlineStr"><is><t xml:space="preserve">${X(v)}</t></is></c>`;
+ const row=(cs,ht)=>{sd+=`<row r="${r}"${ht?` ht="${ht}" customHeight="1"`:''}>${cs}</row>`;r++};
+ const full=(v,s,ht)=>{mg.push(`A${r}:F${r}`);row(c(1,v,s)+[2,3,4,5,6].map(i=>c(i,'',s)).join(''),ht)};
+ full(TT+(h.h_mo?' — '+toAr(h.h_mo):''),1,30);L.forEach(t=>full(t,4,20));r++;
+ row(HDR.map((t,i)=>c(i+1,t,2)).join(''),34);
+ R.forEach(x=>row(x.map((t,i)=>c(i+1,t,3)).join(''),24));
+ const sheet=XH+`<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetPr><pageSetUpPr fitToPage="1"/></sheetPr><sheetViews><sheetView rightToLeft="1" workbookViewId="0"/></sheetViews><sheetFormatPr defaultRowHeight="18"/><cols>${[6,18,30,30,18,20].map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')}</cols><sheetData>${sd}</sheetData><mergeCells count="${mg.length}">${mg.map(m=>`<mergeCell ref="${m}"/>`).join('')}</mergeCells><pageMargins left="0.4" right="0.4" top="0.5" bottom="0.5" header="0.3" footer="0.3"/><pageSetup paperSize="9" orientation="portrait" fitToWidth="1" fitToHeight="0"/></worksheet>`;
+ const bd='<border><left style="thin"><color auto="1"/></left><right style="thin"><color auto="1"/></right><top style="thin"><color auto="1"/></top><bottom style="thin"><color auto="1"/></bottom><diagonal/></border>';
+ const al='<alignment horizontal="center" vertical="center" wrapText="1"/>';
+ const styles=XH+`<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="3"><font><sz val="12"/><name val="Arial"/></font><font><b/><sz val="16"/><name val="Arial"/></font><font><b/><sz val="12"/><name val="Arial"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFD9D9D9"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border>${bd}</borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="5"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1" applyAlignment="1">${al}</xf><xf numFmtId="0" fontId="2" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1">${al}</xf><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1" applyAlignment="1">${al}</xf><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1" applyAlignment="1">${al}</xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+ const ct='application/vnd.openxmlformats-officedocument.spreadsheetml.';
+ return zip([
+  ['[Content_Types].xml',XH+`<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="${ct}sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="${ct}worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="${ct}styles+xml"/></Types>`],
+  ['_rels/.rels',XH+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+  ['xl/workbook.xml',XH+'<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="كشف النسخ" sheetId="1" r:id="rId1"/></sheets></workbook>'],
+  ['xl/_rels/workbook.xml.rels',XH+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'],
+  ['xl/styles.xml',styles],['xl/worksheets/sheet1.xml',sheet]]);
+}
+function docxBlob(set){
+ const h=set.head,L=infoL(h),R=rowsOf(set.items);
+ const run=(t,sz,b)=>`<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/>${b?'<w:b/><w:bCs/>':''}<w:sz w:val="${sz}"/><w:szCs w:val="${sz}"/><w:rtl/></w:rPr><w:t xml:space="preserve">${X(t)}</w:t></w:r>`;
+ const para=(t,sz,b,jc)=>`<w:p><w:pPr><w:bidi/><w:spacing w:before="0" w:after="0"/><w:jc w:val="${jc||'center'}"/></w:pPr>${t===''?'':run(t,sz,b)}</w:p>`;
+ const B='<w:tcBorders><w:top w:val="single" w:sz="6" w:color="000000"/><w:left w:val="single" w:sz="6" w:color="000000"/><w:bottom w:val="single" w:sz="6" w:color="000000"/><w:right w:val="single" w:sz="6" w:color="000000"/></w:tcBorders>';
+ const W=[600,1700,2600,2600,1500,1800];
+ const tc=(w,t,sz,b,fill,span,nob)=>`<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${span?`<w:gridSpan w:val="${span}"/>`:''}${nob?'':B}${fill?`<w:shd w:val="clear" w:color="auto" w:fill="${fill}"/>`:''}<w:vAlign w:val="center"/></w:tcPr>${para(t,sz,b)}</w:tc>`;
+ const tr=(cells,ht)=>`<w:tr><w:trPr><w:cantSplit/><w:trHeight w:val="${ht}" w:hRule="atLeast"/></w:trPr>${cells}</w:tr>`;
+ const tbl=(grid,rows)=>`<w:tbl><w:tblPr><w:tblW w:w="${grid.reduce((a,b)=>a+b,0)}" w:type="dxa"/><w:jc w:val="center"/><w:bidiVisual/><w:tblLayout w:type="fixed"/></w:tblPr><w:tblGrid>${grid.map(g=>`<w:gridCol w:w="${g}"/>`).join('')}</w:tblGrid>${rows}</w:tbl>`;
+ const np=Math.max(1,Math.ceil(R.length/PER));let body='';
+ for(let p=0;p<np;p++){
+  body+=para(TT+(h.h_mo?' — '+toAr(h.h_mo):''),34,true);
+  body+=tbl([5400,5400],tr(tc(5400,L[1],24,true,'',0,true)+tc(5400,L[2],24,true,'',0,true),420));
+  body+=para('',12);
+  let rows=tr(HDR.map((t,i)=>tc(W[i],t,22,true,'D9D9D9')).join(''),560);
+  for(let i=0;i<PER;i++){const x=R[p*PER+i]||['','','','','',''];rows+=tr(x.map((t,j)=>tc(W[j],t,22,false)).join(''),500)}
+  body+=tbl(W,rows);
+  body+=para('',12);
+  body+=tbl([3600,3600,3600],tr(['العضو المختص','المستشار المشرف','نائب رئيس الهيئة'].map(t=>tc(3600,t,24,true,'',0,true)).join(''),700));
+  if(p<np-1)body+='<w:p><w:r><w:br w:type="page"/></w:r></w:p>';
+ }
+ const doc=XH+`<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${body}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="500" w:right="560" w:bottom="500" w:left="560" w:header="300" w:footer="300" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+ return zip([
+  ['[Content_Types].xml',XH+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'],
+  ['_rels/.rels',XH+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'],
+  ['word/document.xml',doc]]);
+}
+function doExport(kind,set){
+ if(!set.items.length){say('الكشف فاضي.','');return}
+ try{
+  const nm='كشف_النسخ_'+(set.head.h_mo?String(set.head.h_mo).replace(/\s+/g,'_')+'_':'')+dfile(new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear());
+  saveBlob(kind==='xlsx'?xlsxBlob(set):docxBlob(set),nm+'.'+kind);
+ }catch(e){console.error(e);say('تعذر التصدير: '+e.message,'')}
+}
+$('xlsx').addEventListener('click',()=>doExport('xlsx',curSet()));
+$('docx').addEventListener('click',()=>doExport('docx',curSet()));
+// ===== إحصائية الشهر =====
+const ACTS=['أجل للاطلاع','مذكرة','مذكرة + حافظة','حافظة','إحالة','جاهزة','لا شأن','قضية هامة'];
+function monthsAvail(){
+ const s=new Set(),add=d=>{const x=dm(d);if(x)s.add(x.y*100+x.m)};
+ Object.keys(jget('act_xm',{})).forEach(k=>add(k.split('|')[0]));
+ Object.keys(jget('cls1:hist',{})).forEach(add);
+ items.forEach(i=>add(i.date));ARCH.forEach(a=>a.items.forEach(i=>add(i.date)));
+ return [...s].sort((a,b)=>b-a);
+}
+function drawStat(){
+ const sel=$('stm'),cur=sel.value,ms=monthsAvail();
+ sel.innerHTML='<option value="">كل الأشهر</option>'+ms.map(k=>`<option value="${k}">${MON[(k%100)-1]} ${toAr(Math.floor(k/100))}</option>`).join('');
+ if(cur&&ms.includes(+cur))sel.value=cur;
+ const mk=sel.value?+sel.value:0,inM=d=>{const x=dm(d);return x&&(!mk||x.y*100+x.m===mk)};
+ const act=jget('act_xm',{}),cnt={};ACTS.forEach(a=>cnt[a]=0);
+ let totalA=0;for(const k in act){if(inM(k.split('|')[0])&&cnt[act[k]]!=null){cnt[act[k]]++;totalA++}}
+ const nowN=items.filter(i=>inM(i.date)).length;let arN=0;ARCH.forEach(a=>a.items.forEach(i=>{if(inM(i.date))arN++}));
+ const hist=jget('cls1:hist',{});let ag=0,ok=0,un=0,ss=0;for(const d in hist){if(inM(d)){ag+=hist[d].ag||0;ok+=hist[d].ok||0;un+=hist[d].un||0;ss++}}
+ const tr=(a,b)=>`<tr><td>${a}</td><td><b>${toAr(b)}</b></td></tr>`;
+ $('stb').innerHTML=`<table class="st"><tr><th colspan="2">الإجراءات على الدعاوى (فلتر المرافعة)</th></tr>${ACTS.map(a=>tr(a,cnt[a])).join('')}${tr('إجمالي الدعاوى اللي ليها إجراء',totalA)}<tr><th colspan="2">كشف النسخ</th></tr>${tr('مذكرات في الكشف الحالي',nowN)}${tr('مذكرات في الكشوف المؤرشفة',arN)}<tr><th colspan="2">الأحكام (آخر جلسات اتفتحت في فلتر/تاب الأحكام)</th></tr>${tr('أحكام ضد',ag)}${tr('أحكام صالح',ok)}${tr('أحكام غير معروفة',un)}${tr('عدد الجلسات',ss)}</table>`;
+}
+$('stm').addEventListener('change',drawStat);
 function refresh(){const a=document.activeElement;if(a&&a.classList&&a.classList.contains('reg'))return;load();draw()}
-window.addEventListener('storage',e=>{if(e.key===IK||e.key===null)refresh()});
+window.addEventListener('storage',e=>{if(e.key===IK||e.key===AK||e.key==='act_xm'||e.key==='cls1:hist'||e.key===null)refresh()});
 window.addEventListener('message',e=>{if(e.data==='nk-refresh')refresh()});
 window.addEventListener('focus',refresh);
 load();draw();
@@ -6545,6 +6763,24 @@ document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>show(b.datase
 document.querySelectorAll('#sub button').forEach(b=>b.onclick=()=>show(b.dataset.k));
 let k0='mf';try{const v=localStorage.getItem('combined_tab');if(v&&document.getElementById('tpl-'+v))k0=v}catch(e){}
 show(k0);
+})();
+</script>
+<script>
+(function(){
+ const d=new Date(),f=d.getDate()+'_'+(d.getMonth()+1)+'_'+d.getFullYear();
+ document.getElementById('bkS').addEventListener('click',()=>{
+  const data={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);data[k]=localStorage.getItem(k)}}catch(e){alert('تعذر قراءة البيانات');return}
+  const b=new Blob([JSON.stringify({app:'pdf-tool',ver:25,at:d.toISOString(),data})],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='نسخة_احتياطية_استخراج_pdf_'+f+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)});
+ const F=document.getElementById('bkF');
+ document.getElementById('bkR').addEventListener('click',()=>F.click());
+ F.addEventListener('change',()=>{const fl=F.files[0];if(!fl)return;const r=new FileReader();r.onload=()=>{
+  try{const j=JSON.parse(r.result);if(j.app!=='pdf-tool'||!j.data)throw 0;
+   const n=Object.keys(j.data).length;
+   if(!confirm('هيتم استبدال بيانات البرنامج الحالية ('+n+' عنصر) بالنسخة الاحتياطية. متأكد؟'))return;
+   for(const k in j.data)localStorage.setItem(k,j.data[k]);
+   alert('تم الاسترجاع.');location.reload()}catch(e){alert('الملف ده مش نسخة احتياطية صالحة.')}};
+  r.readAsText(fl);F.value=''});
 })();
 </script>
 <script>if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script>
