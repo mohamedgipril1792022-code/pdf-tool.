@@ -41,7 +41,7 @@ body{display:flex;flex-direction:column}
 <button role="tab" data-k="sp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/></svg><span>تقسيم الأحكام</span></button>
 <button role="tab" data-k="nk" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="12" height="15" rx="1"/><path d="M4 7v14h12M11 8h6M11 12h6"/></svg><span>النسخ</span></button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ١٣</b><i>·</i>٤ نوفمبر ٢٠٢٦</span></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ١٤</b><i>·</i>٤ نوفمبر ٢٠٢٦</span></div>
 <div id="sub" hidden><button data-k="xm" aria-selected="false">فلتر المرافعة</button><button data-k="xa" aria-selected="false">فلتر الأحكام</button></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -6240,7 +6240,10 @@ const load=()=>{try{const a=JSON.parse(localStorage.getItem(IK)||'[]');items=Arr
 const save=()=>{try{localStorage.setItem(IK,JSON.stringify(items))}catch(e){}};
 const HF=['h_br','h_yr','h_mem','h_gr','h_mo'];
 let H={};try{H=JSON.parse(localStorage.getItem(HK)||'{}')}catch(e){H={}}
-HF.forEach(id=>{$(id).value=H[id]||'';$(id).addEventListener('input',()=>{H[id]=$(id).value;try{localStorage.setItem(HK,JSON.stringify(H))}catch(e){}draw()})});
+const saveH=()=>{HF.forEach(id=>{H[id]=$(id).value});try{localStorage.setItem(HK,JSON.stringify(H))}catch(e){}};
+HF.forEach(id=>{$(id).value=H[id]||'';['input','change','blur'].forEach(ev=>$(id).addEventListener(ev,()=>{saveH();if(ev==='input')draw()}))});
+window.addEventListener('pagehide',saveH);document.addEventListener('visibilitychange',()=>{if(document.hidden)saveH()});
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
 function say(t,c){const m=$('msg');m.textContent=t;m.className='hint '+(c||'')}
 function dateAr(d){return toAr(String(d||'').replace(/\//g,' / '))}
 function page(chunk,pi,np){
