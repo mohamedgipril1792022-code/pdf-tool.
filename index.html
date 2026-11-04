@@ -41,7 +41,7 @@ body{display:flex;flex-direction:column}
 <button role="tab" data-k="sp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/></svg><span>تقسيم الأحكام</span></button>
 <button role="tab" data-k="nk" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="12" height="15" rx="1"/><path d="M4 7v14h12M11 8h6M11 12h6"/></svg><span>النسخ</span></button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ١٨</b><i>·</i>٤ نوفمبر ٢٠٢٦</span></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ٢١</b><i>·</i>٤ نوفمبر ٢٠٢٦</span></div>
 <div id="sub" hidden><button data-k="xm" aria-selected="false">فلتر المرافعة</button><button data-k="xa" aria-selected="false">فلتر الأحكام</button></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -418,7 +418,7 @@ function build(){
   const by={'متنوع':[],'تسجيل':[]};
   for(const f of s.files)for(const r of f.rows){total++;if(pass(r.no,sf))(by[f.kind]||(by[f.kind]=[])).push(r)}
   res.push({date:s.date,by});
-  info.push((s.date||'بدون تاريخ')+' (متنوع '+toAr(by['متنوع'].length)+'، تسجيل '+toAr(by['تسجيل'].length)+')');
+  info.push(dShow(s.date||'بدون تاريخ')+' (متنوع '+toAr(by['متنوع'].length)+'، تسجيل '+toAr(by['تسجيل'].length)+')');
  }
  EDIT=[];closeEd();
  $('scaler').innerHTML=res.map((s,i)=>{CURD=s.date;CURS=i;return sheetHtml(s.by)}).join('');CURD=null;
@@ -437,7 +437,7 @@ function csSearch(){
  const h=[];
  for(const f of state.files)for(const r of f.rows)if(csT(r.no).some(x=>x.includes(n))&&(!y||csT(r.yr).some(x=>x===y||x.endsWith(y))))h.push([f,r]);
  if(!h.length){o.innerHTML='<span class="hint">مفيش دعوى بالرقم ده في الملفات.</span>';return}
- const rows=h.slice(0,150).map(([f,r])=>`<tr><td>${esc(toAr(f.date||''))}</td><td>${esc(r.sec||f.kind||'')}</td><td>${esc(toAr(r.m==null?'':r.m))}</td><td>${esc(toAr(r.no))} / ${esc(toAr(r.yr))}</td><td>${esc(r.pl||'')}</td><td>${esc(r.df||'')}</td><td>${esc(toAr((r.dec||'')+(r.note?' - '+r.note:'')))}</td></tr>`).join('');
+ const rows=h.slice(0,150).map(([f,r])=>`<tr><td>${esc(toAr(dShow(f.date||'')))}</td><td>${esc(r.sec||f.kind||'')}</td><td>${esc(toAr(r.m==null?'':r.m))}</td><td>${esc(toAr(r.no))} / ${esc(toAr(r.yr))}</td><td>${esc(r.pl||'')}</td><td>${esc(r.df||'')}</td><td>${esc(toAr((r.dec||'')+(r.note?' - '+r.note:'')))}</td></tr>`).join('');
  o.innerHTML=`<div class="hint ok">${toAr(h.length)} نتيجة${h.length>150?' (أول ١٥٠)':''}</div><table><thead><tr><th>الجلسة</th><th>القسم</th><th>م</th><th>رقم الدعوى</th><th>المدعي</th><th>المدعى عليه</th><th>القرار</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 $('csb').addEventListener('click',csSearch);
@@ -479,7 +479,8 @@ const dateFromName=f=>{
  }
  return '';
 };
-const sessDate=s=>{s=toEn(s||'').trim();const m=s.match(/(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s};
+const sessDate=s=>{s=toEn(s||'').trim();let m=s.match(/^(\d{4})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})$/);if(m)return (+m[3])+'/'+(+m[2])+'/'+m[1];m=s.match(/(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s};
+const dShow=d=>{const m=String(d||'').match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?m[3]+'_'+(+m[2])+'_'+(+m[1]):String(d||'')};
 const dateKey=s=>{const m=String(s).match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?(+m[3])*10000+(+m[2])*100+(+m[1]):1e9};
 function sessionsOf(){
  const m=new Map();
@@ -489,12 +490,12 @@ function sessionsOf(){
 function clearResult(){window.__result=null;$('scaler').innerHTML='';$('exp').hidden=true;try{closeEd()}catch(e){}$('view').style.height='auto'}
 function renderFiles(){
  
- $('flist').innerHTML=state.files.map((f,i)=>`<li><span class="fn">${esc(f.name)}</span><span class="fc">${esc(f.kind)} · ${toAr(f.rows.length)} صف</span><input class="fdate" type="text" dir="ltr" data-i="${i}" value="${esc(f.date||'')}" placeholder="تاريخ الجلسة" aria-label="تاريخ الجلسة"><select class="fkind" data-i="${i}" aria-label="نوع الجلسة"><option${f.kind==='متنوع'?' selected':''}>متنوع</option><option${f.kind==='تسجيل'?' selected':''}>تسجيل</option></select><button type="button" class="sec fx" data-x="${i}" aria-label="حذف الملف">×</button></li>`).join('');
+ $('flist').innerHTML=state.files.map((f,i)=>`<li><span class="fn">${esc(f.name)}</span><span class="fc">${esc(f.kind)} · ${toAr(f.rows.length)} صف</span><input class="fdate" type="text" dir="ltr" data-i="${i}" value="${esc(dShow(f.date||''))}" placeholder="تاريخ الجلسة" aria-label="تاريخ الجلسة"><select class="fkind" data-i="${i}" aria-label="نوع الجلسة"><option${f.kind==='متنوع'?' selected':''}>متنوع</option><option${f.kind==='تسجيل'?' selected':''}>تسجيل</option></select><button type="button" class="sec fx" data-x="${i}" aria-label="حذف الملف">×</button></li>`).join('');
  const c=$('clrf');if(c)c.hidden=!state.files.length;
 }
 $('flist').addEventListener('change',e=>{
  const d=e.target.closest('.fdate'),k=e.target.closest('.fkind');
- if(d){const f=state.files[+d.dataset.i];if(f){f.date=sessDate(d.value);d.value=f.date;build()}}
+ if(d){const f=state.files[+d.dataset.i];if(f){f.date=sessDate(d.value);d.value=dShow(f.date);build()}}
  else if(k){const f=state.files[+k.dataset.i];if(f){f.kind=k.value;renderFiles();build()}}
 });
 $('flist').addEventListener('click',e=>{
@@ -640,7 +641,7 @@ function exportDocx(by){
 // ===== شكل الشيت (زي ملف الإكسل بتاعك): جدول متنوع ثم جدول تسجيل =====
 const isDate=s=>/^\d{4}\/\d{2}\/\d{2}$/.test(s);
 const serial=s=>{const [y,m,d]=s.split('/').map(Number);return Math.round((Date.UTC(y,m-1,d)-Date.UTC(1899,11,30))/86400000)};
-const titleTxt=()=>'جلسة '+toAr((CURD!=null?CURD:$('sdate').value).trim().replace(/\//g,'_'))+' تحضير';
+const titleTxt=()=>'جلسة '+toAr(dShow((CURD!=null?CURD:$('sdate').value).trim()).replace(/\//g,'_'))+' تحضير';
 const KINDS=['متنوع','تسجيل'];
 let EDIT=[];
 // ===== حفظ التصحيحات: أي اسم بتعدّله بيتحفظ في المتصفح وبيتطبق تلقائي لو نفس القراءة الغلط ظهرت تاني =====
@@ -738,7 +739,7 @@ $('prt').addEventListener('click',()=>window.print());
 function exportXlsxMulti(res){
  const H='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
  const parts=res.map(s=>{CURD=s.date;return xlsxPart(s.by)});CURD=null;
- const used={},names=res.map(s=>{let nm=('جلسة '+(s.date||'').replace(/\//g,'-')).trim().slice(0,31).replace(/[\\\/?*\[\]:]/g,'-');
+ const used={},names=res.map(s=>{let nm=('جلسة '+dShow(s.date||'')).trim().slice(0,31).replace(/[\\\/?*\[\]:]/g,'-');
   if(used[nm]){used[nm]++;nm=nm.slice(0,27)+' ('+used[nm]+')'}else used[nm]=1;return nm});
  const n=res.length,ct='application/vnd.openxmlformats-officedocument.spreadsheetml.';
  const files=[
@@ -756,7 +757,7 @@ function exportDocxMulti(res){
  CURD=null;
  return docxWrap(body);
 }
-const fname=ext=>{const ds=((window.__result&&window.__result.sessions)||[]).map(s=>(s.date||'').replace(/\//g,'-')).filter(Boolean);
+const fname=ext=>{const ds=((window.__result&&window.__result.sessions)||[]).map(s=>dShow(s.date||'')).filter(Boolean);
  return 'مفوضين_'+(ds.length>1?'جلسات_'+ds.join('_و_'):'جلسة_'+(ds[0]||'مفلترة'))+'.'+ext};
 $('xl').addEventListener('click',()=>{try{save(exportXlsxMulti(window.__result.sessions),fname('xlsx'))}catch(e){console.error(e);say('تعذر عمل ملف Excel: '+e.message,'err')}});
 $('wd').addEventListener('click',()=>{try{save(exportDocxMulti(window.__result.sessions),fname('docx'))}catch(e){console.error(e);say('تعذر عمل ملف Word: '+e.message,'err')}});
@@ -1227,7 +1228,7 @@ function build(){
   for(const f of ss.files)for(const r of f.rows){total++;if(by[r.sec]&&(!sf.length||pass(r.no,sf))){by[r.sec].push(fixRow(r));kept++}}
   const parts=[];
   for(const k of Object.keys(by)){if(by[k].length)parts.push(k+' '+toAr(by[k].length));else delete by[k]}
-  info.push((ss.date||'بدون تاريخ')+(parts.length?' ('+parts.join('، ')+')':' (لا يوجد)'));
+  info.push(dShow(ss.date||'بدون تاريخ')+(parts.length?' ('+parts.join('، ')+')':' (لا يوجد)'));
   if(parts.length)res.push({date:ss.date,by});
  }
  if(!res.length){clearResult();say('مفيش دعاوى مطابقة للنهايات والأقسام المختارة.','err');return}
@@ -1247,7 +1248,7 @@ function csSearch(){
  const h=[];
  for(const f of state.files)for(const r of f.rows)if(csT(r.no).some(x=>x.includes(n))&&(!y||csT(r.yr).some(x=>x===y||x.endsWith(y))))h.push([f,r]);
  if(!h.length){o.innerHTML='<span class="hint">مفيش دعوى بالرقم ده في الملفات.</span>';return}
- const rows=h.slice(0,150).map(([f,r])=>`<tr><td>${esc(toAr(f.date||''))}</td><td>${esc(r.sec||f.kind||'')}</td><td>${esc(toAr(r.m==null?'':r.m))}</td><td>${esc(toAr(r.no))} / ${esc(toAr(r.yr))}</td><td>${esc(r.pl||'')}</td><td>${esc(r.df||'')}</td><td>${esc(toAr((r.dec||'')+(r.note?' - '+r.note:'')))}</td></tr>`).join('');
+ const rows=h.slice(0,150).map(([f,r])=>`<tr><td>${esc(toAr(dShow(f.date||'')))}</td><td>${esc(r.sec||f.kind||'')}</td><td>${esc(toAr(r.m==null?'':r.m))}</td><td>${esc(toAr(r.no))} / ${esc(toAr(r.yr))}</td><td>${esc(r.pl||'')}</td><td>${esc(r.df||'')}</td><td>${esc(toAr((r.dec||'')+(r.note?' - '+r.note:'')))}</td></tr>`).join('');
  o.innerHTML=`<div class="hint ok">${toAr(h.length)} نتيجة${h.length>150?' (أول ١٥٠)':''}</div><table><thead><tr><th>الجلسة</th><th>القسم</th><th>م</th><th>رقم الدعوى</th><th>المدعي</th><th>المدعى عليه</th><th>القرار</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 $('csb').addEventListener('click',csSearch);
@@ -1289,7 +1290,8 @@ const dateFromName=f=>{
  }
  return '';
 };
-const sessDate=s=>{s=toEn(s||'').trim();const m=s.match(/(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s};
+const sessDate=s=>{s=toEn(s||'').trim();let m=s.match(/^(\d{4})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})$/);if(m)return (+m[3])+'/'+(+m[2])+'/'+m[1];m=s.match(/(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s};
+const dShow=d=>{const m=String(d||'').match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?m[3]+'_'+(+m[2])+'_'+(+m[1]):String(d||'')};
 const dateKey=s=>{const m=String(s).match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?(+m[3])*10000+(+m[2])*100+(+m[1]):1e9};
 function sessionsOf(){
  const m=new Map();
@@ -1299,12 +1301,12 @@ function sessionsOf(){
 function clearResult(){window.__result=null;$('scaler').innerHTML='';$('exp').hidden=true;try{closeEd()}catch(e){}$('view').style.height='auto'}
 function renderFiles(){
  drawSecs();
- $('flist').innerHTML=state.files.map((f,i)=>`<li><span class="fn">${esc(f.name)}</span><span class="fc">${toAr(f.secs.length)} قسم · ${toAr(f.rows.length)} صف</span><input class="fdate" type="text" dir="ltr" data-i="${i}" value="${esc(f.date||'')}" placeholder="تاريخ الجلسة" aria-label="تاريخ الجلسة"><button type="button" class="sec fx" data-x="${i}" aria-label="حذف الملف">×</button></li>`).join('');
+ $('flist').innerHTML=state.files.map((f,i)=>`<li><span class="fn">${esc(f.name)}</span><span class="fc">${toAr(f.secs.length)} قسم · ${toAr(f.rows.length)} صف</span><input class="fdate" type="text" dir="ltr" data-i="${i}" value="${esc(dShow(f.date||''))}" placeholder="تاريخ الجلسة" aria-label="تاريخ الجلسة"><button type="button" class="sec fx" data-x="${i}" aria-label="حذف الملف">×</button></li>`).join('');
  const c=$('clrf');if(c)c.hidden=!state.files.length;
 }
 $('flist').addEventListener('change',e=>{
  const d=e.target.closest('.fdate'),k=e.target.closest('.fkind');
- if(d){const f=state.files[+d.dataset.i];if(f){f.date=sessDate(d.value);d.value=f.date;build()}}
+ if(d){const f=state.files[+d.dataset.i];if(f){f.date=sessDate(d.value);d.value=dShow(f.date);build()}}
  else if(k){const f=state.files[+k.dataset.i];if(f){f.kind=k.value;renderFiles();build()}}
 });
 $('flist').addEventListener('click',e=>{
@@ -1450,7 +1452,7 @@ function exportDocx(by){
 // ===== شكل الشيت (زي ملف الإكسل بتاعك): جدول متنوع ثم جدول تسجيل =====
 const isDate=s=>/^\d{4}\/\d{2}\/\d{2}$/.test(s);
 const serial=s=>{const [y,m,d]=s.split('/').map(Number);return Math.round((Date.UTC(y,m-1,d)-Date.UTC(1899,11,30))/86400000)};
-const titleTxt=()=>'جلسة '+toAr((CURD!=null?CURD:$('sdate').value).trim().replace(/\//g,'_'))+' مرافعة';
+const titleTxt=()=>'جلسة '+toAr(dShow((CURD!=null?CURD:$('sdate').value).trim()).replace(/\//g,'_'))+' مرافعة';
 const SECK={};
 const secTitle=k=>k+(SECK[k]?' — '+SECK[k]:'');
 const HD=['مسلسل','رول','رقم الدعوى','السنة القضائية','المدعي','المدعي عليه','الجلسة السابقة','القرار','الجلسة القادمة'];
@@ -1531,7 +1533,7 @@ $('prt').addEventListener('click',()=>window.print());
 function exportXlsxMulti(res){
  const H='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
  const parts=res.map(s=>{CURD=s.date;return xlsxPart(s.by)});CURD=null;
- const used={},names=res.map(s=>{let nm=('جلسة '+(s.date||'').replace(/\//g,'-')).trim().slice(0,31).replace(/[\\\/?*\[\]:]/g,'-');
+ const used={},names=res.map(s=>{let nm=('جلسة '+dShow(s.date||'')).trim().slice(0,31).replace(/[\\\/?*\[\]:]/g,'-');
   if(used[nm]){used[nm]++;nm=nm.slice(0,27)+' ('+used[nm]+')'}else used[nm]=1;return nm});
  const n=res.length,ct='application/vnd.openxmlformats-officedocument.spreadsheetml.';
  const files=[
@@ -1549,7 +1551,7 @@ function exportDocxMulti(res){
  CURD=null;
  return docxWrap(body);
 }
-const fname=ext=>{const ds=((window.__result&&window.__result.sessions)||[]).map(s=>(s.date||'').replace(/\//g,'-')).filter(Boolean);
+const fname=ext=>{const ds=((window.__result&&window.__result.sessions)||[]).map(s=>dShow(s.date||'')).filter(Boolean);
  return 'مرافعة_'+(ds.length>1?'جلسات_'+ds.join('_و_'):'جلسة_'+(ds[0]||'مفلترة'))+'.'+ext};
 $('xl').addEventListener('click',()=>{try{save(exportXlsxMulti(window.__result.sessions),fname('xlsx'))}catch(e){console.error(e);say('تعذر عمل ملف Excel: '+e.message,'err')}});
 $('wd').addEventListener('click',()=>{try{save(exportDocxMulti(window.__result.sessions),fname('docx'))}catch(e){console.error(e);say('تعذر عمل ملف Word: '+e.message,'err')}});
@@ -1713,7 +1715,7 @@ table.s2 td.cls.ag{background:#f4b6b6}table.s2 td.cls.ok{background:#c6e8c6}tabl
 .clsbig .ag{background:#f4b6b6}.clsbig .ok{background:#c6e8c6}.clsbig .un{background:#e2e2e2}
 .clsline{text-align:center;font-weight:800;font-size:12pt;margin:0 0 3mm}
 
-#clsSes{gap:6px}#clsSes button{padding:7px 10px;font-size:.85rem;text-align:center;line-height:1.35}
+#clsSes{gap:6px}#clsSes button{flex:1 1 100%;padding:7px 10px;font-size:.85rem;text-align:center;line-height:1.35}
 #clsSes button.on{background:var(--acc);color:var(--accfg)}
 
 #clsbox{border:1.5px solid var(--acc);border-radius:12px;padding:10px 14px;background:var(--card);box-shadow:0 1px 4px rgba(0,0,0,.15)}
@@ -2042,7 +2044,7 @@ function build(){
   for(const f of ss.files)for(const r of f.rows){total++;if(by[r.sec]&&(!sf.length||pass(r.no,sf))){cnt[clsOf(r.dec).c]++;if(!CLF||clsOf(r.dec).c===CLF){by[r.sec].push(fixRow(r));kept++}}}
   const parts=[];
   for(const k of Object.keys(by)){if(by[k].length)parts.push(k+' '+toAr(by[k].length));else delete by[k]}
-  info.push((ss.date||'بدون تاريخ')+(parts.length?' ('+parts.join('، ')+')':' (لا يوجد)'));
+  info.push(dFmt(ss.date)+(parts.length?' ('+parts.join('، ')+')':' (لا يوجد)'));
   if(parts.length&&(!SESF||(ss.date||'')===SESF))res.push({date:ss.date,by});
  }
  drawSesCls();kept=res.reduce((n,s)=>n+Object.values(s.by).reduce((m,a)=>m+a.length,0),0);
@@ -2064,7 +2066,7 @@ function csSearch(){
  const h=[];
  for(const f of state.files)for(const r of f.rows)if(csT(r.no).some(x=>x.includes(n))&&(!y||csT(r.yr).some(x=>x===y||x.endsWith(y))))h.push([f,r]);
  if(!h.length){o.innerHTML='<span class="hint">مفيش دعوى بالرقم ده في الملفات.</span>';return}
- const rows=h.slice(0,150).map(([f,r])=>`<tr><td>${esc(toAr(f.date||''))}</td><td>${esc(r.sec||f.kind||'')}</td><td>${esc(toAr(r.m==null?'':r.m))}</td><td>${esc(toAr(r.no))} / ${esc(toAr(r.yr))}</td><td>${esc(r.pl||'')}</td><td>${esc(r.df||'')}</td><td>${esc(toAr((r.dec||'')+(r.note?' - '+r.note:'')))}</td></tr>`).join('');
+ const rows=h.slice(0,150).map(([f,r])=>`<tr><td>${esc(toAr(dShow(f.date||'')))}</td><td>${esc(r.sec||f.kind||'')}</td><td>${esc(toAr(r.m==null?'':r.m))}</td><td>${esc(toAr(r.no))} / ${esc(toAr(r.yr))}</td><td>${esc(r.pl||'')}</td><td>${esc(r.df||'')}</td><td>${esc(toAr((r.dec||'')+(r.note?' - '+r.note:'')))}</td></tr>`).join('');
  o.innerHTML=`<div class="hint ok">${toAr(h.length)} نتيجة${h.length>150?' (أول ١٥٠)':''}</div><table><thead><tr><th>الجلسة</th><th>القسم</th><th>م</th><th>رقم الدعوى</th><th>المدعي</th><th>المدعى عليه</th><th>القرار</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 $('csb').addEventListener('click',csSearch);
@@ -2106,7 +2108,8 @@ const dateFromName=f=>{
  }
  return '';
 };
-const sessDate=s=>{s=toEn(s||'').trim();const m=s.match(/(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s};
+const sessDate=s=>{s=toEn(s||'').trim();let m=s.match(/^(\d{4})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})$/);if(m)return (+m[3])+'/'+(+m[2])+'/'+m[1];m=s.match(/(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s};
+const dShow=d=>{const m=String(d||'').match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?m[3]+'_'+(+m[2])+'_'+(+m[1]):String(d||'')};
 const dateKey=s=>{const m=String(s).match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?(+m[3])*10000+(+m[2])*100+(+m[1]):1e9};
 function sessionsOf(){
  const m=new Map();
@@ -2116,12 +2119,12 @@ function sessionsOf(){
 function clearResult(){window.__result=null;try{drawCls(null)}catch(e){}$('scaler').innerHTML='';$('exp').hidden=true;try{closeEd()}catch(e){}$('view').style.height='auto'}
 function renderFiles(){
  drawSecs();
- $('flist').innerHTML=state.files.map((f,i)=>`<li><span class="fn">${esc(f.name)}</span><span class="fc">${toAr(f.secs.length)} قسم · ${toAr(f.rows.length)} صف</span><input class="fdate" type="text" dir="ltr" data-i="${i}" value="${esc(f.date||'')}" placeholder="تاريخ الجلسة" aria-label="تاريخ الجلسة"><button type="button" class="sec fx" data-x="${i}" aria-label="حذف الملف">×</button></li>`).join('');
+ $('flist').innerHTML=state.files.map((f,i)=>`<li><span class="fn">${esc(f.name)}</span><span class="fc">${toAr(f.secs.length)} قسم · ${toAr(f.rows.length)} صف</span><input class="fdate" type="text" dir="ltr" data-i="${i}" value="${esc(dShow(f.date||''))}" placeholder="تاريخ الجلسة" aria-label="تاريخ الجلسة"><button type="button" class="sec fx" data-x="${i}" aria-label="حذف الملف">×</button></li>`).join('');
  const c=$('clrf');if(c)c.hidden=!state.files.length;
 }
 $('flist').addEventListener('change',e=>{
  const d=e.target.closest('.fdate'),k=e.target.closest('.fkind');
- if(d){const f=state.files[+d.dataset.i];if(f){f.date=sessDate(d.value);d.value=f.date;build()}}
+ if(d){const f=state.files[+d.dataset.i];if(f){f.date=sessDate(d.value);d.value=dShow(f.date);build()}}
  else if(k){const f=state.files[+k.dataset.i];if(f){f.kind=k.value;renderFiles();build()}}
 });
 $('flist').addEventListener('click',e=>{
@@ -2267,7 +2270,7 @@ function exportDocx(by){
 // ===== شكل الشيت (زي ملف الإكسل بتاعك): جدول متنوع ثم جدول تسجيل =====
 const isDate=s=>/^\d{4}\/\d{2}\/\d{2}$/.test(s);
 const serial=s=>{const [y,m,d]=s.split('/').map(Number);return Math.round((Date.UTC(y,m-1,d)-Date.UTC(1899,11,30))/86400000)};
-const titleTxt=()=>'جلسة '+toAr((CURD!=null?CURD:$('sdate').value).trim().replace(/\//g,'_'))+' أحكام';
+const titleTxt=()=>'جلسة '+toAr(dShow((CURD!=null?CURD:$('sdate').value).trim()).replace(/\//g,'_'))+' أحكام';
 const SECK={};
 const secTitle=k=>k+(SECK[k]?' — '+SECK[k]:'');
 let NC=7;
@@ -2288,6 +2291,7 @@ function clsOf(dec){const d=clN(dec);
 function setNC(){NC=7+(NOTE?1:0)+(CLSON?1:0)}
 const clsTd=r=>{const c=clsOf(r.dec);return `<td class="cls ${c.c}">${c.t}</td>`};
 function clsCount(by){const n={ag:0,ok:0,un:0};for(const k in by)for(const r of by[k])n[clsOf(r.dec).c]++;return n}
+const dFmt=d=>{const m=String(d||'').match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?toAr(m[3]+'_'+(+m[2])+'_'+(+m[1])):toAr(d||'بدون تاريخ')};
 function clsLine(n){return `ضد: ${toAr(n.ag)} — صالح: ${toAr(n.ok)} — غير معروف: ${toAr(n.un)}`}
 function drawCls(res){
  const el=$('clsSum');if(!el)return;const mi=$('clsMini');if(!res||!res.length){el.innerHTML='';if(mi)mi.innerHTML='';return}
@@ -2298,7 +2302,7 @@ function drawCls(res){
 function drawSesCls(){
  const el=$('clsSes');if(!el)return;
  if(SL.length<2){el.innerHTML='';return}
- el.innerHTML=`<button type="button" class="sec${SESF?'':' on'}" data-d="">كل الجلسات</button>`+SL.map(z=>`<button type="button" class="sec${SESF===z.date?' on':''}" data-d="${esc(z.date)}">جلسة ${esc(toAr(z.date||'بدون تاريخ'))}<br>ضد ${toAr(z.cnt.ag)} · صالح ${toAr(z.cnt.ok)} · غير معروف ${toAr(z.cnt.un)}</button>`).join('');
+ el.innerHTML=`<button type="button" class="sec${SESF?'':' on'}" data-d="">كل الجلسات</button>`+SL.map(z=>`<button type="button" class="sec${SESF===z.date?' on':''}" data-d="${esc(z.date)}">جلسة ${esc(dFmt(z.date))}<br>ضد ${toAr(z.cnt.ag)} · صالح ${toAr(z.cnt.ok)} · غير معروف ${toAr(z.cnt.un)}</button>`).join('');
 }
 $('clsSes')&&$('clsSes').addEventListener('click',e=>{const b=e.target.closest('button[data-d]');if(!b)return;SESF=b.dataset.d;if(state.files.length)build()});
 (function(){const b=$('clsbox');if(!b)return;try{b.open=localStorage.getItem('cls1:open')==='1'}catch(e){}b.addEventListener('toggle',()=>{try{localStorage.setItem('cls1:open',b.open?'1':'0')}catch(e){}})})();
@@ -2391,7 +2395,7 @@ $('prt').addEventListener('click',()=>window.print());
 function exportXlsxMulti(res){
  const H='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
  const parts=res.map(s=>{CURD=s.date;return xlsxPart(s.by)});CURD=null;
- const used={},names=res.map(s=>{let nm=('جلسة '+(s.date||'').replace(/\//g,'-')).trim().slice(0,31).replace(/[\\\/?*\[\]:]/g,'-');
+ const used={},names=res.map(s=>{let nm=('جلسة '+dShow(s.date||'')).trim().slice(0,31).replace(/[\\\/?*\[\]:]/g,'-');
   if(used[nm]){used[nm]++;nm=nm.slice(0,27)+' ('+used[nm]+')'}else used[nm]=1;return nm});
  const n=res.length,ct='application/vnd.openxmlformats-officedocument.spreadsheetml.';
  const files=[
@@ -2409,7 +2413,7 @@ function exportDocxMulti(res){
  CURD=null;
  return docxWrap(body);
 }
-const fname=ext=>{const ds=((window.__result&&window.__result.sessions)||[]).map(s=>(s.date||'').replace(/\//g,'-')).filter(Boolean);
+const fname=ext=>{const ds=((window.__result&&window.__result.sessions)||[]).map(s=>dShow(s.date||'')).filter(Boolean);
  return 'احكام_'+(ds.length>1?'جلسات_'+ds.join('_و_'):'جلسة_'+(ds[0]||'مفلترة'))+'.'+ext};
 $('xl').addEventListener('click',()=>{try{save(exportXlsxMulti(window.__result.sessions),fname('xlsx'))}catch(e){console.error(e);say('تعذر عمل ملف Excel: '+e.message,'err')}});
 $('wd').addEventListener('click',()=>{try{save(exportDocxMulti(window.__result.sessions),fname('docx'))}catch(e){console.error(e);say('تعذر عمل ملف Word: '+e.message,'err')}});
@@ -4794,7 +4798,7 @@ function build(){
   }
   const parts=[];
   for(const k of Object.keys(by)){if(by[k].length)parts.push(k+' '+toAr(by[k].length));else delete by[k]}
-  info.push((ss.date||'بدون تاريخ')+(parts.length?' ('+parts.join('، ')+')':' (لا يوجد)'));
+  info.push(dShow(ss.date||'بدون تاريخ')+(parts.length?' ('+parts.join('، ')+')':' (لا يوجد)'));
   if(parts.length)res.push({date:ss.date,by});
  }
  if(!res.length){clearResult();say('مفيش دعاوى مطابقة.','err');return}
@@ -4807,7 +4811,7 @@ function build(){
 function drawSesbar(res){
  const b=$('sesbar');
  b.innerHTML='<button type="button" class="sec" data-p="all">🖨 طباعة الكل</button>'+res.map((s,i)=>{const n=Object.values(s.by).reduce((t,a)=>t+a.length,0);
-  return `<button type="button" class="sec" data-p="${i}">🖨 طباعة <bdi dir="ltr">${esc(toAr(s.date||'بدون تاريخ'))}</bdi> (${toAr(n)})</button>`}).join('');
+  return `<button type="button" class="sec" data-p="${i}">🖨 طباعة <bdi dir="ltr">${esc(toAr(dShow(s.date||'بدون تاريخ')))}</bdi> (${toAr(n)})</button>`}).join('');
  if(!res.length)b.hidden=true;
 }
 function clearOne(){document.body.classList.remove('one');document.querySelectorAll('#scaler .sheet2').forEach(s=>delete s.dataset.pr)}
@@ -4852,7 +4856,8 @@ const dateFromName=f=>{
  }
  return '';
 };
-const sessDate=s=>{s=toEn(s||'').trim();const m=s.match(/(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s};
+const sessDate=s=>{s=toEn(s||'').trim();let m=s.match(/^(\d{4})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})$/);if(m)return (+m[3])+'/'+(+m[2])+'/'+m[1];m=s.match(/(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s};
+const dShow=d=>{const m=String(d||'').match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?m[3]+'_'+(+m[2])+'_'+(+m[1]):String(d||'')};
 const dateKey=s=>{const m=String(s).match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?(+m[3])*10000+(+m[2])*100+(+m[1]):1e9};
 function sessionsOf(){
  const m=new Map();
@@ -4873,7 +4878,7 @@ function renderFiles(){
 }
 $('flist').addEventListener('change',e=>{
  const d=e.target.closest('.fdate'),k=e.target.closest('.fkind');
- if(d){const f=state.files[+d.dataset.i];if(f){f.date=sessDate(d.value);d.value=f.date;saveFiles();build()}}
+ if(d){const f=state.files[+d.dataset.i];if(f){f.date=sessDate(d.value);d.value=dShow(f.date);saveFiles();build()}}
  else if(k){const f=state.files[+k.dataset.i];if(f){f.kind=k.value;renderFiles();build()}}
 });
 $('flist').addEventListener('click',e=>{
@@ -5022,7 +5027,7 @@ function exportDocx(by){
 // ===== شكل الشيت (زي ملف الإكسل بتاعك): جدول متنوع ثم جدول تسجيل =====
 const isDate=s=>/^\d{4}\/\d{2}\/\d{2}$/.test(s);
 const serial=s=>{const [y,m,d]=s.split('/').map(Number);return Math.round((Date.UTC(y,m-1,d)-Date.UTC(1899,11,30))/86400000)};
-const titleTxt=()=>'جلسة '+toAr((CURD!=null?CURD:$('sdate').value).trim().replace(/\//g,'_'))+' مرافعة';
+const titleTxt=()=>'جلسة '+toAr(dShow((CURD!=null?CURD:$('sdate').value).trim()).replace(/\//g,'_'))+' مرافعة';
 const SECK={};
 const secTitle=k=>k+(SECK[k]?' — '+SECK[k]:'');
 const HD=['مسلسل','رول','رقم الدعوى','السنة القضائية','المدعي','المدعي عليه','الجلسة السابقة','القرار','الجلسة القادمة'];
@@ -5075,7 +5080,7 @@ function drawBulk(){const b=$('bulk');if(!b)return;const on=!!window.__result;b.
   const cur=$('bulkk').value,opts=['<option value="">كل الأقسام</option>'].concat([...ks].map(k=>`<option>${k}</option>`));
   $('bulkk').innerHTML=opts.join('');if(ks.has(cur))$('bulkk').value=cur;
   const cs=$('bulks').value,ds=window.__result.sessions.map(z=>z.date||'');
-  $('bulks').innerHTML='<option value="">كل الجلسات</option>'+ds.map(d=>`<option value="${esc(d)}">جلسة ${esc(toAr(d||'بدون تاريخ').replace(/\//g,' / '))}</option>`).join('');
+  $('bulks').innerHTML='<option value="">كل الجلسات</option>'+ds.map(d=>`<option value="${esc(d)}">جلسة ${esc(toAr(dShow(d||'بدون تاريخ')))}</option>`).join('');
   if(ds.includes(cs))$('bulks').value=cs}
  if(on&&!$('bulksel').options.length)$('bulksel').innerHTML='<option value="">— اختر —</option>'+ACTS.map(a=>`<option>${a}</option>`).join('')+'<option value="__clr">مسح الإجراء</option>'}
 $('bulkgo').addEventListener('click',()=>{
@@ -5088,7 +5093,7 @@ $('bulkgo').addEventListener('click',()=>{
  pushH(H0,'الإجراء للكل');
  try{localStorage.setItem(ACTK,JSON.stringify(ACT))}catch(_){}
  document.querySelectorAll('#scaler select.actsel').forEach(sel=>{const r=rowOf(sel);if(!r)return;const x=ACT[rkey(r)]||'';sel.value=x;sel.classList.toggle('on',!!x);sel.closest('.aw').classList.toggle('memo',isMemo(x))});
- say('تم تطبيق «'+(v==='__clr'?'مسح الإجراء':v)+'» على '+toAr(n)+' دعوى'+(sc?' في قسم '+sc:'')+(sd?' جلسة '+toAr(sd.replace(/\//g,' / ')):'')+((isMemo(v))?' (والمذكرات اتنقلت لتبويب النسخ)':''),'ok');
+ say('تم تطبيق «'+(v==='__clr'?'مسح الإجراء':v)+'» على '+toAr(n)+' دعوى'+(sc?' في قسم '+sc:'')+(sd?' جلسة '+toAr(dShow(sd)):'')+((isMemo(v))?' (والمذكرات اتنقلت لتبويب النسخ)':''),'ok');
 });
 $('scaler').addEventListener('change',e=>{
  const ck=e.target.closest('input.skipchk');
@@ -5198,7 +5203,7 @@ $('prt').addEventListener('click',()=>{if(window.__result)$('sesbar').hidden=!$(
 function exportXlsxMulti(res){
  const H='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
  const parts=res.map(s=>{CURD=s.date;return xlsxPart(s.by)});CURD=null;
- const used={},names=res.map(s=>{let nm=('جلسة '+(s.date||'').replace(/\//g,'-')).trim().slice(0,31).replace(/[\\\/?*\[\]:]/g,'-');
+ const used={},names=res.map(s=>{let nm=('جلسة '+dShow(s.date||'')).trim().slice(0,31).replace(/[\\\/?*\[\]:]/g,'-');
   if(used[nm]){used[nm]++;nm=nm.slice(0,27)+' ('+used[nm]+')'}else used[nm]=1;return nm});
  const n=res.length,ct='application/vnd.openxmlformats-officedocument.spreadsheetml.';
  const files=[
@@ -5216,7 +5221,7 @@ function exportDocxMulti(res){
  CURD=null;
  return docxWrap(body);
 }
-const fname=ext=>{const ds=((window.__result&&window.__result.sessions)||[]).map(s=>(s.date||'').replace(/\//g,'-')).filter(Boolean);
+const fname=ext=>{const ds=((window.__result&&window.__result.sessions)||[]).map(s=>dShow(s.date||'')).filter(Boolean);
  return 'فلتر_مرافعة_'+(ds.length>1?'جلسات_'+ds.join('_و_'):'جلسة_'+(ds[0]||'مفلترة'))+'.'+ext};
 $('xl').addEventListener('click',()=>{try{save(exportXlsxMulti(window.__result.sessions),fname('xlsx'))}catch(e){console.error(e);say('تعذر عمل ملف Excel: '+e.message,'err')}});
 $('wd').addEventListener('click',()=>{try{save(exportDocxMulti(window.__result.sessions),fname('docx'))}catch(e){console.error(e);say('تعذر عمل ملف Word: '+e.message,'err')}});
@@ -5381,7 +5386,7 @@ table.s2 td.cls.ag{background:#f4b6b6}table.s2 td.cls.ok{background:#c6e8c6}tabl
 .clsbig .ag{background:#f4b6b6}.clsbig .ok{background:#c6e8c6}.clsbig .un{background:#e2e2e2}
 .clsline{text-align:center;font-weight:800;font-size:12pt;margin:0 0 3mm}
 
-#clsSes{gap:6px}#clsSes button{padding:7px 10px;font-size:.85rem;text-align:center;line-height:1.35}
+#clsSes{gap:6px}#clsSes button{flex:1 1 100%;padding:7px 10px;font-size:.85rem;text-align:center;line-height:1.35}
 #clsSes button.on{background:var(--acc);color:var(--accfg)}
 
 #clsbox{border:1.5px solid var(--acc);border-radius:12px;padding:10px 14px;background:var(--card);box-shadow:0 1px 4px rgba(0,0,0,.15)}
@@ -5928,7 +5933,7 @@ function build(){
   }
   const parts=[];
   for(const k of Object.keys(by)){if(by[k].length)parts.push(k+' '+toAr(by[k].length));else delete by[k]}
-  info.push((ss.date||'بدون تاريخ')+(parts.length?' ('+parts.join('، ')+')':' (لا يوجد)'));
+  info.push(dFmt(ss.date)+(parts.length?' ('+parts.join('، ')+')':' (لا يوجد)'));
   if(parts.length&&(!SESF||(ss.date||'')===SESF))res.push({date:ss.date,by});
  }
  drawSesCls();kept=res.reduce((n,s)=>n+Object.values(s.by).reduce((m,a)=>m+a.length,0),0);
@@ -5943,7 +5948,7 @@ function build(){
 function drawSesbar(res){
  const b=$('sesbar');
  b.innerHTML=res.map((s,i)=>{const n=Object.values(s.by).reduce((t,a)=>t+a.length,0);
-  return `<button type="button" class="sec" data-p="${i}">🖨 طباعة <bdi dir="ltr">${esc(toAr(s.date||'بدون تاريخ'))}</bdi> (${toAr(n)})</button>`}).join('');
+  return `<button type="button" class="sec" data-p="${i}">🖨 طباعة <bdi dir="ltr">${esc(toAr(dShow(s.date||'بدون تاريخ')))}</bdi> (${toAr(n)})</button>`}).join('');
  if(!res.length)b.hidden=true;
 }
 function clearOne(){document.body.classList.remove('one');document.querySelectorAll('#scaler .sheet2').forEach(s=>delete s.dataset.pr)}
@@ -5988,7 +5993,8 @@ const dateFromName=f=>{
  }
  return '';
 };
-const sessDate=s=>{s=toEn(s||'').trim();const m=s.match(/(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s};
+const sessDate=s=>{s=toEn(s||'').trim();let m=s.match(/^(\d{4})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})$/);if(m)return (+m[3])+'/'+(+m[2])+'/'+m[1];m=s.match(/(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s};
+const dShow=d=>{const m=String(d||'').match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?m[3]+'_'+(+m[2])+'_'+(+m[1]):String(d||'')};
 const dateKey=s=>{const m=String(s).match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?(+m[3])*10000+(+m[2])*100+(+m[1]):1e9};
 function sessionsOf(){
  const m=new Map();
@@ -6009,7 +6015,7 @@ function renderFiles(){
 }
 $('flist').addEventListener('change',e=>{
  const d=e.target.closest('.fdate'),k=e.target.closest('.fkind');
- if(d){const f=state.files[+d.dataset.i];if(f){f.date=sessDate(d.value);d.value=f.date;build()}}
+ if(d){const f=state.files[+d.dataset.i];if(f){f.date=sessDate(d.value);d.value=dShow(f.date);build()}}
  else if(k){const f=state.files[+k.dataset.i];if(f){f.kind=k.value;renderFiles();build()}}
 });
 $('flist').addEventListener('click',e=>{
@@ -6159,7 +6165,7 @@ function exportDocx(by){
 // ===== شكل الشيت (زي ملف الإكسل بتاعك): جدول متنوع ثم جدول تسجيل =====
 const isDate=s=>/^\d{4}\/\d{2}\/\d{2}$/.test(s);
 const serial=s=>{const [y,m,d]=s.split('/').map(Number);return Math.round((Date.UTC(y,m-1,d)-Date.UTC(1899,11,30))/86400000)};
-const titleTxt=()=>'جلسة '+toAr((CURD!=null?CURD:$('sdate').value).trim().replace(/\//g,'_'))+' أحكام';
+const titleTxt=()=>'جلسة '+toAr(dShow((CURD!=null?CURD:$('sdate').value).trim()).replace(/\//g,'_'))+' أحكام';
 const SECK={};
 const secTitle=k=>k+(SECK[k]?' — '+SECK[k]:'');
 let NC=7;
@@ -6180,6 +6186,7 @@ function clsOf(dec){const d=clN(dec);
 function setNC(){NC=7+(NOTE?1:0)+(CLSON?1:0)}
 const clsTd=r=>{const c=clsOf(r.dec);return `<td class="cls ${c.c}">${c.t}</td>`};
 function clsCount(by){const n={ag:0,ok:0,un:0};for(const k in by)for(const r of by[k])n[clsOf(r.dec).c]++;return n}
+const dFmt=d=>{const m=String(d||'').match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?toAr(m[3]+'_'+(+m[2])+'_'+(+m[1])):toAr(d||'بدون تاريخ')};
 function clsLine(n){return `ضد: ${toAr(n.ag)} — صالح: ${toAr(n.ok)} — غير معروف: ${toAr(n.un)}`}
 function drawCls(res){
  const el=$('clsSum');if(!el)return;const mi=$('clsMini');if(!res||!res.length){el.innerHTML='';if(mi)mi.innerHTML='';return}
@@ -6190,7 +6197,7 @@ function drawCls(res){
 function drawSesCls(){
  const el=$('clsSes');if(!el)return;
  if(SL.length<2){el.innerHTML='';return}
- el.innerHTML=`<button type="button" class="sec${SESF?'':' on'}" data-d="">كل الجلسات</button>`+SL.map(z=>`<button type="button" class="sec${SESF===z.date?' on':''}" data-d="${esc(z.date)}">جلسة ${esc(toAr(z.date||'بدون تاريخ'))}<br>ضد ${toAr(z.cnt.ag)} · صالح ${toAr(z.cnt.ok)} · غير معروف ${toAr(z.cnt.un)}</button>`).join('');
+ el.innerHTML=`<button type="button" class="sec${SESF?'':' on'}" data-d="">كل الجلسات</button>`+SL.map(z=>`<button type="button" class="sec${SESF===z.date?' on':''}" data-d="${esc(z.date)}">جلسة ${esc(dFmt(z.date))}<br>ضد ${toAr(z.cnt.ag)} · صالح ${toAr(z.cnt.ok)} · غير معروف ${toAr(z.cnt.un)}</button>`).join('');
 }
 $('clsSes')&&$('clsSes').addEventListener('click',e=>{const b=e.target.closest('button[data-d]');if(!b)return;SESF=b.dataset.d;if(state.files.length)build()});
 (function(){const b=$('clsbox');if(!b)return;try{b.open=localStorage.getItem('cls1:open')==='1'}catch(e){}b.addEventListener('toggle',()=>{try{localStorage.setItem('cls1:open',b.open?'1':'0')}catch(e){}})})();
@@ -6283,7 +6290,7 @@ $('prt').addEventListener('click',()=>{if(window.__result)$('prtm').hidden=!$('p
 function exportXlsxMulti(res){
  const H='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
  const parts=res.map(s=>{CURD=s.date;return xlsxPart(s.by)});CURD=null;
- const used={},names=res.map(s=>{let nm=('جلسة '+(s.date||'').replace(/\//g,'-')).trim().slice(0,31).replace(/[\\\/?*\[\]:]/g,'-');
+ const used={},names=res.map(s=>{let nm=('جلسة '+dShow(s.date||'')).trim().slice(0,31).replace(/[\\\/?*\[\]:]/g,'-');
   if(used[nm]){used[nm]++;nm=nm.slice(0,27)+' ('+used[nm]+')'}else used[nm]=1;return nm});
  const n=res.length,ct='application/vnd.openxmlformats-officedocument.spreadsheetml.';
  const files=[
@@ -6301,7 +6308,7 @@ function exportDocxMulti(res){
  CURD=null;
  return docxWrap(body);
 }
-const fname=ext=>{const ds=((window.__result&&window.__result.sessions)||[]).map(s=>(s.date||'').replace(/\//g,'-')).filter(Boolean);
+const fname=ext=>{const ds=((window.__result&&window.__result.sessions)||[]).map(s=>dShow(s.date||'')).filter(Boolean);
  return 'فلتر_احكام_'+(ds.length>1?'جلسات_'+ds.join('_و_'):'جلسة_'+(ds[0]||'مفلترة'))+'.'+ext};
 $('xl').addEventListener('click',()=>{try{save(exportXlsxMulti(window.__result.sessions),fname('xlsx'))}catch(e){console.error(e);say('تعذر عمل ملف Excel: '+e.message,'err')}});
 $('wd').addEventListener('click',()=>{try{save(exportDocxMulti(window.__result.sessions),fname('docx'))}catch(e){console.error(e);say('تعذر عمل ملف Word: '+e.message,'err')}});
@@ -6443,7 +6450,8 @@ HF.forEach(id=>{$(id).value=H[id]||'';['input','change','blur'].forEach(ev=>$(id
 window.addEventListener('pagehide',saveH);document.addEventListener('visibilitychange',()=>{if(document.hidden)saveH()});
 try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
 function say(t,c){const m=$('msg');m.textContent=t;m.className='hint '+(c||'')}
-function dateAr(d){return toAr(String(d||'').replace(/\//g,' / '))}
+function dateAr(d){const m=String(d||'').match(/^(\d+)\/(\d+)\/(\d{4})$/);return toAr(m?m[3]+'_'+(+m[2])+'_'+(+m[1]):String(d||''))}
+function normD(s){s=toEn(s||'').trim();let m=s.match(/^(\d{4})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})$/);if(m)return (+m[3])+'/'+(+m[2])+'/'+m[1];m=s.match(/^(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})$/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s}
 function page(chunk,pi,np){
  const rows=[];
  for(let i=0;i<PER;i++){
@@ -6485,8 +6493,8 @@ $('fresh').addEventListener('click',()=>{
 });
 $('add').addEventListener('click',()=>{
  const no=prompt('رقم الدعوى؟');if(!no)return;const yr=prompt('السنة القضائية؟')||'';
- const pl=prompt('المدعي؟')||'',df=prompt('المدعي عليه؟')||'',dt=prompt('تاريخ الجلسة؟ (مثال 3/11/2026)')||'';
- items.push({id:'m|'+Date.now(),no:toEn(no).trim(),yr:toEn(yr).trim(),pl,df,date:toEn(dt).trim(),act:'مذكرة',reg:''});save();draw();
+ const pl=prompt('المدعي؟')||'',df=prompt('المدعي عليه؟')||'',dt=prompt('تاريخ الجلسة؟ (مثال 2026_11_3)')||'';
+ items.push({id:'m|'+Date.now(),no:toEn(no).trim(),yr:toEn(yr).trim(),pl,df,date:normD(dt),act:'مذكرة',reg:''});save();draw();
 });
 function refresh(){const a=document.activeElement;if(a&&a.classList&&a.classList.contains('reg'))return;load();draw()}
 window.addEventListener('storage',e=>{if(e.key===IK||e.key===null)refresh()});
