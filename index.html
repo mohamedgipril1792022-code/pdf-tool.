@@ -41,7 +41,7 @@ body{display:flex;flex-direction:column}
 <button role="tab" data-k="sp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/></svg><span>تقسيم الأحكام</span></button>
 <button role="tab" data-k="nk" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="12" height="15" rx="1"/><path d="M4 7v14h12M11 8h6M11 12h6"/></svg><span>النسخ</span></button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ١٠</b><i>·</i>٤ نوفمبر ٢٠٢٦</span></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ١٢</b><i>·</i>٤ نوفمبر ٢٠٢٦</span></div>
 <div id="sub" hidden><button data-k="xm" aria-selected="false">فلتر المرافعة</button><button data-k="xa" aria-selected="false">فلتر الأحكام</button></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -4195,7 +4195,7 @@ details#cs .addrow{margin-top:6px}
    <div id="exp" class="actions" hidden><button id="prt" type="button" class="sec">طباعة ▾</button><button id="xl" type="button" class="sec">Excel</button><button id="wd" type="button" class="sec">Word</button><button id="big" type="button" class="sec">⤢ توسيع</button></div>
   </div>
   <div id="sesbar" class="actions" hidden></div>
-  <div id="bulk" class="actions" hidden style="align-items:center;border:1px dashed var(--line);border-radius:8px;padding:8px"><b>الإجراء للكل:</b><select id="bulksel" class="fkind" aria-label="الإجراء للكل"></select><label class="opt"><input type="checkbox" id="bulkE" checked> اللي ملوش إجراء بس</label><button id="bulkgo" type="button">تطبيق على الكل</button></div>
+  <div id="bulk" class="actions" hidden style="align-items:center;border:1px dashed var(--line);border-radius:8px;padding:8px"><b>الإجراء للكل:</b><select id="bulkk" class="fkind" aria-label="القسم"></select><select id="bulksel" class="fkind" aria-label="الإجراء للكل"></select><label class="opt"><input type="checkbox" id="bulkE" checked> اللي ملوش إجراء بس</label><button id="bulkgo" type="button">تطبيق على الكل</button><button id="undo" type="button" class="sec" disabled>↶ تراجع</button></div>
   <p id="msg" class="hint"></p>
  </div>
  <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="eddone" type="button">تم</button></div></div></div>
@@ -4939,27 +4939,51 @@ function nkSync(r,v){
  }else if(i>=0)a.splice(i,1);
  nkSave(a);
 }
+const HIST=[];
+function snapOf(r){const k=rkey(r);return {r,a:ACT[k],s:SKP[k]}}
+function pushH(list,label){if(!list.length)return;HIST.push({list,label});if(HIST.length>60)HIST.shift();updUndo()}
+function updUndo(){const u=$('undo');if(!u)return;u.disabled=!HIST.length;u.textContent='↶ تراجع'+(HIST.length?' ('+toAr(HIST.length)+')':'')}
+function refreshSels(){document.querySelectorAll('#scaler select.actsel').forEach(sel=>{const r=rowOf(sel);if(!r)return;const k=rkey(r),x=ACT[k]||'';sel.value=x;sel.classList.toggle('on',!!x);const aw=sel.closest('.aw');aw.classList.toggle('memo',isMemo(x));const ck=aw.querySelector('.skipchk');if(ck)ck.checked=!!SKP[k]})}
+function saveAS(){try{localStorage.setItem(ACTK,JSON.stringify(ACT));localStorage.setItem(SKK,JSON.stringify(SKP))}catch(_){}}
+function undo(){
+ const h=HIST.pop();if(!h)return;
+ for(const z of h.list){const k=rkey(z.r);
+  if(z.a)ACT[k]=z.a;else delete ACT[k];
+  if(z.s)SKP[k]=z.s;else delete SKP[k];
+  nkSync(z.r,ACT[k]||'')}
+ saveAS();refreshSels();updUndo();say('تم التراجع عن: '+h.label+' ('+toAr(h.list.length)+' دعوى)','ok');
+}
+$('undo').addEventListener('click',undo);
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='z'&&!/INPUT|TEXTAREA/.test((document.activeElement||{}).tagName||'')){e.preventDefault();undo()}});
+const kindOf=k=>{const m=nk(k).match(/(عاجل|موضوعي|موضوعى)\s*(متنوع|تسجيل)/);return m?(m[1]==='عاجل'?'عاجل':'موضوعي')+' '+m[2]:''};
 function drawBulk(){const b=$('bulk');if(!b)return;const on=!!window.__result;b.hidden=!on;
+ if(on){const ks=new Set();for(const ss of window.__result.sessions)for(const k in ss.by){const kk=kindOf(k);if(kk)ks.add(kk)}
+  const cur=$('bulkk').value,opts=['<option value="">كل الأقسام</option>'].concat([...ks].map(k=>`<option>${k}</option>`));
+  $('bulkk').innerHTML=opts.join('');if(ks.has(cur))$('bulkk').value=cur}
  if(on&&!$('bulksel').options.length)$('bulksel').innerHTML='<option value="">— اختر —</option>'+ACTS.map(a=>`<option>${a}</option>`).join('')+'<option value="__clr">مسح الإجراء</option>'}
 $('bulkgo').addEventListener('click',()=>{
  const v=$('bulksel').value;if(!v){say('اختار الإجراء الأول.','err');return}
  const only=$('bulkE').checked,res=window.__result;if(!res)return;let n=0;
- for(const ss of res.sessions)for(const k in ss.by)for(const r of ss.by[k]){
+ const sc=$('bulkk').value,H0=[];
+ for(const ss of res.sessions)for(const k in ss.by){if(sc&&kindOf(k)!==sc)continue;for(const r of ss.by[k]){
   const key=rkey(r);if(only&&ACT[key]&&v!=='__clr')continue;
-  if(v==='__clr'){if(!ACT[key])continue;delete ACT[key];nkSync(r,'')}else{ACT[key]=v;nkSync(r,v)}n++}
+  if(v==='__clr'){if(!ACT[key])continue;H0.push(snapOf(r));delete ACT[key];nkSync(r,'')}else{H0.push(snapOf(r));ACT[key]=v;nkSync(r,v)}n++}}
+ pushH(H0,'الإجراء للكل');
  try{localStorage.setItem(ACTK,JSON.stringify(ACT))}catch(_){}
  document.querySelectorAll('#scaler select.actsel').forEach(sel=>{const r=rowOf(sel);if(!r)return;const x=ACT[rkey(r)]||'';sel.value=x;sel.classList.toggle('on',!!x);sel.closest('.aw').classList.toggle('memo',isMemo(x))});
- say('تم تطبيق «'+(v==='__clr'?'مسح الإجراء':v)+'» على '+toAr(n)+' دعوى'+((isMemo(v))?' (والمذكرات اتنقلت لتبويب النسخ)':''),'ok');
+ say('تم تطبيق «'+(v==='__clr'?'مسح الإجراء':v)+'» على '+toAr(n)+' دعوى'+(sc?' في قسم '+sc:'')+((isMemo(v))?' (والمذكرات اتنقلت لتبويب النسخ)':''),'ok');
 });
 $('scaler').addEventListener('change',e=>{
  const ck=e.target.closest('input.skipchk');
  if(ck){const sl=ck.closest('.aw').querySelector('select'),r0=rowOf(sl);if(!r0)return;const k0=rkey(r0);
+  pushH([snapOf(r0)],'بدون نسخ');
   if(ck.checked)SKP[k0]=1;else delete SKP[k0];
   try{localStorage.setItem(SKK,JSON.stringify(SKP))}catch(_){}
   nkSync(r0,sl.value);say(ck.checked?'المذكرة دي مش هتتنسخ في الكشف':'المذكرة رجعت لكشف النسخ','ok');return}
  const sel=e.target.closest('select.actsel');if(!sel)return;
  const r=rowOf(sel);if(!r)return;
  const v=sel.value,k=rkey(r);
+ pushH([snapOf(r)],'تغيير إجراء');
  if(v)ACT[k]=v;else delete ACT[k];
  try{localStorage.setItem(ACTK,JSON.stringify(ACT))}catch(_){}
  sel.classList.toggle('on',!!v);sel.closest('.aw').classList.toggle('memo',isMemo(v));nkSync(r,v);
