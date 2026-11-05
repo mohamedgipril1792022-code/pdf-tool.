@@ -151,6 +151,26 @@ body{display:flex;flex-direction:column}
 #verBar .vb{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.2px;color:#fff;background:linear-gradient(135deg,#1f5f8b,#2f86c0);border-radius:999px;padding:2px 12px;box-shadow:0 1px 3px rgba(0,0,0,.25)}
 #verBar .bk{pointer-events:auto;display:inline-flex;gap:6px;margin-inline-start:8px}#verBar .bk button{font:inherit;font-size:11.5px;font-weight:700;border:1px solid #1f5f8b;color:#1f5f8b;background:#fff;border-radius:999px;padding:1px 10px;cursor:pointer}#verBar .vb b{font-weight:800}#verBar .vb i{font-style:normal;opacity:.7}
 </style>
+
+<style>
+:root{--bg:#f3f4f6;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1f5f8b;--accfg:#fff;--head:#dfe5ec}
+@media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#5aa6d6;--accfg:#0b1620;--head:#2a3542}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:"Segoe UI",Tahoma,Arial,sans-serif}
+body{display:flex;flex-direction:column}
+#tabs{display:flex;gap:6px;padding:8px 10px;padding-top:max(8px,env(safe-area-inset-top,0px));padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px));background:var(--card);border-bottom:1px solid var(--line);flex:none}
+#tabs button{flex:1;min-width:0;font:inherit;font-size:.82rem;font-weight:700;padding:6px 2px;min-height:54px;border-radius:10px;border:1px solid var(--line);background:var(--head);color:var(--fg);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;line-height:1.15;text-align:center}
+#tabs button svg{flex:none}
+#tabs button[aria-selected="true"]{background:var(--acc);color:var(--accfg);border-color:var(--acc)}
+@media (max-width:560px){#tabs{gap:4px}#tabs button{font-size:.7rem;padding:5px 1px;min-height:50px}#tabs button svg{width:20px;height:20px}}
+#views{flex:1;min-height:0;position:relative}
+#views iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg);display:none}
+#views iframe.on{display:block}
+#sub{display:flex;gap:6px;padding:6px 10px;background:var(--card);border-bottom:1px solid var(--line);flex:none}#sub[hidden]{display:none}#sub button{flex:1;font:inherit;font-weight:700;padding:7px 4px;border-radius:8px;border:1px solid var(--line);background:var(--head);color:var(--fg);cursor:pointer}#sub button[aria-selected="true"]{background:var(--acc);color:var(--accfg);border-color:var(--acc)}@media (max-width:420px){#tabs button{font-size:.74rem}}
+#verBar{flex:none;display:flex;justify-content:center;padding:4px 10px 0;pointer-events:none}
+#verBar .vb{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.2px;color:#fff;background:linear-gradient(135deg,#1f5f8b,#2f86c0);border-radius:999px;padding:2px 12px;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+#verBar .bk{pointer-events:auto;display:inline-flex;gap:6px;margin-inline-start:8px}#verBar .bk button{font:inherit;font-size:11.5px;font-weight:700;border:1px solid #1f5f8b;color:#1f5f8b;background:#fff;border-radius:999px;padding:1px 10px;cursor:pointer}#verBar .vb b{font-weight:800}#verBar .vb i{font-style:normal;opacity:.7}
+</style>
 </head>
 <body>
 <div id="tabs" role="tablist">
@@ -162,7 +182,7 @@ body{display:flex;flex-direction:column}
 <button role="tab" data-k="sp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/></svg><span>تقسيم الأحكام</span></button>
 <button role="tab" data-k="nk" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="12" height="15" rx="1"/><path d="M4 7v14h12M11 8h6M11 12h6"/></svg><span>النسخ</span></button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ٣٠</b><i>·</i>٤ نوفمبر ٢٠٢٦</span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ٣٢</b><i>·</i>٤ نوفمبر ٢٠٢٦</span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span></div>
 <div id="sub" hidden><button data-k="xm" aria-selected="false">فلتر المرافعة</button><button data-k="xa" aria-selected="false">فلتر الأحكام</button></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -314,7 +334,10 @@ body.big #bigbar{display:flex}
    <div id="exp" class="actions" hidden><button id="big" type="button" class="sec">⤢ توسيع</button><button id="prt" type="button" class="sec">طباعة أو حفظ</button><button id="xl" type="button" class="sec">Excel</button><button id="wd" type="button" class="sec">Word</button></div>
   </div>
   <p id="msg" class="hint"></p>
-<style>#cs{display:flex;flex-direction:column;gap:6px}#csr{overflow-x:auto}#csr table{border-collapse:collapse;width:100%;font-size:.88rem}#csr th,#csr td{border:1px solid var(--line);padding:4px 6px;text-align:center}#csr th{background:var(--head)}</style>
+<style>#cs{display:flex;flex-direction:column;gap:6px}#csr{overflow-x:auto}#csr table{border-collapse:collapse;width:100%;font-size:.88rem}#csr th,#csr td{border:1px solid var(--line);padding:4px 6px;text-align:center}#csr th{background:var(--head)}
+#csr table{table-layout:auto}#csr td,#csr th{word-break:break-word;overflow-wrap:anywhere}
+@media (max-width:700px){#csr table.csx,#csr table.csx tbody,#csr table.csx tr,#csr table.csx td{display:block;width:100%}#csr table.csx thead{display:none}#csr table.csx tr{border:1px solid var(--line);border-radius:8px;margin:0 0 8px;padding:4px 8px}#csr table.csx td{border:0;border-bottom:1px dashed var(--line);text-align:right;padding:4px 2px}#csr table.csx td:last-child{border-bottom:0}#csr table.csx td:empty{display:none}#csr table.csx td::before{content:attr(data-l)": ";color:var(--mut);font-weight:700;font-size:.82rem}}
+</style>
 <details id="cs" class="noprint"><summary>بحث برقم الدعوى</summary><div class="addrow"><input id="csq" type="text" dir="ltr" inputmode="numeric" placeholder="مثلًا 1234 أو 1234/70"><button id="csb" type="button">بحث</button></div><div id="csr"></div></details>
  </div>
  <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="eddone" type="button">تم</button></div></div></div>
@@ -559,8 +582,10 @@ function csSearch(){
  const h=[];
  for(const f of state.files)for(const r of f.rows)if(csT(r.no).some(x=>x.includes(n))&&(!y||csT(r.yr).some(x=>x===y||x.endsWith(y))))h.push([f,r]);
  if(!h.length){o.innerHTML='<span class="hint">مفيش دعوى بالرقم ده في الملفات.</span>';return}
- const rows=h.slice(0,150).map(([f,r])=>`<tr><td>${esc(dB(toAr(dShow(f.date||''))))}</td><td>${esc(r.sec||f.kind||'')}</td><td>${esc(toAr(r.m==null?'':r.m))}</td><td>${esc(toAr(r.no))} / ${esc(toAr(r.yr))}</td><td>${esc(r.pl||'')}</td><td>${esc(r.df||'')}</td><td>${esc(toAr((r.dec||'')+(r.note?' - '+r.note:'')))}</td></tr>`).join('');
- o.innerHTML=`<div class="hint ok">${toAr(h.length)} نتيجة${h.length>150?' (أول ١٥٠)':''}</div><table><thead><tr><th>الجلسة</th><th>القسم</th><th>م</th><th>رقم الدعوى</th><th>المدعي</th><th>المدعى عليه</th><th>القرار</th></tr></thead><tbody>${rows}</tbody></table>`;
+ const L=[['الجلسة',(f,r)=>esc(dB(toAr(dShow(f.date||''))))],['القسم',(f,r)=>esc(r.sec||f.kind||'')],['م',(f,r)=>esc(toAr(r.m==null?'':r.m))],['رقم الدعوى',(f,r)=>esc(toAr(r.no))+' / '+esc(toAr(r.yr))],['المدعي',(f,r)=>esc(r.pl||'')],['المدعى عليه',(f,r)=>esc(r.df||'')],['الجلسة السابقة',(f,r)=>r.prev?esc(toAr(r.prev)):''],['القرار',(f,r)=>esc(toAr((r.dec||'')+(r.note?' - '+r.note:'')))],['الجلسة القادمة',(f,r)=>r.next?esc(toAr(r.next)):'']];
+ const used=L.filter((c,i)=>i<6||c[0]==='القرار'||h.some(([f,r])=>c[1](f,r)));
+ const rows=h.map(([f,r])=>'<tr>'+used.map(c=>`<td data-l="${c[0]}">${c[1](f,r)}</td>`).join('')+'</tr>').join('');
+ o.innerHTML=`<div class="hint ok">${toAr(h.length)} نتيجة</div><table class="csx"><thead><tr>${used.map(c=>'<th>'+c[0]+'</th>').join('')}</tr></thead><tbody>${rows}</tbody></table>`;
 }
 $('csb').addEventListener('click',csSearch);
 $('csq').addEventListener('input',csSearch);
@@ -894,7 +919,7 @@ function gsSync(){
  for(const f of state.files){
   if(!f.rows.length)continue;
   const sig=[f.name,f.size,f.mod,f.rows.length,f.date||''].join('|');cur[f.name]=sig;
-  if(_gsSig[f.name]!==sig)G.put(GSK,{name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,
+  if(_gsSig[f.name]!==sig)G.put(GSK,{src:window.__GSP?'gs':'tab',name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,
    rows:f.rows.map(r=>[sessDate(r.date||f.date||''),r.sec||'',r.m,r.no,r.yr,r.pl||'',r.df||'',r.prev||'',r.dec||'',r.next||'',r.note||''])});
  }
  if(GSF)for(const n in _gsSig)if(!(n in cur))G.del(GSK,n);
@@ -1080,7 +1105,10 @@ body.big #bigbar{display:flex}
    <div id="exp" class="actions" hidden><button id="big" type="button" class="sec">⤢ توسيع</button><button id="prt" type="button" class="sec">طباعة أو حفظ</button><button id="xl" type="button" class="sec">Excel</button><button id="wd" type="button" class="sec">Word</button></div>
   </div>
   <p id="msg" class="hint"></p>
-<style>#cs{display:flex;flex-direction:column;gap:6px}#csr{overflow-x:auto}#csr table{border-collapse:collapse;width:100%;font-size:.88rem}#csr th,#csr td{border:1px solid var(--line);padding:4px 6px;text-align:center}#csr th{background:var(--head)}</style>
+<style>#cs{display:flex;flex-direction:column;gap:6px}#csr{overflow-x:auto}#csr table{border-collapse:collapse;width:100%;font-size:.88rem}#csr th,#csr td{border:1px solid var(--line);padding:4px 6px;text-align:center}#csr th{background:var(--head)}
+#csr table{table-layout:auto}#csr td,#csr th{word-break:break-word;overflow-wrap:anywhere}
+@media (max-width:700px){#csr table.csx,#csr table.csx tbody,#csr table.csx tr,#csr table.csx td{display:block;width:100%}#csr table.csx thead{display:none}#csr table.csx tr{border:1px solid var(--line);border-radius:8px;margin:0 0 8px;padding:4px 8px}#csr table.csx td{border:0;border-bottom:1px dashed var(--line);text-align:right;padding:4px 2px}#csr table.csx td:last-child{border-bottom:0}#csr table.csx td:empty{display:none}#csr table.csx td::before{content:attr(data-l)": ";color:var(--mut);font-weight:700;font-size:.82rem}}
+</style>
 <details id="cs" class="noprint"><summary>بحث برقم الدعوى</summary><div class="addrow"><input id="csq" type="text" dir="ltr" inputmode="numeric" placeholder="مثلًا 1234 أو 1234/70"><button id="csb" type="button">بحث</button></div><div id="csr"></div></details>
  </div>
  <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="eddone" type="button">تم</button></div></div></div>
@@ -1392,8 +1420,10 @@ function csSearch(){
  const h=[];
  for(const f of state.files)for(const r of f.rows)if(csT(r.no).some(x=>x.includes(n))&&(!y||csT(r.yr).some(x=>x===y||x.endsWith(y))))h.push([f,r]);
  if(!h.length){o.innerHTML='<span class="hint">مفيش دعوى بالرقم ده في الملفات.</span>';return}
- const rows=h.slice(0,150).map(([f,r])=>`<tr><td>${esc(dB(toAr(dShow(f.date||''))))}</td><td>${esc(r.sec||f.kind||'')}</td><td>${esc(toAr(r.m==null?'':r.m))}</td><td>${esc(toAr(r.no))} / ${esc(toAr(r.yr))}</td><td>${esc(r.pl||'')}</td><td>${esc(r.df||'')}</td><td>${esc(toAr((r.dec||'')+(r.note?' - '+r.note:'')))}</td></tr>`).join('');
- o.innerHTML=`<div class="hint ok">${toAr(h.length)} نتيجة${h.length>150?' (أول ١٥٠)':''}</div><table><thead><tr><th>الجلسة</th><th>القسم</th><th>م</th><th>رقم الدعوى</th><th>المدعي</th><th>المدعى عليه</th><th>القرار</th></tr></thead><tbody>${rows}</tbody></table>`;
+ const L=[['الجلسة',(f,r)=>esc(dB(toAr(dShow(f.date||''))))],['القسم',(f,r)=>esc(r.sec||f.kind||'')],['م',(f,r)=>esc(toAr(r.m==null?'':r.m))],['رقم الدعوى',(f,r)=>esc(toAr(r.no))+' / '+esc(toAr(r.yr))],['المدعي',(f,r)=>esc(r.pl||'')],['المدعى عليه',(f,r)=>esc(r.df||'')],['الجلسة السابقة',(f,r)=>r.prev?esc(toAr(r.prev)):''],['القرار',(f,r)=>esc(toAr((r.dec||'')+(r.note?' - '+r.note:'')))],['الجلسة القادمة',(f,r)=>r.next?esc(toAr(r.next)):'']];
+ const used=L.filter((c,i)=>i<6||c[0]==='القرار'||h.some(([f,r])=>c[1](f,r)));
+ const rows=h.map(([f,r])=>'<tr>'+used.map(c=>`<td data-l="${c[0]}">${c[1](f,r)}</td>`).join('')+'</tr>').join('');
+ o.innerHTML=`<div class="hint ok">${toAr(h.length)} نتيجة</div><table class="csx"><thead><tr>${used.map(c=>'<th>'+c[0]+'</th>').join('')}</tr></thead><tbody>${rows}</tbody></table>`;
 }
 $('csb').addEventListener('click',csSearch);
 $('csq').addEventListener('input',csSearch);
@@ -1710,7 +1740,7 @@ function gsSync(){
  for(const f of state.files){
   if(!f.rows.length)continue;
   const sig=[f.name,f.size,f.mod,f.rows.length,f.date||''].join('|');cur[f.name]=sig;
-  if(_gsSig[f.name]!==sig)G.put(GSK,{name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,
+  if(_gsSig[f.name]!==sig)G.put(GSK,{src:window.__GSP?'gs':'tab',name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,
    rows:f.rows.map(r=>[sessDate(r.date||f.date||''),r.sec||'',r.m,r.no,r.yr,r.pl||'',r.df||'',r.prev||'',r.dec||'',r.next||'',r.note||''])});
  }
  if(GSF)for(const n in _gsSig)if(!(n in cur))G.del(GSK,n);
@@ -1928,7 +1958,10 @@ html,body{overflow-x:hidden}.wrap,.panel{min-width:0;max-width:100%}ul.files li 
    <div id="exp" class="actions" hidden><button id="big" type="button" class="sec">⤢ توسيع</button><button id="prt" type="button" class="sec">طباعة أو حفظ</button><button id="xl" type="button" class="sec">Excel</button><button id="wd" type="button" class="sec">Word</button></div>
   </div>
   <p id="msg" class="hint"></p>
-<style>#cs{display:flex;flex-direction:column;gap:6px}#csr{overflow-x:auto}#csr table{border-collapse:collapse;width:100%;font-size:.88rem}#csr th,#csr td{border:1px solid var(--line);padding:4px 6px;text-align:center}#csr th{background:var(--head)}</style>
+<style>#cs{display:flex;flex-direction:column;gap:6px}#csr{overflow-x:auto}#csr table{border-collapse:collapse;width:100%;font-size:.88rem}#csr th,#csr td{border:1px solid var(--line);padding:4px 6px;text-align:center}#csr th{background:var(--head)}
+#csr table{table-layout:auto}#csr td,#csr th{word-break:break-word;overflow-wrap:anywhere}
+@media (max-width:700px){#csr table.csx,#csr table.csx tbody,#csr table.csx tr,#csr table.csx td{display:block;width:100%}#csr table.csx thead{display:none}#csr table.csx tr{border:1px solid var(--line);border-radius:8px;margin:0 0 8px;padding:4px 8px}#csr table.csx td{border:0;border-bottom:1px dashed var(--line);text-align:right;padding:4px 2px}#csr table.csx td:last-child{border-bottom:0}#csr table.csx td:empty{display:none}#csr table.csx td::before{content:attr(data-l)": ";color:var(--mut);font-weight:700;font-size:.82rem}}
+</style>
 <details id="cs" class="noprint"><summary>بحث برقم الدعوى</summary><div class="addrow"><input id="csq" type="text" dir="ltr" inputmode="numeric" placeholder="مثلًا 1234 أو 1234/70"><button id="csb" type="button">بحث</button></div><div id="csr"></div></details>
  </div>
  <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="eddone" type="button">تم</button></div></div></div>
@@ -2234,8 +2267,10 @@ function csSearch(){
  const h=[];
  for(const f of state.files)for(const r of f.rows)if(csT(r.no).some(x=>x.includes(n))&&(!y||csT(r.yr).some(x=>x===y||x.endsWith(y))))h.push([f,r]);
  if(!h.length){o.innerHTML='<span class="hint">مفيش دعوى بالرقم ده في الملفات.</span>';return}
- const rows=h.slice(0,150).map(([f,r])=>`<tr><td>${esc(dB(toAr(dShow(f.date||''))))}</td><td>${esc(r.sec||f.kind||'')}</td><td>${esc(toAr(r.m==null?'':r.m))}</td><td>${esc(toAr(r.no))} / ${esc(toAr(r.yr))}</td><td>${esc(r.pl||'')}</td><td>${esc(r.df||'')}</td><td>${esc(toAr((r.dec||'')+(r.note?' - '+r.note:'')))}</td></tr>`).join('');
- o.innerHTML=`<div class="hint ok">${toAr(h.length)} نتيجة${h.length>150?' (أول ١٥٠)':''}</div><table><thead><tr><th>الجلسة</th><th>القسم</th><th>م</th><th>رقم الدعوى</th><th>المدعي</th><th>المدعى عليه</th><th>القرار</th></tr></thead><tbody>${rows}</tbody></table>`;
+ const L=[['الجلسة',(f,r)=>esc(dB(toAr(dShow(f.date||''))))],['القسم',(f,r)=>esc(r.sec||f.kind||'')],['م',(f,r)=>esc(toAr(r.m==null?'':r.m))],['رقم الدعوى',(f,r)=>esc(toAr(r.no))+' / '+esc(toAr(r.yr))],['المدعي',(f,r)=>esc(r.pl||'')],['المدعى عليه',(f,r)=>esc(r.df||'')],['الجلسة السابقة',(f,r)=>r.prev?esc(toAr(r.prev)):''],['القرار',(f,r)=>esc(toAr((r.dec||'')+(r.note?' - '+r.note:'')))],['الجلسة القادمة',(f,r)=>r.next?esc(toAr(r.next)):'']];
+ const used=L.filter((c,i)=>i<6||c[0]==='القرار'||h.some(([f,r])=>c[1](f,r)));
+ const rows=h.map(([f,r])=>'<tr>'+used.map(c=>`<td data-l="${c[0]}">${c[1](f,r)}</td>`).join('')+'</tr>').join('');
+ o.innerHTML=`<div class="hint ok">${toAr(h.length)} نتيجة</div><table class="csx"><thead><tr>${used.map(c=>'<th>'+c[0]+'</th>').join('')}</tr></thead><tbody>${rows}</tbody></table>`;
 }
 $('csb').addEventListener('click',csSearch);
 $('csq').addEventListener('input',csSearch);
@@ -2596,7 +2631,7 @@ function gsSync(){
  for(const f of state.files){
   if(!f.rows.length)continue;
   const sig=[f.name,f.size,f.mod,f.rows.length,f.date||''].join('|');cur[f.name]=sig;
-  if(_gsSig[f.name]!==sig)G.put(GSK,{name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,
+  if(_gsSig[f.name]!==sig)G.put(GSK,{src:window.__GSP?'gs':'tab',name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,
    rows:f.rows.map(r=>[sessDate(r.date||f.date||''),r.sec||'',r.m,r.no,r.yr,r.pl||'',r.df||'',r.prev||'',r.dec||'',r.next||'',r.note||''])});
  }
  if(GSF)for(const n in _gsSig)if(!(n in cur))G.del(GSK,n);
@@ -4492,7 +4527,6 @@ details#cs .addrow{margin-top:6px}
    <div id="exp" class="actions" hidden><button id="prt" type="button" class="sec">طباعة ▾</button><button id="xl" type="button" class="sec">Excel</button><button id="wd" type="button" class="sec">Word</button><button id="big" type="button" class="sec">⤢ توسيع</button></div>
   </div>
   <div id="sesbar" class="actions" hidden></div>
-  <details id="hist" class="noprint" style="border:1px solid var(--line);border-radius:8px;padding:6px 10px"><summary style="font-weight:700;cursor:pointer">سجل دعوى (كل جلساتها في الرول)</summary><div class="actions" style="margin-top:8px"><input id="hq" type="text" dir="ltr" inputmode="numeric" placeholder="رقم الدعوى أو 1234/2020" style="padding:8px;border:1px solid var(--line);border-radius:6px"><button id="hgo" type="button" class="sec">بحث</button></div><div id="hout" style="margin-top:8px"></div></details>
   <div id="bulk" class="actions" hidden style="align-items:center;border:1px dashed var(--line);border-radius:8px;padding:8px"><b>الإجراء للكل:</b><select id="bulks" class="fkind" aria-label="الجلسة"></select><select id="bulkk" class="fkind" aria-label="القسم"></select><select id="bulksel" class="fkind" aria-label="الإجراء للكل"></select><label class="opt"><input type="checkbox" id="bulkE" checked> اللي ملوش إجراء بس</label><button id="bulkgo" type="button">تطبيق على الكل</button><button id="undo" type="button" class="sec" disabled>↶ تراجع</button></div>
   <p id="msg" class="hint"></p>
  </div>
@@ -5307,14 +5341,14 @@ $('scaler').addEventListener('change',e=>{
 });
 // ===== حفظ الرول في المتصفح عشان ما يتحملش كل مرة =====
 const FLK='xm1:files';
-function saveFiles(){
+function saveFiles(){if(window.__GSP)return;
  try{
   const o=state.files.map(f=>({name:f.name,size:f.size,mod:f.mod,date:f.date,secs:f.secs,nsheets:f.nsheets,
    rows:f.rows.map(r=>[r.m,r.no,r.yr,r.pl,r.df,r.prev,r.dec,r.next,r.date,r.sec])}));
   localStorage.setItem(FLK,JSON.stringify(o));
  }catch(e){console.error(e);try{say('الرول كبير ومقدرتش أحفظه في المتصفح.','err')}catch(_){}}
 }
-function restoreFiles(){
+function restoreFiles(){if(window.__GSP)return;
  try{
   const o=JSON.parse(localStorage.getItem(FLK)||'[]');if(!Array.isArray(o)||!o.length)return;
   for(const f of o){
@@ -5452,7 +5486,7 @@ function gsSync(){
  for(const f of state.files){
   if(!f.rows.length)continue;
   const sig=[f.name,f.size,f.mod,f.rows.length,f.date||''].join('|');cur[f.name]=sig;
-  if(_gsSig[f.name]!==sig)G.put(GSK,{name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,
+  if(_gsSig[f.name]!==sig)G.put(GSK,{src:window.__GSP?'gs':'tab',name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,
    rows:f.rows.map(r=>[sessDate(r.date||f.date||''),r.sec||'',r.m,r.no,r.yr,r.pl||'',r.df||'',r.prev||'',r.dec||'',r.next||'',r.note||''])});
  }
  if(GSF)for(const n in _gsSig)if(!(n in cur))G.del(GSK,n);
@@ -6563,7 +6597,7 @@ function gsSync(){
  for(const f of state.files){
   if(!f.rows.length)continue;
   const sig=[f.name,f.size,f.mod,f.rows.length,f.date||''].join('|');cur[f.name]=sig;
-  if(_gsSig[f.name]!==sig)G.put(GSK,{name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,
+  if(_gsSig[f.name]!==sig)G.put(GSK,{src:window.__GSP?'gs':'tab',name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,
    rows:f.rows.map(r=>[sessDate(r.date||f.date||''),r.sec||'',r.m,r.no,r.yr,r.pl||'',r.df||'',r.prev||'',r.dec||'',r.next||'',r.note||''])});
  }
  if(GSF)for(const n in _gsSig)if(!(n in cur))G.del(GSK,n);
@@ -6574,8 +6608,8 @@ window.addEventListener('message',e=>{
   state.files=state.files.filter(f=>f.name!==n);delete _gsSig[n];
   if(state.files.length!==L0){renderFiles();try{if(typeof saveFiles==='function')saveFiles()}catch(_){}if(state.files.length)build();else clearResult()}}
 });
-(function(){const G=parent.GS;if(!G)return;G.ready.then(()=>{
- if(state.files.length)return;const L=G.list('xa');if(!L.length)return;
+(function(){const G=parent.GS;if(!G||window.__GSP)return;G.ready.then(()=>{
+ if(state.files.length)return;const L=G.list('xa').filter(x=>x.src!=='gs');if(!L.length)return;
  for(const f of L){const out={name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,notes:false,rows:[]};
   for(const a of f.rows)out.rows.push({date:a[0],sec:a[1],m:a[2],no:a[3],yr:a[4],pl:a[5],df:a[6],prev:a[7],dec:a[8],next:a[9],note:a[10],file:out});
   state.files.push(out)}
@@ -6672,6 +6706,15 @@ ul.rl .c{color:var(--mut);font-size:.85rem}
 ul.rl input.dt{width:130px;direction:ltr;padding:5px 8px}
 ul.rl button{padding:6px 12px;font-size:.85rem}
 input[type=file]{width:100%}
+.sheet{background:#fff;color:#000;padding:6px 0;overflow-x:auto}.sheet *{color:#000}.t2{font-size:15pt;font-weight:700;text-align:center;margin-bottom:6px}
+table.s2{width:100%;table-layout:fixed;border-collapse:collapse;font-size:11pt;font-weight:700}
+table.s2 td,table.s2 th{border:1px solid #000;text-align:center;vertical-align:middle;padding:5px 3px;word-break:break-word}
+table.s2 th{background:#9DC3E6;font-size:9.5pt}table.s2 td.sec{background:#FFE699;font-size:12pt}table.s2 td.act{background:#9DC3E6}
+table.s2 tr.last td:not(.act){background:#fff6d6}table.s2 .sm{font-weight:400;font-size:.85em}table.s2 .fl{font-size:.75rem;color:#1d7a46!important}
+tr.ex td{text-align:right!important;font-weight:400;font-size:.88rem}tr.ex{display:table-row}
+table.s2 select{font:inherit;font-weight:700;width:100%;padding:3px;background:#fff;color:#000;border:1px solid #000;border-radius:4px;min-width:0}
+.w{display:none}td.sec.w{display:none}
+@media (min-width:700px){span.w{display:inline}tr.ex.n{display:none}th.w,td.w{display:table-cell}td.sec.n{display:none}td.sec.w{display:table-cell}table.s2{font-size:12pt}}
 </style>
 </head>
 <body>
@@ -6714,6 +6757,8 @@ const dShow=d=>{const m=String(d||'').match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?
 const dateKey=s=>{const m=String(s).match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?(+m[3])*10000+(+m[2])*100+(+m[1]):1e9};
 const sessDate=s=>{s=toEn(s||'').trim();let m=s.match(/^(\d{4})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})$/);if(m)return (+m[3])+'/'+(+m[2])+'/'+m[1];m=s.match(/(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s};
 const dN=v=>/^[\d٠-٩]{1,4}\s*[\/\-_.]\s*[\d٠-٩]{1,2}\s*[\/\-_.]\s*[\d٠-٩]{1,4}$/.test(String(v).trim())?dB(toAr(toEn(v))):esc(v);
+const isDt=v=>/^[\d٠-٩]{1,4}\s*[\/\-_.]\s*[\d٠-٩]{1,2}\s*[\/\-_.]\s*[\d٠-٩]{1,4}$/.test(String(v).trim());
+const cellT=(v,n)=>(String(v).length>n?'<span class="w">'+esc(v)+'</span>':esc(v));
 const dTxt=d=>d?dB(toAr(dShow(d))):'بدون تاريخ';
 const KL={sp:'رول حكم (تقسيم الأحكام)',mf:'تحضير (PDF)',mr:'مرافعة (PDF)',ah:'أحكام (PDF)',xm:'مرافعة (إكسيل)',xa:'أحكام (إكسيل)'};
 const ACTS=['أجل للاطلاع','مذكرة','مذكرة + حافظة','حافظة','إحالة','جاهزة','لا شأن','قضية هامة'];
@@ -6761,25 +6806,24 @@ function search(){
  for(const h of hits){const k=h.no+'/'+h.yr;if(!gm.has(k))gm.set(k,[]);gm.get(k).push(h)}
  let groups=[...gm.values()];
  groups.sort((a,b)=>dateKey(b[b.length-1].d)-dateKey(a[a.length-1].d));
- const total=groups.length;groups=groups.slice(0,60);
- const card=(h,isLast)=>{
+ const total=groups.length;
+ const srow=(h,isLast)=>{
   const key=h.d+'|'+h.no+'|'+h.yr,v=A[key]||'';
-  return `<div class="st${isLast?' last':''}"><div class="sh"><b>${dTxt(h.d)}</b><span class="hint">${esc(KL[h.k])}${h.sec?' — '+esc(h.sec):''}</span>${h.approx?'<span class="hint">≈ رقم قريب</span>':''}${isLast?'<span class="ok">آخر ظهور</span>':''}</div>
-   ${mode==='nm'?`<div class="hint">${esc(h.pl||'')}${h.df?' ضد '+esc(h.df):''}</div>`:''}
-   ${h.dec||h.note?`<div><span class="hint">القرار:</span> ${esc((h.dec||'')+(h.note?' - '+h.note:''))}</div>`:''}
-   ${h.next?`<div><span class="hint">الجلسة القادمة:</span> ${dN(h.next)}</div>`:''}
-   <div class="ar"><select class="act${v?' on':''}" data-i="${h.i}" aria-label="الإجراء"><option value="">إجراء</option>${ACTS.map(a=>`<option${a===v?' selected':''}>${a}</option>`).join('')}<option value="__clr">مسح الإجراء</option></select></div></div>`};
+  const lbl=h.k==='sp'?esc(KL[h.k])+'<br>'+esc(h.sec)+(h.m?' — مسلسل '+esc(toAr(h.m)):''):esc(KL[h.k])+(h.sec?'<br><span class="sm">'+esc(h.sec)+'</span>':'')+(h.approx?'<br><span class="sm">≈ رقم قريب</span>':'');
+  const st=dTxt(h.d)+' — '+esc(KL[h.k])+(h.sec&&h.k!=='sp'?' — '+esc(h.sec):'');
+  return `<tr><td class="sec n" colspan="5">${st}</td><td class="sec w" colspan="8">${st}</td></tr>
+  <tr class="${isLast?'last':''}"><td>${dTxt(h.d)}${isLast?'<div class="fl">آخر ظهور</div>':''}</td><td>${lbl}</td><td class="w">${esc(h.pl||'')}</td><td class="w">${esc(h.df||'')}</td><td class="w">${h.prev?dN(h.prev):''}</td><td>${cellT(((h.dec||'')+(h.note?' - '+h.note:'')),24)}</td><td>${h.next?(isDt(h.next)?dN(h.next):cellT(h.next,0)):''}</td><td class="act"><select class="act${v?' on':''}" data-i="${h.i}" aria-label="الإجراء"><option value="">إجراء</option>${ACTS.map(a=>`<option${a===v?' selected':''}>${a}</option>`).join('')}<option value="__clr">مسح الإجراء</option></select></td></tr><tr class="ex n"><td colspan="5"><div><b>المدعي:</b> ${esc(h.pl||'—')}</div><div><b>المدعى عليه:</b> ${esc(h.df||'—')}</div>${h.prev?'<div><b>الجلسة السابقة:</b> '+dN(h.prev)+'</div>':''}${(h.dec||h.note)&&((h.dec||'')+(h.note||'')).length>24?'<div><b>القرار:</b> '+esc((h.dec||'')+(h.note?' - '+h.note:''))+'</div>':''}${h.next&&!isDt(h.next)?'<div><b>الجلسة القادمة:</b> '+esc(h.next)+'</div>':''}</td></tr>`};
  const gHtml=groups.map(g=>{
   const last=g[g.length-1],ref=g.slice().reverse().find(h=>h.pl||h.df)||last;
   let la='';for(let i=g.length-1;i>=0;i--){const a=A[g[i].d+'|'+g[i].no+'|'+g[i].yr];if(a){la=a;break}}
   const inner=`<div class="sum"><b>دعوى ${esc(toAr(last.no))} / ${esc(toAr(last.yr))}</b><div>${esc(ref.pl||'')}${ref.df?' ضد '+esc(ref.df):''}</div>
-   <div class="hint">ظهرت ${toAr(g.length)} مرة — آخرها ${dTxt(last.d)} (${esc(KL[last.k])})${last.dec?' — القرار: '+esc(last.dec):''}${last.next?' — الجلسة القادمة: '+dN(last.next):''}${la?' — آخر إجراء: <b>'+esc(la)+'</b>':''}</div></div>
-   <div class="stl">${g.map((h,i)=>card(h,i===g.length-1)).join('')}</div>`;
+   <div class="hint">ظهرت ${toAr(g.length)} مرة — آخر ظهور ${dTxt(last.d)}${last.dec?' — القرار: '+esc(last.dec):''}${last.next?' — الجلسة القادمة: '+dN(last.next):''}${la?' — آخر إجراء: <b>'+esc(la)+'</b>':''}</div></div>
+   <div class="sheet"><div class="t2">مسار الدعوى ${esc(toAr(last.no))} / ${esc(toAr(last.yr))}</div><table class="s2"><thead><tr><th>الجلسة</th><th>الرول</th><th class="w">المدعي</th><th class="w">المدعى عليه</th><th class="w">الجلسة السابقة</th><th>القرار</th><th>الجلسة القادمة</th><th>الإجراء</th></tr></thead><tbody>${g.map((h,i)=>srow(h,i===g.length-1)).join('')}</tbody></table></div>`;
   if(groups.length===1)return `<div style="display:flex;flex-direction:column;gap:8px">${inner}</div>`;
   return `<details class="gd"><summary><b>${esc(toAr(last.no))} / ${esc(toAr(last.yr))}</b> — ${esc(ref.pl||'')}${ref.df?' ضد '+esc(ref.df):''} <span class="hint">(${toAr(g.length)} ظهور — آخرها ${dTxt(last.d)})</span></summary><div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">${inner}</div></details>`;
  }).join('');
  const pdfNote=hits.some(h=>isPdf(h.k))?'<p class="hint">نتائج الـ PDF قراءتها تقريبية وممكن يكون فيها أخطاء'+(fuzzy?'، وفيه '+toAr(fuzzy)+' نتيجة برقم قريب (علامة ≈)':'')+'.</p>':'';
- o.innerHTML=(groups.length>1?`<p class="hint ok">${toAr(total)} دعوى${total>60?' (أول ٦٠)':''}</p>`:'')+pdfNote+gHtml;
+ o.innerHTML=(groups.length>1?`<p class="hint ok">${toAr(total)} دعوى</p>`:'')+pdfNote+gHtml;
  o._hits=hits;
 }
 function setAct(h,v){
@@ -6827,14 +6871,14 @@ document.addEventListener('change',e=>{
 async function feed(kind,files,msg){
  if(!files.length)return;msg.className='hint';msg.textContent='جاري القراءة… (ملفات الـ PDF ممكن ياخدوا وقت)';
  const before=new Set(G.all().map(r=>r.kind+'|'+r.name+'|'+r.rows.length));
- try{await G.feed(kind,files)}catch(err){msg.className='err';msg.textContent='تعذّر: '+err.message;return}
+ let hd;try{hd=await G.feed(kind,files)}catch(err){msg.className='err';msg.textContent='تعذّر: '+err.message;return}
  let n=0;const t0=Date.now(),names=files.map(f=>f.name);
  const chk=setInterval(()=>{
   const got=G.all().filter(r=>r.kind===kind&&names.includes(r.name)&&!before.has(r.kind+'|'+r.name+'|'+r.rows.length));
   let tm='';try{tm=parent.document.querySelector('#views iframe[data-k="'+kind+'"]').contentDocument.getElementById('msg').textContent||''}catch(_){}
-  if(got.length<names.length&&/مقدرتش|تعذّر|مشكلة/.test(tm)){clearInterval(chk);msg.className='err';msg.textContent=tm;return}
+  if(got.length<names.length&&/مقدرتش|تعذّر|مشكلة/.test(tm)){clearInterval(chk);hd&&hd.release();msg.className='err';msg.textContent=tm;return}
   const dn=names.filter(n=>G.dups[kind+'|'+n]).map(n=>n+' (نفس '+G.dups[kind+'|'+n]+')');
-  if(got.length+dn.length>=names.length||Date.now()-t0>600000){clearInterval(chk);msg.className=got.length||dn.length?'ok':'hint';msg.textContent=(got.length?'تم حفظ '+toAr(got.length)+' رول.':'')+(dn.length?' متحفوظ بالفعل بنفس المحتوى فمتكررش: '+dn.join('، '):'')||'مفيش جديد اتحفظ (مفيش جدول دعاوى).'}
+  if(got.length+dn.length>=names.length||Date.now()-t0>600000){clearInterval(chk);hd&&hd.release();msg.className=got.length||dn.length?'ok':'hint';msg.textContent=(got.length?'تم حفظ '+toAr(got.length)+' رول.':'')+(dn.length?' متحفوظ بالفعل بنفس المحتوى فمتكررش: '+dn.join('، '):'')||'مفيش جديد اتحفظ (مفيش جدول دعاوى).'}
   else if(got.length)msg.textContent='اتحفظ '+toAr(got.length)+' من '+toAr(names.length)+'…';
  },800);
 }
@@ -7185,18 +7229,19 @@ window.GS=(function(){
    delete this.dups[id];
    const r=Object.assign({},rec,{id,kind,sig,at:Date.now()});L[r.id]=r;idbPut(r);emit();return 'ok'},
   syncSp(){spSync();emit()},
-  del(kind,name,notify){const id=kind+'|'+name;if(!L[id])return;delete L[id];idbDel(id);
-   if(notify){
+  del(kind,name,notify){const id=kind+'|'+name;if(!L[id])return;const own=L[id].src==='gs';delete L[id];idbDel(id);
+   if(notify&&!own){
     if(kind==='xm'){try{const o=JSON.parse(localStorage.getItem('xm1:files')||'[]').filter(f=>f.name!==name);localStorage.setItem('xm1:files',JSON.stringify(o))}catch(e){}}
     try{const f=document.querySelector('#views iframe[data-k="'+kind+'"]');if(f&&f.contentWindow)f.contentWindow.postMessage({gsDel:name},'*')}catch(e){}}
    emit()},
   dump:()=>Object.values(L),
   async load(arr){await ready;for(const r of arr||[]){L[r.id]=r;idbPut(r)}emit()},
   async feed(k,files){
-   const f=await window.__ensure(k),w=f.contentWindow,inp=w.document.getElementById('files');
-   if(!inp)throw new Error('التبويب مش جاهز');
+   const f=await window.__privateFrame(k),w=f.contentWindow,inp=w.document.getElementById('files');
+   if(!inp){f.remove();throw new Error('التبويب مش جاهز')}
    const dt=new w.DataTransfer();files.forEach(x=>dt.items.add(x));inp.files=dt.files;
    inp.dispatchEvent(new w.Event('change',{bubbles:true}));
+   return {frame:f,release(){try{f.remove()}catch(e){}}};
   }};
 })();
 </script>
@@ -7223,6 +7268,7 @@ function show(k){
   });
   try{localStorage.setItem('combined_tab',k);if(top==='xl')localStorage.setItem('xl_sub',k)}catch(e){}
 }
+window.__privateFrame=function(k){const f=document.createElement('iframe');f.setAttribute('aria-hidden','true');f.style.cssText='position:absolute;width:1px;height:1px;left:-9999px;top:0;border:0;visibility:hidden';f.srcdoc=build(k).replace('<head>','<head><script>window.__GSP=1<\/script>');document.body.appendChild(f);return new Promise(r=>f.addEventListener('load',()=>setTimeout(()=>r(f),50),{once:true}))};
 window.__ensure=function(k){const f=document.querySelector('#views iframe[data-k="'+k+'"]');if(!loaded[k]){loaded[k]=1;return new Promise(r=>{f.addEventListener('load',()=>setTimeout(()=>r(f),50),{once:true});f.srcdoc=build(k)})}return Promise.resolve(f)};
 document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>show(b.dataset.k));
 document.querySelectorAll('#sub button').forEach(b=>b.onclick=()=>show(b.dataset.k));
