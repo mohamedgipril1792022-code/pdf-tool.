@@ -71,9 +71,90 @@ body{display:flex;flex-direction:column}
 #verBar .vb{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.2px;color:#fff;background:linear-gradient(135deg,#1f5f8b,#2f86c0);border-radius:999px;padding:2px 12px;box-shadow:0 1px 3px rgba(0,0,0,.25)}
 #verBar .bk{pointer-events:auto;display:inline-flex;gap:6px;margin-inline-start:8px}#verBar .bk button{font:inherit;font-size:11.5px;font-weight:700;border:1px solid #1f5f8b;color:#1f5f8b;background:#fff;border-radius:999px;padding:1px 10px;cursor:pointer}#verBar .vb b{font-weight:800}#verBar .vb i{font-style:normal;opacity:.7}
 </style>
+
+<style>
+:root{--bg:#f3f4f6;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1f5f8b;--accfg:#fff;--head:#dfe5ec}
+@media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#5aa6d6;--accfg:#0b1620;--head:#2a3542}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:"Segoe UI",Tahoma,Arial,sans-serif}
+body{display:flex;flex-direction:column}
+#tabs{display:flex;gap:6px;padding:8px 10px;padding-top:max(8px,env(safe-area-inset-top,0px));padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px));background:var(--card);border-bottom:1px solid var(--line);flex:none}
+#tabs button{flex:1;min-width:0;font:inherit;font-size:.82rem;font-weight:700;padding:6px 2px;min-height:54px;border-radius:10px;border:1px solid var(--line);background:var(--head);color:var(--fg);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;line-height:1.15;text-align:center}
+#tabs button svg{flex:none}
+#tabs button[aria-selected="true"]{background:var(--acc);color:var(--accfg);border-color:var(--acc)}
+@media (max-width:560px){#tabs{gap:4px}#tabs button{font-size:.7rem;padding:5px 1px;min-height:50px}#tabs button svg{width:20px;height:20px}}
+#views{flex:1;min-height:0;position:relative}
+#views iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg);display:none}
+#views iframe.on{display:block}
+#sub{display:flex;gap:6px;padding:6px 10px;background:var(--card);border-bottom:1px solid var(--line);flex:none}#sub[hidden]{display:none}#sub button{flex:1;font:inherit;font-weight:700;padding:7px 4px;border-radius:8px;border:1px solid var(--line);background:var(--head);color:var(--fg);cursor:pointer}#sub button[aria-selected="true"]{background:var(--acc);color:var(--accfg);border-color:var(--acc)}@media (max-width:420px){#tabs button{font-size:.74rem}}
+#verBar{flex:none;display:flex;justify-content:center;padding:4px 10px 0;pointer-events:none}
+#verBar .vb{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.2px;color:#fff;background:linear-gradient(135deg,#1f5f8b,#2f86c0);border-radius:999px;padding:2px 12px;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+#verBar .bk{pointer-events:auto;display:inline-flex;gap:6px;margin-inline-start:8px}#verBar .bk button{font:inherit;font-size:11.5px;font-weight:700;border:1px solid #1f5f8b;color:#1f5f8b;background:#fff;border-radius:999px;padding:1px 10px;cursor:pointer}#verBar .vb b{font-weight:800}#verBar .vb i{font-style:normal;opacity:.7}
+</style>
+
+<style>
+:root{--bg:#f3f4f6;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1f5f8b;--accfg:#fff;--head:#dfe5ec}
+@media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#5aa6d6;--accfg:#0b1620;--head:#2a3542}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:"Segoe UI",Tahoma,Arial,sans-serif}
+body{display:flex;flex-direction:column}
+#tabs{display:flex;gap:6px;padding:8px 10px;padding-top:max(8px,env(safe-area-inset-top,0px));padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px));background:var(--card);border-bottom:1px solid var(--line);flex:none}
+#tabs button{flex:1;min-width:0;font:inherit;font-size:.82rem;font-weight:700;padding:6px 2px;min-height:54px;border-radius:10px;border:1px solid var(--line);background:var(--head);color:var(--fg);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;line-height:1.15;text-align:center}
+#tabs button svg{flex:none}
+#tabs button[aria-selected="true"]{background:var(--acc);color:var(--accfg);border-color:var(--acc)}
+@media (max-width:560px){#tabs{gap:4px}#tabs button{font-size:.7rem;padding:5px 1px;min-height:50px}#tabs button svg{width:20px;height:20px}}
+#views{flex:1;min-height:0;position:relative}
+#views iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg);display:none}
+#views iframe.on{display:block}
+#sub{display:flex;gap:6px;padding:6px 10px;background:var(--card);border-bottom:1px solid var(--line);flex:none}#sub[hidden]{display:none}#sub button{flex:1;font:inherit;font-weight:700;padding:7px 4px;border-radius:8px;border:1px solid var(--line);background:var(--head);color:var(--fg);cursor:pointer}#sub button[aria-selected="true"]{background:var(--acc);color:var(--accfg);border-color:var(--acc)}@media (max-width:420px){#tabs button{font-size:.74rem}}
+#verBar{flex:none;display:flex;justify-content:center;padding:4px 10px 0;pointer-events:none}
+#verBar .vb{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.2px;color:#fff;background:linear-gradient(135deg,#1f5f8b,#2f86c0);border-radius:999px;padding:2px 12px;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+#verBar .bk{pointer-events:auto;display:inline-flex;gap:6px;margin-inline-start:8px}#verBar .bk button{font:inherit;font-size:11.5px;font-weight:700;border:1px solid #1f5f8b;color:#1f5f8b;background:#fff;border-radius:999px;padding:1px 10px;cursor:pointer}#verBar .vb b{font-weight:800}#verBar .vb i{font-style:normal;opacity:.7}
+</style>
+
+<style>
+:root{--bg:#f3f4f6;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1f5f8b;--accfg:#fff;--head:#dfe5ec}
+@media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#5aa6d6;--accfg:#0b1620;--head:#2a3542}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:"Segoe UI",Tahoma,Arial,sans-serif}
+body{display:flex;flex-direction:column}
+#tabs{display:flex;gap:6px;padding:8px 10px;padding-top:max(8px,env(safe-area-inset-top,0px));padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px));background:var(--card);border-bottom:1px solid var(--line);flex:none}
+#tabs button{flex:1;min-width:0;font:inherit;font-size:.82rem;font-weight:700;padding:6px 2px;min-height:54px;border-radius:10px;border:1px solid var(--line);background:var(--head);color:var(--fg);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;line-height:1.15;text-align:center}
+#tabs button svg{flex:none}
+#tabs button[aria-selected="true"]{background:var(--acc);color:var(--accfg);border-color:var(--acc)}
+@media (max-width:560px){#tabs{gap:4px}#tabs button{font-size:.7rem;padding:5px 1px;min-height:50px}#tabs button svg{width:20px;height:20px}}
+#views{flex:1;min-height:0;position:relative}
+#views iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg);display:none}
+#views iframe.on{display:block}
+#sub{display:flex;gap:6px;padding:6px 10px;background:var(--card);border-bottom:1px solid var(--line);flex:none}#sub[hidden]{display:none}#sub button{flex:1;font:inherit;font-weight:700;padding:7px 4px;border-radius:8px;border:1px solid var(--line);background:var(--head);color:var(--fg);cursor:pointer}#sub button[aria-selected="true"]{background:var(--acc);color:var(--accfg);border-color:var(--acc)}@media (max-width:420px){#tabs button{font-size:.74rem}}
+#verBar{flex:none;display:flex;justify-content:center;padding:4px 10px 0;pointer-events:none}
+#verBar .vb{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.2px;color:#fff;background:linear-gradient(135deg,#1f5f8b,#2f86c0);border-radius:999px;padding:2px 12px;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+#verBar .bk{pointer-events:auto;display:inline-flex;gap:6px;margin-inline-start:8px}#verBar .bk button{font:inherit;font-size:11.5px;font-weight:700;border:1px solid #1f5f8b;color:#1f5f8b;background:#fff;border-radius:999px;padding:1px 10px;cursor:pointer}#verBar .vb b{font-weight:800}#verBar .vb i{font-style:normal;opacity:.7}
+</style>
+
+<style>
+:root{--bg:#f3f4f6;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1f5f8b;--accfg:#fff;--head:#dfe5ec}
+@media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#5aa6d6;--accfg:#0b1620;--head:#2a3542}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:"Segoe UI",Tahoma,Arial,sans-serif}
+body{display:flex;flex-direction:column}
+#tabs{display:flex;gap:6px;padding:8px 10px;padding-top:max(8px,env(safe-area-inset-top,0px));padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px));background:var(--card);border-bottom:1px solid var(--line);flex:none}
+#tabs button{flex:1;min-width:0;font:inherit;font-size:.82rem;font-weight:700;padding:6px 2px;min-height:54px;border-radius:10px;border:1px solid var(--line);background:var(--head);color:var(--fg);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;line-height:1.15;text-align:center}
+#tabs button svg{flex:none}
+#tabs button[aria-selected="true"]{background:var(--acc);color:var(--accfg);border-color:var(--acc)}
+@media (max-width:560px){#tabs{gap:4px}#tabs button{font-size:.7rem;padding:5px 1px;min-height:50px}#tabs button svg{width:20px;height:20px}}
+#views{flex:1;min-height:0;position:relative}
+#views iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg);display:none}
+#views iframe.on{display:block}
+#sub{display:flex;gap:6px;padding:6px 10px;background:var(--card);border-bottom:1px solid var(--line);flex:none}#sub[hidden]{display:none}#sub button{flex:1;font:inherit;font-weight:700;padding:7px 4px;border-radius:8px;border:1px solid var(--line);background:var(--head);color:var(--fg);cursor:pointer}#sub button[aria-selected="true"]{background:var(--acc);color:var(--accfg);border-color:var(--acc)}@media (max-width:420px){#tabs button{font-size:.74rem}}
+#verBar{flex:none;display:flex;justify-content:center;padding:4px 10px 0;pointer-events:none}
+#verBar .vb{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.2px;color:#fff;background:linear-gradient(135deg,#1f5f8b,#2f86c0);border-radius:999px;padding:2px 12px;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+#verBar .bk{pointer-events:auto;display:inline-flex;gap:6px;margin-inline-start:8px}#verBar .bk button{font:inherit;font-size:11.5px;font-weight:700;border:1px solid #1f5f8b;color:#1f5f8b;background:#fff;border-radius:999px;padding:1px 10px;cursor:pointer}#verBar .vb b{font-weight:800}#verBar .vb i{font-style:normal;opacity:.7}
+</style>
 </head>
 <body>
 <div id="tabs" role="tablist">
+<button role="tab" data-k="gs" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg><span>البحث العام</span></button>
 <button role="tab" data-k="mf" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>المفوضين</span></button>
 <button role="tab" data-k="mr" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M6 21h12M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z"/></svg><span>المرافعة</span></button>
 <button role="tab" data-k="ah" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M9 13l2 2 4-4"/></svg><span>الأحكام</span></button>
@@ -81,7 +162,7 @@ body{display:flex;flex-direction:column}
 <button role="tab" data-k="sp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/></svg><span>تقسيم الأحكام</span></button>
 <button role="tab" data-k="nk" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="12" height="15" rx="1"/><path d="M4 7v14h12M11 8h6M11 12h6"/></svg><span>النسخ</span></button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ٢٦</b><i>·</i>٤ نوفمبر ٢٠٢٦</span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ٣٠</b><i>·</i>٤ نوفمبر ٢٠٢٦</span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span></div>
 <div id="sub" hidden><button data-k="xm" aria-selected="false">فلتر المرافعة</button><button data-k="xa" aria-selected="false">فلتر الأحكام</button></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -89,6 +170,7 @@ body{display:flex;flex-direction:column}
 <iframe data-k="ah" title="الأحكام"></iframe>
 <iframe data-k="sp" title="تقسيم الأحكام"></iframe>
 <iframe data-k="nk" title="النسخ"></iframe>
+<iframe data-k="gs" title="البحث العام"></iframe>
 <iframe data-k="xm" title="فلتر المرافعة"></iframe>
 <iframe data-k="xa" title="فلتر الأحكام"></iframe>
 </div>
@@ -531,6 +613,7 @@ function sessionsOf(){
 }
 function clearResult(){window.__result=null;$('scaler').innerHTML='';$('exp').hidden=true;try{closeEd()}catch(e){}$('view').style.height='auto'}
 function renderFiles(){
+ try{gsSync()}catch(e){console.error(e)}
  
  $('flist').innerHTML=state.files.map((f,i)=>`<li><span class="fn">${esc(f.name)}</span><span class="fc">${esc(f.kind)} · ${toAr(f.rows.length)} صف</span><input class="fdate" type="text" dir="ltr" data-i="${i}" value="${esc(dShow(f.date||''))}" placeholder="تاريخ الجلسة" aria-label="تاريخ الجلسة"><select class="fkind" data-i="${i}" aria-label="نوع الجلسة"><option${f.kind==='متنوع'?' selected':''}>متنوع</option><option${f.kind==='تسجيل'?' selected':''}>تسجيل</option></select><button type="button" class="sec fx" data-x="${i}" aria-label="حذف الملف">×</button></li>`).join('');
  const c=$('clrf');if(c)c.hidden=!state.files.length;
@@ -554,7 +637,7 @@ $('files').addEventListener('change',async e=>{
   let skipped=0;
   for(const f of fl){
    if(state.files.some(x=>x.name===f.name&&x.size===f.size&&x.mod===f.lastModified)){skipped++;continue}
-   const p=await parseFile(f);p.size=f.size;p.mod=f.lastModified;p.date=sessDate(p.date||dateFromName(f));state.files.push(p);
+   const p=await parseFile(f);p.size=f.size;p.mod=f.lastModified;p.date=sessDate(p.date||dateFromName(f));{state.files=state.files.filter(x=>x.name!==p.name);state.files.push(p)};
   }
   renderFiles();
   const n=state.files.reduce((s,f)=>s+f.rows.length,0);
@@ -803,6 +886,25 @@ const fname=ext=>{const ds=((window.__result&&window.__result.sessions)||[]).map
  return 'مفوضين_'+(ds.length>1?'جلسات_'+ds.join('_و_'):'جلسة_'+(ds[0]||'مفلترة'))+'.'+ext};
 $('xl').addEventListener('click',()=>{try{save(exportXlsxMulti(window.__result.sessions),fname('xlsx'))}catch(e){console.error(e);say('تعذر عمل ملف Excel: '+e.message,'err')}});
 $('wd').addEventListener('click',()=>{try{save(exportDocxMulti(window.__result.sessions),fname('docx'))}catch(e){console.error(e);say('تعذر عمل ملف Word: '+e.message,'err')}});
+
+// ===== البحث العام: حفظ الرول في المخزن المشترك =====
+const GSK='mf',GSF=false;let _gsSig={};
+function gsSync(){
+ const G=parent.GS;if(!G)return;const cur={};
+ for(const f of state.files){
+  if(!f.rows.length)continue;
+  const sig=[f.name,f.size,f.mod,f.rows.length,f.date||''].join('|');cur[f.name]=sig;
+  if(_gsSig[f.name]!==sig)G.put(GSK,{name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,
+   rows:f.rows.map(r=>[sessDate(r.date||f.date||''),r.sec||'',r.m,r.no,r.yr,r.pl||'',r.df||'',r.prev||'',r.dec||'',r.next||'',r.note||''])});
+ }
+ if(GSF)for(const n in _gsSig)if(!(n in cur))G.del(GSK,n);
+ _gsSig=cur;
+}
+window.addEventListener('message',e=>{
+ if(e.data&&e.data.gsDel){const n=e.data.gsDel,L0=state.files.length;
+  state.files=state.files.filter(f=>f.name!==n);delete _gsSig[n];
+  if(state.files.length!==L0){renderFiles();try{if(typeof saveFiles==='function')saveFiles()}catch(_){}if(state.files.length)build();else clearResult()}}
+});
 })();
 <@@/script>
 <script>
@@ -1344,6 +1446,7 @@ function sessionsOf(){
 }
 function clearResult(){window.__result=null;$('scaler').innerHTML='';$('exp').hidden=true;try{closeEd()}catch(e){}$('view').style.height='auto'}
 function renderFiles(){
+ try{gsSync()}catch(e){console.error(e)}
  drawSecs();
  $('flist').innerHTML=state.files.map((f,i)=>`<li><span class="fn">${esc(f.name)}</span><span class="fc">${toAr(f.secs.length)} قسم · ${toAr(f.rows.length)} صف</span><input class="fdate" type="text" dir="ltr" data-i="${i}" value="${esc(dShow(f.date||''))}" placeholder="تاريخ الجلسة" aria-label="تاريخ الجلسة"><button type="button" class="sec fx" data-x="${i}" aria-label="حذف الملف">×</button></li>`).join('');
  const c=$('clrf');if(c)c.hidden=!state.files.length;
@@ -1367,7 +1470,7 @@ $('files').addEventListener('change',async e=>{
   let skipped=0;
   for(const f of fl){
    if(state.files.some(x=>x.name===f.name&&x.size===f.size&&x.mod===f.lastModified)){skipped++;continue}
-   const p=await parseFile(f);p.size=f.size;p.mod=f.lastModified;p.date=sessDate(p.date||dateFromName(f));state.files.push(p);
+   const p=await parseFile(f);p.size=f.size;p.mod=f.lastModified;p.date=sessDate(p.date||dateFromName(f));{state.files=state.files.filter(x=>x.name!==p.name);state.files.push(p)};
   }
   renderFiles();
   const n=state.files.reduce((s,f)=>s+f.rows.length,0);
@@ -1599,6 +1702,25 @@ const fname=ext=>{const ds=((window.__result&&window.__result.sessions)||[]).map
  return 'مرافعة_'+(ds.length>1?'جلسات_'+ds.join('_و_'):'جلسة_'+(ds[0]||'مفلترة'))+'.'+ext};
 $('xl').addEventListener('click',()=>{try{save(exportXlsxMulti(window.__result.sessions),fname('xlsx'))}catch(e){console.error(e);say('تعذر عمل ملف Excel: '+e.message,'err')}});
 $('wd').addEventListener('click',()=>{try{save(exportDocxMulti(window.__result.sessions),fname('docx'))}catch(e){console.error(e);say('تعذر عمل ملف Word: '+e.message,'err')}});
+
+// ===== البحث العام: حفظ الرول في المخزن المشترك =====
+const GSK='mr',GSF=false;let _gsSig={};
+function gsSync(){
+ const G=parent.GS;if(!G)return;const cur={};
+ for(const f of state.files){
+  if(!f.rows.length)continue;
+  const sig=[f.name,f.size,f.mod,f.rows.length,f.date||''].join('|');cur[f.name]=sig;
+  if(_gsSig[f.name]!==sig)G.put(GSK,{name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,
+   rows:f.rows.map(r=>[sessDate(r.date||f.date||''),r.sec||'',r.m,r.no,r.yr,r.pl||'',r.df||'',r.prev||'',r.dec||'',r.next||'',r.note||''])});
+ }
+ if(GSF)for(const n in _gsSig)if(!(n in cur))G.del(GSK,n);
+ _gsSig=cur;
+}
+window.addEventListener('message',e=>{
+ if(e.data&&e.data.gsDel){const n=e.data.gsDel,L0=state.files.length;
+  state.files=state.files.filter(f=>f.name!==n);delete _gsSig[n];
+  if(state.files.length!==L0){renderFiles();try{if(typeof saveFiles==='function')saveFiles()}catch(_){}if(state.files.length)build();else clearResult()}}
+});
 })();
 <@@/script>
 <script>
@@ -2166,6 +2288,7 @@ function sessionsOf(){
 }
 function clearResult(){window.__result=null;try{drawCls(null)}catch(e){}$('scaler').innerHTML='';$('exp').hidden=true;try{closeEd()}catch(e){}$('view').style.height='auto'}
 function renderFiles(){
+ try{gsSync()}catch(e){console.error(e)}
  drawSecs();
  $('flist').innerHTML=state.files.map((f,i)=>`<li><span class="fn">${esc(f.name)}</span><span class="fc">${toAr(f.secs.length)} قسم · ${toAr(f.rows.length)} صف</span><input class="fdate" type="text" dir="ltr" data-i="${i}" value="${esc(dShow(f.date||''))}" placeholder="تاريخ الجلسة" aria-label="تاريخ الجلسة"><button type="button" class="sec fx" data-x="${i}" aria-label="حذف الملف">×</button></li>`).join('');
  const c=$('clrf');if(c)c.hidden=!state.files.length;
@@ -2189,7 +2312,7 @@ $('files').addEventListener('change',async e=>{
   let skipped=0;
   for(const f of fl){
    if(state.files.some(x=>x.name===f.name&&x.size===f.size&&x.mod===f.lastModified)){skipped++;continue}
-   const p=await parseFile(f);p.size=f.size;p.mod=f.lastModified;p.date=sessDate(p.date||dateFromName(f));state.files.push(p);
+   const p=await parseFile(f);p.size=f.size;p.mod=f.lastModified;p.date=sessDate(p.date||dateFromName(f));{state.files=state.files.filter(x=>x.name!==p.name);state.files.push(p)};
   }
   renderFiles();
   const n=state.files.reduce((s,f)=>s+f.rows.length,0);
@@ -2465,6 +2588,25 @@ const fname=ext=>{const ds=((window.__result&&window.__result.sessions)||[]).map
  return 'احكام_'+(ds.length>1?'جلسات_'+ds.join('_و_'):'جلسة_'+(ds[0]||'مفلترة'))+'.'+ext};
 $('xl').addEventListener('click',()=>{try{save(exportXlsxMulti(window.__result.sessions),fname('xlsx'))}catch(e){console.error(e);say('تعذر عمل ملف Excel: '+e.message,'err')}});
 $('wd').addEventListener('click',()=>{try{save(exportDocxMulti(window.__result.sessions),fname('docx'))}catch(e){console.error(e);say('تعذر عمل ملف Word: '+e.message,'err')}});
+
+// ===== البحث العام: حفظ الرول في المخزن المشترك =====
+const GSK='ah',GSF=false;let _gsSig={};
+function gsSync(){
+ const G=parent.GS;if(!G)return;const cur={};
+ for(const f of state.files){
+  if(!f.rows.length)continue;
+  const sig=[f.name,f.size,f.mod,f.rows.length,f.date||''].join('|');cur[f.name]=sig;
+  if(_gsSig[f.name]!==sig)G.put(GSK,{name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,
+   rows:f.rows.map(r=>[sessDate(r.date||f.date||''),r.sec||'',r.m,r.no,r.yr,r.pl||'',r.df||'',r.prev||'',r.dec||'',r.next||'',r.note||''])});
+ }
+ if(GSF)for(const n in _gsSig)if(!(n in cur))G.del(GSK,n);
+ _gsSig=cur;
+}
+window.addEventListener('message',e=>{
+ if(e.data&&e.data.gsDel){const n=e.data.gsDel,L0=state.files.length;
+  state.files=state.files.filter(f=>f.name!==n);delete _gsSig[n];
+  if(state.files.length!==L0){renderFiles();try{if(typeof saveFiles==='function')saveFiles()}catch(_){}if(state.files.length)build();else clearResult()}}
+});
 })();
 <@@/script>
 <script>
@@ -3354,7 +3496,7 @@ function persist(){
 }
 /* ===== الرولات: رولات المرافعة (متنوع / تسجيل حسب اسم الشيت) + رول الحكم ===== */
 let ROLL={m:new Set(),r:new Set(),j:new Map(),rows:[],files:{m:[],j:[]}};
-function rollSave(){try{localStorage.setItem('sp1:rolls',JSON.stringify({m:[...ROLL.m],r:[...ROLL.r],j:[...ROLL.j],rows:ROLL.rows,files:ROLL.files}))}catch(e){}}
+function rollSave(){try{localStorage.setItem('sp1:rolls',JSON.stringify({m:[...ROLL.m],r:[...ROLL.r],j:[...ROLL.j],rows:ROLL.rows,files:ROLL.files}))}catch(e){}try{parent.GS&&parent.GS.syncSp()}catch(e){}}
 function rollLoad(){try{const o=JSON.parse(localStorage.getItem('sp1:rolls')||'null');if(o){ROLL={m:new Set(o.m||[]),r:new Set(o.r||[]),j:new Map(o.j||[]),rows:o.rows||[],files:o.files||{m:[],j:[]}}}}catch(e){}}
 const rollDigits=v=>String(v==null?'':v).replace(/[٠-٩]/g,d=>d.charCodeAt(0)-1632).replace(/[۰-۹]/g,d=>d.charCodeAt(0)-1776);
 // sheets: [{name, rows:[[cell,...],...]}] — بتستخرج رقم+سنة كل صف حسب عناوين الأعمدة
@@ -4921,6 +5063,7 @@ function sessionsOf(){
 }
 function clearResult(){window.__result=null;try{$('bulk').hidden=true}catch(e){}$('scaler').innerHTML='';$('exp').hidden=true;$('sesbar').hidden=true;$('sesbar').innerHTML='';clearOne();try{closeEd()}catch(e){}$('view').style.height='auto'}
 function renderFiles(){
+ try{gsSync()}catch(e){console.error(e)}
  drawSecs();
  $('flist').innerHTML=state.files.map((f,i)=>{
   const ds=[...new Set(f.rows.map(r=>r.date))].filter(Boolean).sort((a,b)=>dateKey(a)-dateKey(b));
@@ -4948,7 +5091,7 @@ $('files').addEventListener('change',async e=>{
   try{
    const p=await parseFile(f);p.size=f.size;p.mod=f.lastModified;
    if(!p.rows.length){bad.push(f.name);continue}
-   state.files.push(p);
+   {state.files=state.files.filter(x=>x.name!==p.name);state.files.push(p)};
   }catch(err){console.error(err);bad.push(f.name+' ('+err.message+')')}
  }
  renderFiles();saveFiles();
@@ -5301,6 +5444,26 @@ $('wd').addEventListener('click',()=>{try{save(exportDocxMulti(window.__result.s
  $('hgo').addEventListener('click',go);q.addEventListener('keydown',e=>{if(e.key==='Enter')go()});
 })();
 restoreFiles();
+
+// ===== البحث العام: حفظ الرول في المخزن المشترك =====
+const GSK='xm',GSF=true;let _gsSig={};
+function gsSync(){
+ const G=parent.GS;if(!G)return;const cur={};
+ for(const f of state.files){
+  if(!f.rows.length)continue;
+  const sig=[f.name,f.size,f.mod,f.rows.length,f.date||''].join('|');cur[f.name]=sig;
+  if(_gsSig[f.name]!==sig)G.put(GSK,{name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,
+   rows:f.rows.map(r=>[sessDate(r.date||f.date||''),r.sec||'',r.m,r.no,r.yr,r.pl||'',r.df||'',r.prev||'',r.dec||'',r.next||'',r.note||''])});
+ }
+ if(GSF)for(const n in _gsSig)if(!(n in cur))G.del(GSK,n);
+ _gsSig=cur;
+}
+window.addEventListener('message',e=>{
+ if(e.data&&e.data.gsDel){const n=e.data.gsDel,L0=state.files.length;
+  state.files=state.files.filter(f=>f.name!==n);delete _gsSig[n];
+  if(state.files.length!==L0){renderFiles();try{if(typeof saveFiles==='function')saveFiles()}catch(_){}if(state.files.length)build();else clearResult()}}
+});
+window.addEventListener('storage',e=>{if(e.key==='act_xm'||e.key==='skp_xm'){try{ACT=JSON.parse(localStorage.getItem(ACTK)||'{}')}catch(_){}try{SKP=JSON.parse(localStorage.getItem(SKK)||'{}')}catch(_){}try{refreshSels()}catch(_){}}});
 })();
 <@@/script>
 <script>
@@ -6086,6 +6249,7 @@ function sessionsOf(){
 }
 function clearResult(){window.__result=null;try{drawCls(null)}catch(e){}$('scaler').innerHTML='';$('exp').hidden=true;$('sesbar').hidden=true;$('sesbar').innerHTML='';clearOne();try{closeEd()}catch(e){}$('view').style.height='auto'}
 function renderFiles(){
+ try{gsSync()}catch(e){console.error(e)}
  drawSecs();
  $('flist').innerHTML=state.files.map((f,i)=>{
   const ds=[...new Set(f.rows.map(r=>r.date))].filter(Boolean).sort((a,b)=>dateKey(a)-dateKey(b));
@@ -6113,7 +6277,7 @@ $('files').addEventListener('change',async e=>{
   try{
    const p=await parseFile(f);p.size=f.size;p.mod=f.lastModified;
    if(!p.rows.length){bad.push(f.name);continue}
-   state.files.push(p);
+   {state.files=state.files.filter(x=>x.name!==p.name);state.files.push(p)};
   }catch(err){console.error(err);bad.push(f.name+' ('+err.message+')')}
  }
  renderFiles();
@@ -6391,6 +6555,31 @@ const fname=ext=>{const ds=((window.__result&&window.__result.sessions)||[]).map
  return 'فلتر_احكام_'+(ds.length>1?'جلسات_'+ds.join('_و_'):'جلسة_'+(ds[0]||'مفلترة'))+'.'+ext};
 $('xl').addEventListener('click',()=>{try{save(exportXlsxMulti(window.__result.sessions),fname('xlsx'))}catch(e){console.error(e);say('تعذر عمل ملف Excel: '+e.message,'err')}});
 $('wd').addEventListener('click',()=>{try{save(exportDocxMulti(window.__result.sessions),fname('docx'))}catch(e){console.error(e);say('تعذر عمل ملف Word: '+e.message,'err')}});
+
+// ===== البحث العام: حفظ الرول في المخزن المشترك =====
+const GSK='xa',GSF=true;let _gsSig={};
+function gsSync(){
+ const G=parent.GS;if(!G)return;const cur={};
+ for(const f of state.files){
+  if(!f.rows.length)continue;
+  const sig=[f.name,f.size,f.mod,f.rows.length,f.date||''].join('|');cur[f.name]=sig;
+  if(_gsSig[f.name]!==sig)G.put(GSK,{name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,
+   rows:f.rows.map(r=>[sessDate(r.date||f.date||''),r.sec||'',r.m,r.no,r.yr,r.pl||'',r.df||'',r.prev||'',r.dec||'',r.next||'',r.note||''])});
+ }
+ if(GSF)for(const n in _gsSig)if(!(n in cur))G.del(GSK,n);
+ _gsSig=cur;
+}
+window.addEventListener('message',e=>{
+ if(e.data&&e.data.gsDel){const n=e.data.gsDel,L0=state.files.length;
+  state.files=state.files.filter(f=>f.name!==n);delete _gsSig[n];
+  if(state.files.length!==L0){renderFiles();try{if(typeof saveFiles==='function')saveFiles()}catch(_){}if(state.files.length)build();else clearResult()}}
+});
+(function(){const G=parent.GS;if(!G)return;G.ready.then(()=>{
+ if(state.files.length)return;const L=G.list('xa');if(!L.length)return;
+ for(const f of L){const out={name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,notes:false,rows:[]};
+  for(const a of f.rows)out.rows.push({date:a[0],sec:a[1],m:a[2],no:a[3],yr:a[4],pl:a[5],df:a[6],prev:a[7],dec:a[8],next:a[9],note:a[10],file:out});
+  state.files.push(out)}
+ renderFiles();window.__files=state.files;build();say('تم استرجاع الرول المحفوظ ('+toAr(state.files.length)+' ملف)','ok')})})();
 })();
 <@@/script>
 <script>
@@ -6440,6 +6629,225 @@ if(eb&&ta){
 </body>
 </html>
 </script>
+<script id="tpl-gs" type="text/plain"><!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>البحث العام</title>
+<style>
+:root{--bg:#f3f4f6;--card:#fff;--fg:#1c2530;--mut:#5d6b7a;--line:#cfd6de;--acc:#1f5f8b;--accfg:#fff;--head:#dfe5ec;--ok:#1d7a46;--bad:#c0392b;--last:#fff6d6}
+@media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--mut:#9aa8b7;--line:#35414e;--acc:#5aa6d6;--accfg:#0b1620;--head:#2a3542;--ok:#5ccf92;--bad:#ff8a7a;--last:#3a3517}}
+*{box-sizing:border-box}
+html,body{overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Segoe UI",Tahoma,Arial,sans-serif;font-size:16px;line-height:1.5;padding:16px max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:16px;min-width:0}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+h1{margin:0;font-size:1.3rem}
+label{font-weight:700;font-size:.9rem;display:block;margin-bottom:3px}
+input[type=text],select{width:100%;font:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+button{font:inherit;font-weight:700;border:0;border-radius:6px;padding:10px 16px;background:var(--acc);color:var(--accfg);cursor:pointer}
+button.sec{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+button.bad{background:transparent;color:var(--bad);border:1px solid var(--bad)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.hint{color:var(--mut);font-size:.88rem;margin:0}.ok{color:var(--ok);font-weight:700}.err{color:var(--bad);font-weight:700}
+.tabs{display:flex;gap:8px}.tabs button{flex:1;background:transparent;color:var(--acc);border:1px solid var(--acc)}.tabs button[aria-selected=true]{background:var(--acc);color:var(--accfg)}
+.sp[hidden]{display:none}
+.sbar{display:flex;gap:8px}.sbar input{flex:1}.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}details.gd{border:1px solid var(--line);border-radius:8px;padding:8px 10px}details.gd>summary{cursor:pointer}
+.sum{border:1.5px solid var(--acc);border-radius:10px;padding:10px 12px;background:var(--card)}
+.sum b{font-size:1.05rem}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.stl{display:flex;flex-direction:column;gap:8px}.st{border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:4px}.st.last{background:var(--last)}.st .sh{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.st .sh .ok{margin-inline-start:auto}.st .ar select{max-width:220px}
+table.tl{border-collapse:collapse;width:100%;min-width:640px;font-size:.92rem}
+table.tl th,table.tl td{border:1px solid var(--line);padding:6px 8px;text-align:center;vertical-align:top}
+table.tl th{background:var(--head)}
+table.tl td.l{text-align:right}
+table.tl tr.last td{background:var(--last)}
+select.act{min-width:112px;padding:6px 8px}select.act.on{border-color:var(--ok);font-weight:700}
+ul.rl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+ul.rl li{display:flex;gap:8px;align-items:center;flex-wrap:wrap;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+ul.rl .n{flex:1 1 180px;font-weight:700;word-break:break-all}
+ul.rl .c{color:var(--mut);font-size:.85rem}
+ul.rl input.dt{width:130px;direction:ltr;padding:5px 8px}
+ul.rl button{padding:6px 12px;font-size:.85rem}
+input[type=file]{width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <section class="panel" aria-label="بحث">
+  <h1>البحث العام</h1>
+  <div class="row2"><div><label for="smode">البحث بـ</label><select id="smode"><option value="no">رقم الدعوى</option><option value="nm">الاسم (المدعي / المدعى عليه)</option></select></div><div><label for="sscope">في</label><select id="sscope"><option value="all">كل الرولات</option><option value="xl">الإكسيل بس</option><option value="pdf">الـ PDF بس</option></select></div></div>
+  <div class="sbar"><input id="q" type="text" placeholder="رقم الدعوى أو 1234/2020" aria-label="كلمة البحث"><button id="go" type="button">بحث</button></div>
+  <p class="hint">بيدوّر برقم الدعوى أو بالاسم في الرولات المحفوظة (PDF وإكسيل، أو واحد منهم) ويعرض مراحل الدعوى مرتبة بالتاريخ لحد آخر إجراء. الإجراء مرتبط بالجلسة اللي اتاخد فيها.</p>
+  <div id="res"></div>
+ </section>
+ <section class="panel" aria-label="الرولات">
+  <div class="tabs" role="tablist"><button type="button" role="tab" data-t="pdf" aria-selected="true">PDF</button><button type="button" role="tab" data-t="xl" aria-selected="false">إكسيل</button></div>
+  <div id="sp-pdf" class="sp">
+   <div class="actions"><div style="flex:1 1 150px"><label for="kpdf">نوع الرول</label><select id="kpdf"><option value="mf">تحضير (المفوضين)</option><option value="mr">مرافعة</option><option value="ah">أحكام</option></select></div></div>
+   <div><label for="fpdf">إضافة / استبدال رولات PDF</label><input id="fpdf" type="file" accept="application/pdf,.pdf" multiple></div>
+   <p id="mpdf" class="hint"></p>
+   <ul class="rl" id="lpdf"></ul>
+  </div>
+  <div id="sp-xl" class="sp" hidden>
+   <div class="actions"><div style="flex:1 1 150px"><label for="kxl">نوع الرول</label><select id="kxl"><option value="xm">مرافعة</option><option value="xa">أحكام</option></select></div></div>
+   <div><label for="fxl">إضافة / استبدال رولات إكسيل</label><input id="fxl" type="file" accept=".xls,.xlsx,.xlsm,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" multiple></div>
+   <p id="mxl" class="hint"></p>
+   <ul class="rl" id="lxl"></ul>
+  </div>
+  <p class="hint">لو رفعت رول بنفس الاسم بيتبدّل القديم، والإجراءات اللي اتاخدت على الدعاوى بتفضل زي ما هي. الرولات بتتحفظ في المتصفح لحد ما تمسحها.</p>
+ </section>
+</div>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const G=parent.GS;
+const AR='٠١٢٣٤٥٦٧٨٩';
+const toAr=s=>String(s).replace(/\d/g,d=>AR[d]);
+const toEn=s=>String(s).replace(/[٠-٩]/g,d=>AR.indexOf(d));
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dB=s=>'\u2066'+String(s).replace(/_/g,'_\u200E')+'\u2069';
+const dShow=d=>{const m=String(d||'').match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?m[3]+'_'+(+m[2])+'_'+(+m[1]):String(d||'')};
+const dateKey=s=>{const m=String(s).match(/^(\d+)\/(\d+)\/(\d{4})$/);return m?(+m[3])*10000+(+m[2])*100+(+m[1]):1e9};
+const sessDate=s=>{s=toEn(s||'').trim();let m=s.match(/^(\d{4})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})$/);if(m)return (+m[3])+'/'+(+m[2])+'/'+m[1];m=s.match(/(\d{1,2})\s*[\/\-_.]\s*(\d{1,2})\s*[\/\-_.]\s*(\d{4})/);return m?(+m[1])+'/'+(+m[2])+'/'+m[3]:s};
+const dN=v=>/^[\d٠-٩]{1,4}\s*[\/\-_.]\s*[\d٠-٩]{1,2}\s*[\/\-_.]\s*[\d٠-٩]{1,4}$/.test(String(v).trim())?dB(toAr(toEn(v))):esc(v);
+const dTxt=d=>d?dB(toAr(dShow(d))):'بدون تاريخ';
+const KL={sp:'رول حكم (تقسيم الأحكام)',mf:'تحضير (PDF)',mr:'مرافعة (PDF)',ah:'أحكام (PDF)',xm:'مرافعة (إكسيل)',xa:'أحكام (إكسيل)'};
+const ACTS=['أجل للاطلاع','مذكرة','مذكرة + حافظة','حافظة','إحالة','جاهزة','لا شأن','قضية هامة'];
+const isMemo=v=>v==='مذكرة'||v==='مذكرة + حافظة';
+const jget=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}};
+const jset=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+if(!G){$('res').innerHTML='<span class="err">التخزين العام مش متاح.</span>';return}
+
+// ===== البحث =====
+const isPdf=k=>k==='mf'||k==='mr'||k==='ah';
+const nz=s=>String(toEn(s==null?'':s)).replace(/[ً-ْـ‎‏]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/\s+/g,' ').trim();
+const ham=(a,b)=>{if(a.length!==b.length)return 9;let h=0;for(let i=0;i<a.length;i++)if(a[i]!==b[i])h++;return h};
+function search(){
+ const o=$('res'),q0=$('q').value.replace(/[‎‏]/g,'').trim(),mode=$('smode').value,scope=$('sscope').value;
+ if(!q0){o.innerHTML='';return}
+ let n='',y='',words=[];
+ if(mode==='no'){
+  const q=toEn(q0),pt=q.split(/[\/\\\-\s]+/).filter(Boolean);n=(pt[0]||'').replace(/\D/g,'').replace(/^0+/,'');y=(pt[1]||'').replace(/\D/g,'');
+  if(!n){o.innerHTML='<span class="err">اكتب رقم الدعوى.</span>';return}
+ }else{words=nz(q0).split(' ').filter(Boolean);if(!words.length){o.innerHTML='<span class="err">اكتب اسم.</span>';return}}
+ const hits=[],seenH=new Set();let fuzzy=0;
+ for(const rec of G.all()){
+  const pdf=isPdf(rec.kind);
+  if(scope==='xl'&&pdf)continue;if(scope==='pdf'&&!pdf)continue;if(rec.kind==='sp'&&scope==='pdf')continue;
+  for(const r of rec.rows){
+   let ok=false,approx=false;
+   if(mode==='no'){
+    const rn=String(toEn(r[3])).replace(/^0+/,''),ry=String(toEn(r[4]));
+    if(y&&!(ry===y||ry.endsWith(y)||y.endsWith(ry)))continue;
+    if(rn===n)ok=true;else if(pdf&&n.length>=3&&ham(rn,n)===1){ok=true;approx=true}
+   }else{
+    const hay=nz((r[5]||'')+' '+(r[6]||''));ok=words.every(w=>hay.includes(w));
+   }
+   if(!ok)continue;if(approx)fuzzy++;
+   const dk=[rec.kind,r[0],r[1],r[3],r[4],r[8],r[9]].join('|');if(seenH.has(dk))continue;seenH.add(dk);
+   hits.push({d:r[0]||'',k:rec.kind,sec:r[1],m:r[2],no:String(r[3]),yr:String(r[4]),pl:r[5],df:r[6],prev:r[7],dec:r[8],next:r[9],note:r[10],file:rec.name,approx});
+  }
+ }
+ if(!hits.length){o.innerHTML='<span class="hint">مفيش نتيجة في '+(scope==='xl'?'رولات الإكسيل':scope==='pdf'?'رولات الـ PDF':'الرولات المحفوظة')+'.'+(G.all().length?'':' (مفيش رولات محفوظة لسه)')+'</span>';return}
+ const ord={mf:0,mr:1,xm:1,ah:2,xa:2,sp:3};
+ hits.sort((a,b)=>dateKey(a.d)-dateKey(b.d)||(ord[a.k]-ord[b.k]));
+ const A=jget('act_xm',{});
+ hits.forEach((h,i)=>{h.i=i});
+ const gm=new Map();
+ for(const h of hits){const k=h.no+'/'+h.yr;if(!gm.has(k))gm.set(k,[]);gm.get(k).push(h)}
+ let groups=[...gm.values()];
+ groups.sort((a,b)=>dateKey(b[b.length-1].d)-dateKey(a[a.length-1].d));
+ const total=groups.length;groups=groups.slice(0,60);
+ const card=(h,isLast)=>{
+  const key=h.d+'|'+h.no+'|'+h.yr,v=A[key]||'';
+  return `<div class="st${isLast?' last':''}"><div class="sh"><b>${dTxt(h.d)}</b><span class="hint">${esc(KL[h.k])}${h.sec?' — '+esc(h.sec):''}</span>${h.approx?'<span class="hint">≈ رقم قريب</span>':''}${isLast?'<span class="ok">آخر ظهور</span>':''}</div>
+   ${mode==='nm'?`<div class="hint">${esc(h.pl||'')}${h.df?' ضد '+esc(h.df):''}</div>`:''}
+   ${h.dec||h.note?`<div><span class="hint">القرار:</span> ${esc((h.dec||'')+(h.note?' - '+h.note:''))}</div>`:''}
+   ${h.next?`<div><span class="hint">الجلسة القادمة:</span> ${dN(h.next)}</div>`:''}
+   <div class="ar"><select class="act${v?' on':''}" data-i="${h.i}" aria-label="الإجراء"><option value="">إجراء</option>${ACTS.map(a=>`<option${a===v?' selected':''}>${a}</option>`).join('')}<option value="__clr">مسح الإجراء</option></select></div></div>`};
+ const gHtml=groups.map(g=>{
+  const last=g[g.length-1],ref=g.slice().reverse().find(h=>h.pl||h.df)||last;
+  let la='';for(let i=g.length-1;i>=0;i--){const a=A[g[i].d+'|'+g[i].no+'|'+g[i].yr];if(a){la=a;break}}
+  const inner=`<div class="sum"><b>دعوى ${esc(toAr(last.no))} / ${esc(toAr(last.yr))}</b><div>${esc(ref.pl||'')}${ref.df?' ضد '+esc(ref.df):''}</div>
+   <div class="hint">ظهرت ${toAr(g.length)} مرة — آخرها ${dTxt(last.d)} (${esc(KL[last.k])})${last.dec?' — القرار: '+esc(last.dec):''}${last.next?' — الجلسة القادمة: '+dN(last.next):''}${la?' — آخر إجراء: <b>'+esc(la)+'</b>':''}</div></div>
+   <div class="stl">${g.map((h,i)=>card(h,i===g.length-1)).join('')}</div>`;
+  if(groups.length===1)return `<div style="display:flex;flex-direction:column;gap:8px">${inner}</div>`;
+  return `<details class="gd"><summary><b>${esc(toAr(last.no))} / ${esc(toAr(last.yr))}</b> — ${esc(ref.pl||'')}${ref.df?' ضد '+esc(ref.df):''} <span class="hint">(${toAr(g.length)} ظهور — آخرها ${dTxt(last.d)})</span></summary><div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">${inner}</div></details>`;
+ }).join('');
+ const pdfNote=hits.some(h=>isPdf(h.k))?'<p class="hint">نتائج الـ PDF قراءتها تقريبية وممكن يكون فيها أخطاء'+(fuzzy?'، وفيه '+toAr(fuzzy)+' نتيجة برقم قريب (علامة ≈)':'')+'.</p>':'';
+ o.innerHTML=(groups.length>1?`<p class="hint ok">${toAr(total)} دعوى${total>60?' (أول ٦٠)':''}</p>`:'')+pdfNote+gHtml;
+ o._hits=hits;
+}
+function setAct(h,v){
+ const key=h.d+'|'+h.no+'|'+h.yr,A=jget('act_xm',{}),S=jget('skp_xm',{});
+ if(v)A[key]=v;else delete A[key];jset('act_xm',A);
+ const a=jget('nk1:items',[]),i=a.findIndex(z=>z.id===key),want=isMemo(v)&&!S[key];
+ if(want){const it={id:key,no:h.no,yr:h.yr,pl:h.pl||'',df:h.df||'',date:h.d,act:v};if(i>=0)a[i]=Object.assign({},a[i],it);else a.push(it)}
+ else if(i>=0)a.splice(i,1);
+ jset('nk1:items',a);
+}
+$('res').addEventListener('change',e=>{
+ const s=e.target.closest('select.act');if(!s)return;
+ const h=$('res')._hits[+s.dataset.i];if(!h)return;
+ setAct(h,s.value==='__clr'?'':s.value);search();
+});
+$('go').addEventListener('click',search);
+$('smode').addEventListener('change',()=>{$('q').placeholder=$('smode').value==='no'?'رقم الدعوى أو 1234/2020':'الاسم (كلمة أو أكتر)';$('q').inputMode=$('smode').value==='no'?'numeric':'text';if($('q').value.trim())search()});
+$('sscope').addEventListener('change',()=>{if($('q').value.trim())search()});
+$('q').addEventListener('keydown',e=>{if(e.key==='Enter')search()});
+
+// ===== إدارة الرولات =====
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-selected',String(x===b)));
+ $('sp-pdf').hidden=b.dataset.t!=='pdf';$('sp-xl').hidden=b.dataset.t!=='xl';
+}));
+function drawList(){
+ for(const [id,ks] of [['lpdf',['mf','mr','ah']],['lxl',['xm','xa','sp']]]){
+  const recs=G.all().filter(r=>ks.includes(r.kind)).sort((a,b)=>(b.at||0)-(a.at||0));
+  $(id).innerHTML=recs.length?recs.map(r=>{
+   const ds=new Set(r.rows.map(x=>x[0]).filter(Boolean));
+   return `<li data-k="${r.kind}" data-n="${esc(r.name)}"><span class="n"><bdi>${esc(r.name)}</bdi></span><span class="c">${esc(KL[r.kind])} — ${toAr(r.rows.length)} دعوى — ${toAr(ds.size)} جلسة</span>${r.kind.length===2&&r.kind[0]!=='x'?`<input class="dt" type="text" inputmode="numeric" value="${esc(ds.size===1?dShow([...ds][0]):'')}" placeholder="تاريخ الجلسة" aria-label="تاريخ الجلسة">`:''}${r.kind==='sp'?'<span class="c">بيتدار من تاب تقسيم الأحكام</span>':'<button type="button" class="bad" data-del>حذف</button>'}</li>`}).join(''):'<li><span class="c">مفيش رولات محفوظة.</span></li>';
+ }
+}
+document.addEventListener('click',e=>{
+ const b=e.target.closest('button[data-del]');if(!b)return;
+ const li=b.closest('li');if(!confirm('حذف الرول «'+li.dataset.n+'» من البحث العام؟'))return;
+ G.del(li.dataset.k,li.dataset.n,true);
+});
+document.addEventListener('change',e=>{
+ const d=e.target.closest('input.dt');if(!d)return;
+ const li=d.closest('li'),rec=G.get(li.dataset.k,li.dataset.n);if(!rec)return;
+ const nd=sessDate(d.value);if(!/^\d+\/\d+\/\d{4}$/.test(nd)){d.value=dShow(rec.rows[0]&&rec.rows[0][0]);return}
+ rec.rows.forEach(r=>{r[0]=nd});rec.date=nd;G.put(rec.kind,rec);
+});
+async function feed(kind,files,msg){
+ if(!files.length)return;msg.className='hint';msg.textContent='جاري القراءة… (ملفات الـ PDF ممكن ياخدوا وقت)';
+ const before=new Set(G.all().map(r=>r.kind+'|'+r.name+'|'+r.rows.length));
+ try{await G.feed(kind,files)}catch(err){msg.className='err';msg.textContent='تعذّر: '+err.message;return}
+ let n=0;const t0=Date.now(),names=files.map(f=>f.name);
+ const chk=setInterval(()=>{
+  const got=G.all().filter(r=>r.kind===kind&&names.includes(r.name)&&!before.has(r.kind+'|'+r.name+'|'+r.rows.length));
+  let tm='';try{tm=parent.document.querySelector('#views iframe[data-k="'+kind+'"]').contentDocument.getElementById('msg').textContent||''}catch(_){}
+  if(got.length<names.length&&/مقدرتش|تعذّر|مشكلة/.test(tm)){clearInterval(chk);msg.className='err';msg.textContent=tm;return}
+  const dn=names.filter(n=>G.dups[kind+'|'+n]).map(n=>n+' (نفس '+G.dups[kind+'|'+n]+')');
+  if(got.length+dn.length>=names.length||Date.now()-t0>600000){clearInterval(chk);msg.className=got.length||dn.length?'ok':'hint';msg.textContent=(got.length?'تم حفظ '+toAr(got.length)+' رول.':'')+(dn.length?' متحفوظ بالفعل بنفس المحتوى فمتكررش: '+dn.join('، '):'')||'مفيش جديد اتحفظ (مفيش جدول دعاوى).'}
+  else if(got.length)msg.textContent='اتحفظ '+toAr(got.length)+' من '+toAr(names.length)+'…';
+ },800);
+}
+$('fpdf').addEventListener('change',e=>{const f=[...e.target.files];e.target.value='';feed($('kpdf').value,f,$('mpdf'))});
+$('fxl').addEventListener('change',e=>{const f=[...e.target.files];e.target.value='';feed($('kxl').value,f,$('mxl'))});
+G.on(()=>{drawList();if($('q').value.trim())search()});
+window.addEventListener('message',e=>{if(e.data==='gs-refresh'){drawList();if($('q').value.trim())search()}});
+G.ready.then(()=>{drawList();if($('q').value.trim())search()});
+drawList();
+})();
+<@@/script>
+</body>
+</html></script>
 <script id="tpl-nk" type="text/plain"><!doctype html>
 <html lang="ar" dir="rtl">
 <head>
@@ -6737,6 +7145,62 @@ load();draw();
 </html>
 </script>
 <script>
+window.GS=(function(){
+ const L={},subs=[];let db=null,tm=0;
+ const emit=()=>{clearTimeout(tm);tm=setTimeout(()=>{subs.forEach(f=>{try{f()}catch(e){}});document.querySelectorAll('#views iframe').forEach(f=>{try{if(f.dataset.k==='gs')f.contentWindow.postMessage('gs-refresh','*')}catch(e){}})},150)};
+ const sigOf=rows=>{let h=5381,n=0;for(const r of rows){const s=[r[0],r[1],r[3],r[4],r[8],r[9]].join('|');for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;n++}return n+':'+(h>>>0)};
+ const SPN='رول الحكم (تقسيم الأحكام)';
+ function spSync(){
+  try{const o=JSON.parse(localStorage.getItem('sp1:rolls')||'null');const id='sp|'+SPN;
+   if(!o||!Array.isArray(o.rows)||!o.rows.length){if(L[id]){delete L[id];idbDel(id)}return}
+   const rows=o.rows.map(a=>{const m=String(a[0]||'').match(/^(\d{4})-(\d+)-(\d+)$/);return [m?(+m[3])+'/'+(+m[2])+'/'+m[1]:'','عضو '+(a[1]||''),a[2]||'',a[3],a[4],a[5]||'','','',a[6]||'','','']});
+   const r={id,kind:'sp',name:SPN,size:0,mod:0,date:'',secs:[],nsheets:0,rows,at:Date.now()};r.sig=sigOf(rows);
+   if(L[id]&&L[id].sig===r.sig)return;L[id]=r;idbPut(r)}catch(e){console.error(e)}
+ }
+ function dedupe(){const seen={};for(const r of Object.values(L).sort((a,b)=>(b.at||0)-(a.at||0))){if(!r.sig)r.sig=sigOf(r.rows);const k=r.kind+'|'+r.sig;if(seen[k]){delete L[r.id];idbDel(r.id)}else seen[k]=1}}
+ const idbPut=r=>{try{if(db)db.transaction('r','readwrite').objectStore('r').put(r)}catch(e){console.error(e)}};
+ const idbDel=id=>{try{if(db)db.transaction('r','readwrite').objectStore('r').delete(id)}catch(e){}};
+ function migrate(){
+  try{const o=JSON.parse(localStorage.getItem('xm1:files')||'[]');if(Array.isArray(o))for(const f of o){const id='xm|'+f.name;if(L[id])continue;
+   L[id]={id,kind:'xm',name:f.name,size:f.size,mod:f.mod,date:f.date||'',secs:f.secs||[],nsheets:f.nsheets||0,at:Date.now(),
+    rows:f.rows.map(a=>[a[8]||f.date||'',a[9]||'',a[0],a[1],a[2],a[3],a[4],a[5]||'',a[6]||'',a[7]||'',''])};idbPut(L[id])}}catch(e){}
+ }
+ const ready=new Promise(res=>{
+  try{const q=indexedDB.open('pdftool_gs',1);
+   q.onupgradeneeded=()=>q.result.createObjectStore('r',{keyPath:'id'});
+   q.onsuccess=()=>{db=q.result;const rq=db.transaction('r').objectStore('r').getAll();
+    rq.onsuccess=()=>{rq.result.forEach(x=>{L[x.id]=x});migrate();spSync();dedupe();emit();res()};rq.onerror=()=>{migrate();res()}};
+   q.onerror=()=>{migrate();res()}}catch(e){migrate();res()}
+ });
+ return {ready,
+  all:()=>Object.values(L),
+  list:k=>Object.values(L).filter(r=>r.kind===k),
+  get:(k,n)=>L[k+'|'+n],
+  on:f=>subs.push(f),
+  dups:{},
+  put(kind,rec){
+   const sig=sigOf(rec.rows),id=kind+'|'+rec.name;
+   const same=Object.values(L).find(x=>x.kind===kind&&x.id!==id&&x.sig===sig);
+   if(same){this.dups[id]=same.name;return 'dup'}
+   delete this.dups[id];
+   const r=Object.assign({},rec,{id,kind,sig,at:Date.now()});L[r.id]=r;idbPut(r);emit();return 'ok'},
+  syncSp(){spSync();emit()},
+  del(kind,name,notify){const id=kind+'|'+name;if(!L[id])return;delete L[id];idbDel(id);
+   if(notify){
+    if(kind==='xm'){try{const o=JSON.parse(localStorage.getItem('xm1:files')||'[]').filter(f=>f.name!==name);localStorage.setItem('xm1:files',JSON.stringify(o))}catch(e){}}
+    try{const f=document.querySelector('#views iframe[data-k="'+kind+'"]');if(f&&f.contentWindow)f.contentWindow.postMessage({gsDel:name},'*')}catch(e){}}
+   emit()},
+  dump:()=>Object.values(L),
+  async load(arr){await ready;for(const r of arr||[]){L[r.id]=r;idbPut(r)}emit()},
+  async feed(k,files){
+   const f=await window.__ensure(k),w=f.contentWindow,inp=w.document.getElementById('files');
+   if(!inp)throw new Error('التبويب مش جاهز');
+   const dt=new w.DataTransfer();files.forEach(x=>dt.items.add(x));inp.files=dt.files;
+   inp.dispatchEvent(new w.Event('change',{bubbles:true}));
+  }};
+})();
+</script>
+<script>
 (function(){
 'use strict';
 const $=s=>document.querySelector(s);
@@ -6759,9 +7223,10 @@ function show(k){
   });
   try{localStorage.setItem('combined_tab',k);if(top==='xl')localStorage.setItem('xl_sub',k)}catch(e){}
 }
+window.__ensure=function(k){const f=document.querySelector('#views iframe[data-k="'+k+'"]');if(!loaded[k]){loaded[k]=1;return new Promise(r=>{f.addEventListener('load',()=>setTimeout(()=>r(f),50),{once:true});f.srcdoc=build(k)})}return Promise.resolve(f)};
 document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>show(b.dataset.k));
 document.querySelectorAll('#sub button').forEach(b=>b.onclick=()=>show(b.dataset.k));
-let k0='mf';try{const v=localStorage.getItem('combined_tab');if(v&&document.getElementById('tpl-'+v))k0=v}catch(e){}
+let k0='gs';try{const v=localStorage.getItem('combined_tab');if(v&&document.getElementById('tpl-'+v))k0=v}catch(e){}
 show(k0);
 })();
 </script>
@@ -6770,7 +7235,8 @@ show(k0);
  const d=new Date(),f=d.getDate()+'_'+(d.getMonth()+1)+'_'+d.getFullYear();
  document.getElementById('bkS').addEventListener('click',()=>{
   const data={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);data[k]=localStorage.getItem(k)}}catch(e){alert('تعذر قراءة البيانات');return}
-  const b=new Blob([JSON.stringify({app:'pdf-tool',ver:25,at:d.toISOString(),data})],{type:'application/json'});
+  const gsd=window.GS?GS.dump():[];
+  const b=new Blob([JSON.stringify({app:'pdf-tool',ver:27,at:d.toISOString(),data,gs:gsd})],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='نسخة_احتياطية_استخراج_pdf_'+f+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)});
  const F=document.getElementById('bkF');
  document.getElementById('bkR').addEventListener('click',()=>F.click());
@@ -6779,7 +7245,7 @@ show(k0);
    const n=Object.keys(j.data).length;
    if(!confirm('هيتم استبدال بيانات البرنامج الحالية ('+n+' عنصر) بالنسخة الاحتياطية. متأكد؟'))return;
    for(const k in j.data)localStorage.setItem(k,j.data[k]);
-   alert('تم الاسترجاع.');location.reload()}catch(e){alert('الملف ده مش نسخة احتياطية صالحة.')}};
+   Promise.resolve(window.GS&&j.gs?GS.load(j.gs):0).then(()=>setTimeout(()=>{alert('تم الاسترجاع.');location.reload()},400))}catch(e){alert('الملف ده مش نسخة احتياطية صالحة.')}};
   r.readAsText(fl);F.value=''});
 })();
 </script>
