@@ -242,7 +242,7 @@ body{display:flex;flex-direction:column}
 <button role="tab" data-k="sp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/></svg><span>تقسيم الأحكام</span></button>
 <button role="tab" data-k="nk" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="12" height="15" rx="1"/><path d="M4 7v14h12M11 8h6M11 12h6"/></svg><span>النسخ</span></button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ٣٥</b><i>·</i>٤ نوفمبر ٢٠٢٦</span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="vb"><b>النسخة ٣٦</b><i>·</i>٦ نوفمبر ٢٠٢٦</span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span></div>
 <div id="sub" hidden><button data-k="xm" aria-selected="false">فلتر المرافعة</button><button data-k="xa" aria-selected="false">فلتر الأحكام</button></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -307,11 +307,11 @@ button.fx{padding:2px 9px;font-size:1.1rem;line-height:1.2}
 
 .sheet2{width:194mm;background:#fff;color:#000;padding:2mm 0}
 .sheet2 *{color:#000}
-.t2{font-size:20pt;font-weight:700;text-align:center;margin-bottom:3mm}
-table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:12.5pt;font-weight:700}
+.t2{font-size:17pt;font-weight:700;text-align:center;margin-bottom:3mm}
+table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:11pt;font-weight:700}
 table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}
-table.s2 th{background:#9DC3E6;font-size:10.5pt}
-table.s2 td.sec{background:#FFE699;font-size:16pt}
+table.s2 th{background:#9DC3E6;font-size:9.5pt}
+table.s2 td.sec{background:#FFE699;font-size:14pt}
 table.s2 td.ed{cursor:text}
 table.s2 td.flag{background:#ffe97a}
 @media print{table.s2 td.flag{background:none}}
@@ -319,6 +319,8 @@ table.s2 td.ed:hover{background:#fff8dc}
 table.s2 td.ed:focus{outline:2px solid #1f5f8b;background:#fffbe6}
 @media print{table.s2 td.ed:hover,table.s2 td.ed:focus{background:none;outline:none}}
 table.s2 tr.gap td{border:0;height:9mm}
+.gap2{height:8mm}
+table.s2{break-inside:auto}
 table.s2 tr{break-inside:avoid}
 /* ===== صفحة الأجندة ===== */
 .sheet{width:194mm;height:281mm;background:#fff;color:#000;padding:0;margin:0 0 16px;display:flex;gap:4mm;flex-direction:row;justify-content:center;break-after:page;page-break-after:always;position:relative}
@@ -861,7 +863,7 @@ function fxApply(r){if(r.__o)return;r.__o={};for(const f in FXF){const v=r[f];if
 function fxSave(r,f,w){if(!FXF[f]||!r.__o||r.__o[f]===undefined)return;const k=f+'|'+r.__o[f];if(w&&w!==r.__o[f])FX[k]=w;else delete FX[k];try{localStorage.setItem(FXK,JSON.stringify(FX))}catch(e){}}
 function tableHtml2(kind,rows){
  rows.forEach(fxApply);
- const hd=['مسلسل','رول','رقم الدعوى','السنة القضائية','المدعي','المدعي عليه','القرار'];
+ const hd=['م','رول','رقم الدعوى','سنة','المدعي','المدعي عليه','القرار'];
  return `<tr><td class="sec" colspan="7">${kind}</td></tr><tr>${hd.map(h=>`<th>${h}</th>`).join('')}</tr>`+
   rows.map((r,i)=>{const e=EDIT.push(r)-1;return `<tr><td class="ed" tabindex="0" data-e="${e}" data-k="ser">${SER(r,i)}</td><td class="ed" tabindex="0" data-e="${e}" data-k="m">${esc(r.m)}</td><td class="ed" tabindex="0" data-e="${e}" data-k="no">${esc(r.no)}</td><td class="ed" tabindex="0" data-e="${e}" data-k="yr">${esc(r.yr)}</td><td class="ed${r.fl&&r.fl.pl?' flag':''}" tabindex="0" data-e="${e}" data-k="pl">${esc(r.pl)}</td><td class="ed${r.fl&&r.fl.df?' flag':''}" tabindex="0" data-e="${e}" data-k="df">${esc(r.df)}</td><td class="ed" tabindex="0" data-e="${e}" data-k="dec">${isDate(r.dec)?'<bdi dir="ltr">'+esc(r.dec)+'</bdi>':esc(r.dec)}</td></tr>`}).join('');
 }
@@ -880,7 +882,7 @@ function xlsxPart(by){
  KINDS.forEach((k,i)=>{
   merges.push(`A${r}:G${r}`);
   row(cell(1,k,2)+[2,3,4,5,6,7].map(c=>cell(c,null,2)).join(''));
-  row(['مسلسل','رول','رقم الدعوى','السنة القضائية','المدعي','المدعي عليه','القرار'].map((h,j)=>cell(j+1,h,3)).join(''));
+  row(['م','رول','رقم الدعوى','سنة','المدعي','المدعي عليه','القرار'].map((h,j)=>cell(j+1,h,3)).join(''));
   (by[k]||[]).forEach((x,i)=>{
    const dv=isDate(x.dec);
    row(cell(1,SER(x,i),4)+cell(2,x.m,4)+cell(3,/^\d+$/.test(x.no)?+x.no:x.no,4)+cell(4,/^\d+$/.test(x.yr)?+x.yr:x.yr,4)+cell(5,x.pl,4)+cell(6,x.df,4)+(dv?cell(7,serial(x.dec),5):cell(7,x.dec,4)));
@@ -907,7 +909,7 @@ function docxBody(by){
  KINDS.forEach((k,i)=>{
   let t='<w:tbl><w:tblPr><w:tblW w:w="0" w:type="auto"/><w:jc w:val="center"/><w:bidiVisual/><w:tblLayout w:type="fixed"/></w:tblPr>'+grid;
   t+=tr(420,tc(W.reduce((a,b)=>a+b,0),k,28,'FFE699',7));
-  t+=tr(380,['مسلسل','رول','رقم الدعوى','السنة القضائية','المدعي','المدعي عليه','القرار'].map((h,j)=>tc(W[j],h,22,'9DC3E6')).join(''),true);
+  t+=tr(380,['م','رول','رقم الدعوى','سنة','المدعي','المدعي عليه','القرار'].map((h,j)=>tc(W[j],h,22,'9DC3E6')).join(''),true);
   (by[k]||[]).forEach((x,i)=>{t+=tr(380,[String(SER(x,i)),String(x.m),x.no,x.yr,x.pl,x.df,x.dec].map((v,j)=>tc(W[j],v,22)).join(''))});
   body+=t+'</w:tbl><w:p><w:pPr><w:spacing w:before="0" w:after="0"/></w:pPr></w:p>'+(i==0?'<w:p/><w:p/>':'');
  });
@@ -1087,11 +1089,11 @@ button.fx{padding:2px 9px;font-size:1.1rem;line-height:1.2}
 
 .sheet2{width:194mm;background:#fff;color:#000;padding:2mm 0}
 .sheet2 *{color:#000}
-.t2{font-size:20pt;font-weight:700;text-align:center;margin-bottom:3mm}
-table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:12.5pt;font-weight:700}
+.t2{font-size:17pt;font-weight:700;text-align:center;margin-bottom:3mm}
+table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:11pt;font-weight:700}
 table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}
-table.s2 th{background:#9DC3E6;font-size:10.5pt}
-table.s2 td.sec{background:#FFE699;font-size:16pt}
+table.s2 th{background:#9DC3E6;font-size:9.5pt}
+table.s2 td.sec{background:#FFE699;font-size:14pt}
 table.s2 tr.gap td{border:0;height:9mm}
 table.s2 tr{break-inside:avoid}
 /* ===== صفحة الأجندة ===== */
@@ -1692,7 +1694,7 @@ const serial=s=>{const [y,m,d]=s.split('/').map(Number);return Math.round((Date.
 const titleTxt=()=>'جلسة '+dB(toAr(dShow((CURD!=null?CURD:$('sdate').value).trim()).replace(/\//g,'_')))+' مرافعة';
 const SECK={};
 const secTitle=k=>k+(SECK[k]?' — '+SECK[k]:'');
-const HD=['مسلسل','رول','رقم الدعوى','السنة القضائية','المدعي','المدعي عليه','الجلسة السابقة','القرار','الجلسة القادمة'];
+const HD=['م','رول','رقم الدعوى','سنة','المدعي','المدعي عليه','الجلسة السابقة','القرار','الجلسة القادمة'];
 const dcell=v=>isDate(v)?'<bdi dir="ltr">'+esc(v)+'</bdi>':esc(v);
 // ===== حفظ التصحيحات: أي اسم بتعدّله بيتحفظ في المتصفح وبيتطبق تلقائي لو نفس القراءة الغلط ظهرت تاني =====
 const FXK='fix_mr';let FX={};try{FX=JSON.parse(localStorage.getItem(FXK)||'{}')}catch(e){FX={}}
@@ -1908,11 +1910,11 @@ button.fx{padding:2px 9px;font-size:1.1rem;line-height:1.2}
 
 .sheet2{width:194mm;background:#fff;color:#000;padding:2mm 0}
 .sheet2 *{color:#000}
-.t2{font-size:20pt;font-weight:700;text-align:center;margin-bottom:3mm}
-table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:12.5pt;font-weight:700}
+.t2{font-size:17pt;font-weight:700;text-align:center;margin-bottom:3mm}
+table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:11pt;font-weight:700}
 table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}
-table.s2 th{background:#9DC3E6;font-size:10.5pt}
-table.s2 td.sec{background:#FFE699;font-size:16pt}
+table.s2 th{background:#9DC3E6;font-size:9.5pt}
+table.s2 td.sec{background:#FFE699;font-size:14pt}
 table.s2 tr.gap td{border:0;height:9mm}
 table.s2 tr{break-inside:avoid}
 /* ===== صفحة الأجندة ===== */
@@ -2540,7 +2542,7 @@ const titleTxt=()=>'جلسة '+dB(toAr(dShow((CURD!=null?CURD:$('sdate').value).
 const SECK={};
 const secTitle=k=>k+(SECK[k]?' — '+SECK[k]:'');
 let NC=7;
-const HD0=['مسلسل','رول','رقم الدعوى','السنة القضائية','المدعي','المدعي عليه','القرار'];
+const HD0=['م','رول','رقم الدعوى','سنة','المدعي','المدعي عليه','القرار'];
 let NOTE=false,CLSON=true,CLF='',SESF='',SL=[];
 const CLK='cls1:cfg';
 let CLC={ag:'الغاء، ثبوت، جنسية',un:'اعادة، احالة، مد اجل',on:true};
@@ -4513,11 +4515,11 @@ body.big #bigbar{display:flex}
 
 .sheet2{width:194mm;background:#fff;color:#000;padding:2mm 0}
 .sheet2 *{color:#000}
-.t2{font-size:20pt;font-weight:700;text-align:center;margin-bottom:3mm}
-table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:12.5pt;font-weight:700}
+.t2{font-size:17pt;font-weight:700;text-align:center;margin-bottom:3mm}
+table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:11pt;font-weight:700}
 table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}
-table.s2 th{background:#9DC3E6;font-size:10.5pt}
-table.s2 td.sec{background:#FFE699;font-size:16pt}
+table.s2 th{background:#9DC3E6;font-size:9.5pt}
+table.s2 td.sec{background:#FFE699;font-size:14pt}
 table.s2 tr.gap td{border:0;height:9mm}
 table.s2 tr{break-inside:avoid}
 /* ===== صفحة الأجندة ===== */
@@ -5318,7 +5320,7 @@ const serial=s=>{const [y,m,d]=s.split('/').map(Number);return Math.round((Date.
 const titleTxt=()=>'جلسة '+dB(toAr(dShow((CURD!=null?CURD:$('sdate').value).trim()).replace(/\//g,'_')))+' مرافعة';
 const SECK={};
 const secTitle=k=>k+(SECK[k]?' — '+SECK[k]:'');
-const HD=['مسلسل','رول','رقم الدعوى','السنة القضائية','المدعي','المدعي عليه','الجلسة السابقة','القرار','الجلسة القادمة'];
+const HD=['م','رول','رقم الدعوى','سنة','المدعي','المدعي عليه','الجلسة السابقة','القرار','الجلسة القادمة'];
 const dcell=v=>isDate(v)?'<bdi dir="ltr">'+esc(v)+'</bdi>':esc(v);
 // ===== حفظ التصحيحات: أي اسم بتعدّله بيتحفظ في المتصفح وبيتطبق تلقائي لو نفس القراءة الغلط ظهرت تاني =====
 const FXK='fix_xm';let FX={};try{FX=JSON.parse(localStorage.getItem(FXK)||'{}')}catch(e){FX={}}
@@ -5420,17 +5422,24 @@ function restoreFiles(){if(window.__GSP)return;
   say('تم استرجاع الرول المحفوظ ('+toAr(state.files.length)+' ملف)','ok');
  }catch(e){console.error(e)}
 }
-function tableHtml2(kind,rows){
+function tableHtml2(kind,rows,hd,hn){
  rows.forEach(fxApply);
- return `<tr><td class="sec" colspan="10">${esc(secTitle(kind))}</td></tr><tr>${HD.map(h=>`<th>${h}</th>`).join('')}<th class="actc">الإجراء</th></tr>`+
-  rows.map((r,i)=>{const E=f=>`class="ed${r.fl&&r.fl[f]?' flag':''}" tabindex="0" data-s="${CURS}" data-k="${esc(kind)}" data-i="${i}" data-f="${f}"`;return `<tr><td ${E('ser')}>${SER(r,i)}</td><td ${E('m')}>${esc(r.m)}</td><td ${E('no')}>${esc(r.no)}</td><td ${E('yr')}>${esc(r.yr)}</td><td ${E('pl')}>${esc(r.pl)}</td><td ${E('df')}>${esc(r.df)}</td><td ${E('prev')}>${dcell(r.prev)}</td><td ${E('dec')}>${esc(r.dec)}</td><td ${E('next')}>${dcell(r.next)}</td><td class="actc">${actSel(r,CURS,kind,i)}</td></tr>`}).join('');
+ const cols=hd?['ser','m','no','yr','pl','df','prev','next'].filter(()=>true):null;
+ const showDec=rows.some(r=>String(r.dec||'').trim()),showNext=rows.some(r=>String(r.next||'').trim());
+ const W={ser:5,m:5,no:10,yr:6,pl:14,df:12,prev:9,dec:11,next:10,act:18};
+ const ks=['ser','m','no','yr','pl','df','prev'].concat(showDec?['dec']:[]).concat(showNext?['next']:[]);
+ const tot=ks.reduce((a,k)=>a+W[k],0)+W.act;
+ const cg='<colgroup>'+ks.map(k=>`<col style="width:${(W[k]*100/tot).toFixed(2)}%">`).join('')+`<col class="actc" style="width:${(W.act*100/tot).toFixed(2)}%"></colgroup>`;
+ const H={ser:HD[0],m:HD[1],no:HD[2],yr:HD[3],pl:HD[4],df:HD[5],prev:HD[6],dec:HD[7],next:HD[8]};
+ return `<table class="s2">${cg}<tbody><tr><td class="sec" colspan="${ks.length+1}">${esc(secTitle(kind))}</td></tr><tr>${ks.map(k=>`<th>${H[k]}</th>`).join('')}<th class="actc">الإجراء</th></tr>`+
+  rows.map((r,i)=>{const E=f=>`class="ed${r.fl&&r.fl[f]?' flag':''}" tabindex="0" data-s="${CURS}" data-k="${esc(kind)}" data-i="${i}" data-f="${f}"`;const V={ser:()=>SER(r,i),m:()=>esc(r.m),no:()=>esc(r.no),yr:()=>esc(r.yr),pl:()=>esc(r.pl),df:()=>esc(r.df),prev:()=>dcell(r.prev),dec:()=>esc(r.dec),next:()=>dcell(r.next)};return '<tr>'+ks.map(k=>`<td ${E(k)}>${V[k]()}</td>`).join('')+`<td class="actc">${actSel(r,CURS,kind,i)}</td></tr>`}).join('')+'</tbody></table>';
 }
 function sheetHtml(by){
  closeEd();
- let t=`<section class="sheet2"><div class="t2">${esc(titleTxt())}</div><table class="s2"><colgroup>${[6,5,10,7,12,10,8,10,15].map(w=>`<col style="width:${w}%">`).join('')}<col class="actc" style="width:17%"></colgroup><tbody>`;
+ let t=`<section class="sheet2"><div class="t2">${esc(titleTxt())}</div>`;
  const ks=Object.keys(by);
- ks.forEach((k,i)=>{t+=tableHtml2(k,by[k]);if(i<ks.length-1)t+='<tr class="gap"><td colspan="10"></td></tr>'});
- return t+'</tbody></table></section>';
+ ks.forEach((k,i)=>{t+=tableHtml2(k,by[k]);if(i<ks.length-1)t+='<div class="gap2"></div>'});
+ return t+'</section>';
 }
 function xlsxPart(by){
  const rows=[];let r=1;const merges=[];const heights={1:32};
@@ -5655,11 +5664,11 @@ button.fx{padding:2px 9px;font-size:1.1rem;line-height:1.2}
 
 .sheet2{width:194mm;background:#fff;color:#000;padding:2mm 0}
 .sheet2 *{color:#000}
-.t2{font-size:20pt;font-weight:700;text-align:center;margin-bottom:3mm}
-table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:12.5pt;font-weight:700}
+.t2{font-size:17pt;font-weight:700;text-align:center;margin-bottom:3mm}
+table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:11pt;font-weight:700}
 table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}
-table.s2 th{background:#9DC3E6;font-size:10.5pt}
-table.s2 td.sec{background:#FFE699;font-size:16pt}
+table.s2 th{background:#9DC3E6;font-size:9.5pt}
+table.s2 td.sec{background:#FFE699;font-size:14pt}
 table.s2 tr.gap td{border:0;height:9mm}
 table.s2 tr{break-inside:avoid}
 /* ===== صفحة الأجندة ===== */
@@ -6506,7 +6515,7 @@ const titleTxt=()=>'جلسة '+dB(toAr(dShow((CURD!=null?CURD:$('sdate').value).
 const SECK={};
 const secTitle=k=>k+(SECK[k]?' — '+SECK[k]:'');
 let NC=7;
-const HD0=['مسلسل','رول','رقم الدعوى','السنة القضائية','المدعي','المدعي عليه','القرار'];
+const HD0=['م','رول','رقم الدعوى','سنة','المدعي','المدعي عليه','القرار'];
 let NOTE=false,CLSON=true,CLF='',SESF='',SL=[];
 const CLK='cls1:cfg';
 let CLC={ag:'الغاء، ثبوت، جنسية',un:'اعادة، احالة، مد اجل',on:true};
