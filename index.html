@@ -27,6 +27,7 @@
 
 
 
+
 <style>
 :root{--bg:#F4F1EA;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1B3A5C;--accfg:#fff;--head:#e4dfd2}
 @media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#C9A24B;--accfg:#12263F;--head:#2a3542}}
@@ -60,7 +61,7 @@ body{display:flex;flex-direction:column}
 <button role="tab" data-k="xl" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg>رول إكسيل</button>
 <button role="tab" data-k="tools" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5 5L21 12.6 12.6 21a2 2 0 0 1-2.8 0L3 14.2a2 2 0 0 1 0-2.8L11.4 3a4 4 0 0 0 3.3 3.3z" transform="scale(.9) translate(1.3 1.3)"/></svg>أدوات</button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT">استخراج PDF</span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ٥٢</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT">استخراج PDF</span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ٥٣</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
 <div id="sub" hidden></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -272,7 +273,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </style>
 <details id="cs" class="noprint"><summary>بحث برقم الدعوى</summary><div class="addrow"><input id="csq" type="text" dir="ltr" inputmode="numeric" placeholder="مثلًا 1234 أو 1234/70"><button id="csb" type="button">بحث</button></div><div id="csr"></div></details>
  </div>
- <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="edok" type="button" class="sec" hidden>✓ الاسم صحيح</button><button id="eddone" type="button">تم</button></div></div></div>
+ <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><div id="edinf" hidden style="background:#12263F;color:#fff;border-radius:8px;padding:5px 8px;font-size:.78rem;line-height:1.6"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="edok" type="button" class="sec" hidden>✓ الاسم صحيح</button><button id="eddone" type="button">تم</button></div></div></div>
  <div id="bigbar" class="noprint"><button id="bsm" type="button" class="sec" aria-label="تصغير">−</button><button id="blg" type="button" class="sec" aria-label="تكبير">+</button><span class="sp"></span><button id="bpr" type="button" class="sec">🖨 طباعة</button><button id="bcl" type="button">✕ إغلاق</button></div>
   <div id="view"><div id="scaler"></div></div>
 </div>
@@ -800,7 +801,8 @@ const layout=()=>'sheet';
 const SER=(r,i)=>r.ser!==undefined?r.ser:i+1;
 const FLD={ser:'المسلسل',m:'الرول',no:'رقم الدعوى',yr:'السنة القضائية',pl:'المدعي',df:'المدعي عليه',dec:'القرار',prev:'الجلسة السابقة',next:'الجلسة القادمة'};
 let EDC=null;
-function closeEd(){if(EDC&&EDC.c)EDC.c.classList.remove('act');EDC=null;$('edbox').hidden=true;$('orig').hidden=true}
+function closeEd(){try{$('edinf').hidden=true}catch(e){}if(EDC&&EDC.c)EDC.c.classList.remove('act');EDC=null;$('edbox').hidden=true;$('orig').hidden=true}
+function infUpd(){const d=$('edinf');if(!d)return;if(!EDC||!FXF.pl||!('pl' in EDC.row)){if(d)d.hidden=true;return}const r=EDC.row,f=EDC.f,es=s=>String(s==null?'':s).replace(/[<>&]/g,x=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[x]));const fl=[...document.querySelectorAll('#scaler td.ed.flag')];const i=fl.indexOf(EDC.c);const cnt=fl.length?(i>=0?'<b style="color:#C9A24B">'+(i+1)+' من '+fl.length+'</b> محتاج تصحيح · ':'<b style="color:#C9A24B">'+fl.length+'</b> محتاج تصحيح · '):'';const o=(r.__o&&r.__o[f]!==undefined&&r.__o[f]!==r[f])?' <s style="color:#ff9b9b">'+es(r.__o[f])+'</s>':'';const nm=(k,l)=>l+': '+(k===f?'<b style="color:#C9A24B">'+es(r[k])+'</b>'+o:es(r[k]));d.innerHTML=cnt+'دعوى <b>'+es(r.no)+(r.yr?' / '+es(r.yr):'')+'</b> · رول '+es(r.m)+'<br>'+nm('pl','المدعي')+'<br>'+nm('df','المدعى عليه');d.hidden=false}
 function okVis(){const b=$('edok');if(b)b.hidden=!(EDC&&EDC.row.fl&&EDC.row.fl[EDC.f])}
 function okSave(){if(!EDC)return;const r=EDC.row,f=EDC.f;if(!r.fl||!r.fl[f])return;const o=(r.__o&&r.__o[f]!==undefined)?r.__o[f]:r[f];OKS=okLd();OKS[f+'|'+o]=1;try{localStorage.setItem(OKK,JSON.stringify(OKS))}catch(e){}r.fl[f]=false;if(r.__f0)r.__f0[f]=false;EDC.c.classList.remove('flag');try{gsTouch(r)}catch(_){}try{parent.GS&&parent.GS.applyOk&&parent.GS.applyOk(f,o)}catch(_){}doneNext()}
 function openEd(c,row,f){
@@ -809,10 +811,10 @@ function openEd(c,row,f){
  EDC={c,row,f};c.classList.add('act');
  $('edlbl').textContent='تعديل: '+(FLD[f]||f);
  $('edbox').hidden=false;const t=$('edta');t.value=f==='ser'?c.textContent:(row[f]==null?'':row[f]);
- okVis();showOrig(row);try{if(matchMedia('(max-width:700px)').matches)c.scrollIntoView({block:'center'})}catch(e){}t.focus({preventScroll:true});try{t.setSelectionRange(t.value.length,t.value.length)}catch(e){}
+ okVis();showOrig(row);infUpd();try{if(matchMedia('(max-width:700px)').matches)setTimeout(()=>{const s=$('stk'),h=s?s.getBoundingClientRect().height:0,r=c.getBoundingClientRect();if(r.top<h+6||r.top>h+70||r.bottom>innerHeight-8)window.scrollBy(0,r.top-h-14)},30)}catch(e){}t.focus({preventScroll:true});try{t.setSelectionRange(t.value.length,t.value.length)}catch(e){}
 }
-$('edta').addEventListener('input',()=>{if(!EDC)return;const v=$('edta').value.replace(/\s+/g,' ').trim();let w=v;if((EDC.f==='ser'||EDC.f==='m')&&/^\d+$/.test(v))w=+v;EDC.row[EDC.f]=w;{const _o=EDC.row.__o&&EDC.row.__o[EDC.f];const _ch=_o===undefined||w!==_o;if(EDC.row.fl&&EDC.row.fl[EDC.f]!==undefined)EDC.row.fl[EDC.f]=_ch?false:!!(EDC.row.__f0&&EDC.row.__f0[EDC.f])}fxSave(EDC.row,EDC.f,w);try{gsTouch(EDC.row)}catch(_){}EDC.c.textContent=v;EDC.c.classList.toggle('flag',!!(EDC.row.fl&&EDC.row.fl[EDC.f]));okVis()});
-function doneNext(){if(!EDC)return;const cur=EDC.c;const nx=[...document.querySelectorAll('#scaler td.ed.flag')].find(x=>cur.compareDocumentPosition(x)&4);closeEd();if(nx)nx.click()}
+$('edta').addEventListener('input',()=>{if(!EDC)return;const v=$('edta').value.replace(/\s+/g,' ').trim();let w=v;if((EDC.f==='ser'||EDC.f==='m')&&/^\d+$/.test(v))w=+v;EDC.row[EDC.f]=w;{const _o=EDC.row.__o&&EDC.row.__o[EDC.f];const _ch=_o===undefined||w!==_o;if(EDC.row.fl&&EDC.row.fl[EDC.f]!==undefined)EDC.row.fl[EDC.f]=_ch?false:!!(EDC.row.__f0&&EDC.row.__f0[EDC.f])}fxSave(EDC.row,EDC.f,w);try{gsTouch(EDC.row)}catch(_){}EDC.c.textContent=v;EDC.c.classList.toggle('flag',!!(EDC.row.fl&&EDC.row.fl[EDC.f]));okVis();infUpd()});
+function doneNext(){if(!EDC)return;const cur=EDC.c;const nx=[...document.querySelectorAll('#scaler td.ed.flag')].find(x=>cur.compareDocumentPosition(x)&4);if(nx)nx.click();else closeEd()}
 $('edta').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();doneNext()}else if(e.key==='Escape')closeEd()});
 $('eddone').addEventListener('click',doneNext);$('edok').addEventListener('click',okSave);
 $('scaler').addEventListener('click',e=>{const c=e.target.closest('td.ed');if(c)openEd(c,EDIT[+c.dataset.e],c.dataset.k)});
@@ -1095,7 +1097,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </style>
 <details id="cs" class="noprint"><summary>بحث برقم الدعوى</summary><div class="addrow"><input id="csq" type="text" dir="ltr" inputmode="numeric" placeholder="مثلًا 1234 أو 1234/70"><button id="csb" type="button">بحث</button></div><div id="csr"></div></details>
  </div>
- <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="edok" type="button" class="sec" hidden>✓ الاسم صحيح</button><button id="eddone" type="button">تم</button></div></div></div>
+ <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><div id="edinf" hidden style="background:#12263F;color:#fff;border-radius:8px;padding:5px 8px;font-size:.78rem;line-height:1.6"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="edok" type="button" class="sec" hidden>✓ الاسم صحيح</button><button id="eddone" type="button">تم</button></div></div></div>
   <div id="bigbar" class="noprint"><button id="bsm" type="button" class="sec" aria-label="تصغير">−</button><button id="blg" type="button" class="sec" aria-label="تكبير">+</button><span class="sp"></span><button id="bpr" type="button" class="sec">🖨 طباعة</button><button id="bcl" type="button">✕ إغلاق</button></div>
   <div id="view"><div id="scaler"></div></div>
 </div>
@@ -1334,7 +1336,8 @@ function rowOf(td){const s=window.__result&&window.__result.sessions[+td.dataset
 const SER=(r,i)=>r.ser!==undefined?r.ser:i+1;
 const FLD={ser:'المسلسل',m:'الرول',no:'رقم الدعوى',yr:'السنة القضائية',pl:'المدعي',df:'المدعي عليه',dec:'القرار',prev:'الجلسة السابقة',next:'الجلسة القادمة'};
 let EDC=null;
-function closeEd(){if(EDC&&EDC.c)EDC.c.classList.remove('act');EDC=null;$('edbox').hidden=true;$('orig').hidden=true}
+function closeEd(){try{$('edinf').hidden=true}catch(e){}if(EDC&&EDC.c)EDC.c.classList.remove('act');EDC=null;$('edbox').hidden=true;$('orig').hidden=true}
+function infUpd(){const d=$('edinf');if(!d)return;if(!EDC||!FXF.pl||!('pl' in EDC.row)){if(d)d.hidden=true;return}const r=EDC.row,f=EDC.f,es=s=>String(s==null?'':s).replace(/[<>&]/g,x=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[x]));const fl=[...document.querySelectorAll('#scaler td.ed.flag')];const i=fl.indexOf(EDC.c);const cnt=fl.length?(i>=0?'<b style="color:#C9A24B">'+(i+1)+' من '+fl.length+'</b> محتاج تصحيح · ':'<b style="color:#C9A24B">'+fl.length+'</b> محتاج تصحيح · '):'';const o=(r.__o&&r.__o[f]!==undefined&&r.__o[f]!==r[f])?' <s style="color:#ff9b9b">'+es(r.__o[f])+'</s>':'';const nm=(k,l)=>l+': '+(k===f?'<b style="color:#C9A24B">'+es(r[k])+'</b>'+o:es(r[k]));d.innerHTML=cnt+'دعوى <b>'+es(r.no)+(r.yr?' / '+es(r.yr):'')+'</b> · رول '+es(r.m)+'<br>'+nm('pl','المدعي')+'<br>'+nm('df','المدعى عليه');d.hidden=false}
 function okVis(){const b=$('edok');if(b)b.hidden=!(EDC&&EDC.row.fl&&EDC.row.fl[EDC.f])}
 function okSave(){if(!EDC)return;const r=EDC.row,f=EDC.f;if(!r.fl||!r.fl[f])return;const o=(r.__o&&r.__o[f]!==undefined)?r.__o[f]:r[f];OKS=okLd();OKS[f+'|'+o]=1;try{localStorage.setItem(OKK,JSON.stringify(OKS))}catch(e){}r.fl[f]=false;if(r.__f0)r.__f0[f]=false;EDC.c.classList.remove('flag');try{gsTouch(r)}catch(_){}try{parent.GS&&parent.GS.applyOk&&parent.GS.applyOk(f,o)}catch(_){}doneNext()}
 function openEd(c,row,f){
@@ -1343,10 +1346,10 @@ function openEd(c,row,f){
  EDC={c,row,f};c.classList.add('act');
  $('edlbl').textContent='تعديل: '+(FLD[f]||f);
  $('edbox').hidden=false;const t=$('edta');t.value=f==='ser'?c.textContent:(row[f]==null?'':row[f]);
- okVis();showOrig(row);try{if(matchMedia('(max-width:700px)').matches)c.scrollIntoView({block:'center'})}catch(e){}t.focus({preventScroll:true});try{t.setSelectionRange(t.value.length,t.value.length)}catch(e){}
+ okVis();showOrig(row);infUpd();try{if(matchMedia('(max-width:700px)').matches)setTimeout(()=>{const s=$('stk'),h=s?s.getBoundingClientRect().height:0,r=c.getBoundingClientRect();if(r.top<h+6||r.top>h+70||r.bottom>innerHeight-8)window.scrollBy(0,r.top-h-14)},30)}catch(e){}t.focus({preventScroll:true});try{t.setSelectionRange(t.value.length,t.value.length)}catch(e){}
 }
-$('edta').addEventListener('input',()=>{if(!EDC)return;const v=$('edta').value.replace(/\s+/g,' ').trim();let w=v;if((EDC.f==='ser'||EDC.f==='m')&&/^\d+$/.test(v))w=+v;EDC.row[EDC.f]=w;{const _o=EDC.row.__o&&EDC.row.__o[EDC.f];const _ch=_o===undefined||w!==_o;if(EDC.row.fl&&EDC.row.fl[EDC.f]!==undefined)EDC.row.fl[EDC.f]=_ch?false:!!(EDC.row.__f0&&EDC.row.__f0[EDC.f])}fxSave(EDC.row,EDC.f,w);try{gsTouch(EDC.row)}catch(_){}EDC.c.textContent=v;EDC.c.classList.toggle('flag',!!(EDC.row.fl&&EDC.row.fl[EDC.f]));okVis()});
-function doneNext(){if(!EDC)return;const cur=EDC.c;const nx=[...document.querySelectorAll('#scaler td.ed.flag')].find(x=>cur.compareDocumentPosition(x)&4);closeEd();if(nx)nx.click()}
+$('edta').addEventListener('input',()=>{if(!EDC)return;const v=$('edta').value.replace(/\s+/g,' ').trim();let w=v;if((EDC.f==='ser'||EDC.f==='m')&&/^\d+$/.test(v))w=+v;EDC.row[EDC.f]=w;{const _o=EDC.row.__o&&EDC.row.__o[EDC.f];const _ch=_o===undefined||w!==_o;if(EDC.row.fl&&EDC.row.fl[EDC.f]!==undefined)EDC.row.fl[EDC.f]=_ch?false:!!(EDC.row.__f0&&EDC.row.__f0[EDC.f])}fxSave(EDC.row,EDC.f,w);try{gsTouch(EDC.row)}catch(_){}EDC.c.textContent=v;EDC.c.classList.toggle('flag',!!(EDC.row.fl&&EDC.row.fl[EDC.f]));okVis();infUpd()});
+function doneNext(){if(!EDC)return;const cur=EDC.c;const nx=[...document.querySelectorAll('#scaler td.ed.flag')].find(x=>cur.compareDocumentPosition(x)&4);if(nx)nx.click();else closeEd()}
 $('edta').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();doneNext()}else if(e.key==='Escape')closeEd()});
 $('eddone').addEventListener('click',doneNext);$('edok').addEventListener('click',okSave);
 $('scaler').addEventListener('click',e=>{const c=e.target.closest('td.ed');if(c)openEd(c,rowOf(c),c.dataset.f)});
@@ -2000,7 +2003,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </style>
 <details id="cs" class="noprint"><summary>بحث برقم الدعوى</summary><div class="addrow"><input id="csq" type="text" dir="ltr" inputmode="numeric" placeholder="مثلًا 1234 أو 1234/70"><button id="csb" type="button">بحث</button></div><div id="csr"></div></details>
  </div>
- <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="edok" type="button" class="sec" hidden>✓ الاسم صحيح</button><button id="eddone" type="button">تم</button></div></div></div>
+ <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><div id="edinf" hidden style="background:#12263F;color:#fff;border-radius:8px;padding:5px 8px;font-size:.78rem;line-height:1.6"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="edok" type="button" class="sec" hidden>✓ الاسم صحيح</button><button id="eddone" type="button">تم</button></div></div></div>
   <div id="bigbar" class="noprint"><button id="bsm" type="button" class="sec" aria-label="تصغير">−</button><button id="blg" type="button" class="sec" aria-label="تكبير">+</button><span class="sp"></span><button id="bpr" type="button" class="sec">🖨 طباعة</button><button id="bcl" type="button">✕ إغلاق</button></div>
   <div id="view"><div id="scaler"></div></div>
 </div>
@@ -2229,7 +2232,8 @@ function rowOf(td){const s=window.__result&&window.__result.sessions[+td.dataset
 const SER=(r,i)=>r.ser!==undefined?r.ser:i+1;
 const FLD={note:'ملاحظات',ser:'المسلسل',m:'الرول',no:'رقم الدعوى',yr:'السنة القضائية',pl:'المدعي',df:'المدعي عليه',dec:'القرار',prev:'الجلسة السابقة',next:'الجلسة القادمة'};
 let EDC=null;
-function closeEd(){if(EDC&&EDC.c)EDC.c.classList.remove('act');EDC=null;$('edbox').hidden=true;$('orig').hidden=true}
+function closeEd(){try{$('edinf').hidden=true}catch(e){}if(EDC&&EDC.c)EDC.c.classList.remove('act');EDC=null;$('edbox').hidden=true;$('orig').hidden=true}
+function infUpd(){const d=$('edinf');if(!d)return;if(!EDC||!FXF.pl||!('pl' in EDC.row)){if(d)d.hidden=true;return}const r=EDC.row,f=EDC.f,es=s=>String(s==null?'':s).replace(/[<>&]/g,x=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[x]));const fl=[...document.querySelectorAll('#scaler td.ed.flag')];const i=fl.indexOf(EDC.c);const cnt=fl.length?(i>=0?'<b style="color:#C9A24B">'+(i+1)+' من '+fl.length+'</b> محتاج تصحيح · ':'<b style="color:#C9A24B">'+fl.length+'</b> محتاج تصحيح · '):'';const o=(r.__o&&r.__o[f]!==undefined&&r.__o[f]!==r[f])?' <s style="color:#ff9b9b">'+es(r.__o[f])+'</s>':'';const nm=(k,l)=>l+': '+(k===f?'<b style="color:#C9A24B">'+es(r[k])+'</b>'+o:es(r[k]));d.innerHTML=cnt+'دعوى <b>'+es(r.no)+(r.yr?' / '+es(r.yr):'')+'</b> · رول '+es(r.m)+'<br>'+nm('pl','المدعي')+'<br>'+nm('df','المدعى عليه');d.hidden=false}
 function okVis(){const b=$('edok');if(b)b.hidden=!(EDC&&EDC.row.fl&&EDC.row.fl[EDC.f])}
 function okSave(){if(!EDC)return;const r=EDC.row,f=EDC.f;if(!r.fl||!r.fl[f])return;const o=(r.__o&&r.__o[f]!==undefined)?r.__o[f]:r[f];OKS=okLd();OKS[f+'|'+o]=1;try{localStorage.setItem(OKK,JSON.stringify(OKS))}catch(e){}r.fl[f]=false;if(r.__f0)r.__f0[f]=false;EDC.c.classList.remove('flag');try{gsTouch(r)}catch(_){}try{parent.GS&&parent.GS.applyOk&&parent.GS.applyOk(f,o)}catch(_){}doneNext()}
 function openEd(c,row,f){
@@ -2238,10 +2242,10 @@ function openEd(c,row,f){
  EDC={c,row,f};c.classList.add('act');
  $('edlbl').textContent='تعديل: '+(FLD[f]||f);
  $('edbox').hidden=false;const t=$('edta');t.value=f==='ser'?c.textContent:(row[f]==null?'':row[f]);
- okVis();showOrig(row);try{if(matchMedia('(max-width:700px)').matches)c.scrollIntoView({block:'center'})}catch(e){}t.focus({preventScroll:true});try{t.setSelectionRange(t.value.length,t.value.length)}catch(e){}
+ okVis();showOrig(row);infUpd();try{if(matchMedia('(max-width:700px)').matches)setTimeout(()=>{const s=$('stk'),h=s?s.getBoundingClientRect().height:0,r=c.getBoundingClientRect();if(r.top<h+6||r.top>h+70||r.bottom>innerHeight-8)window.scrollBy(0,r.top-h-14)},30)}catch(e){}t.focus({preventScroll:true});try{t.setSelectionRange(t.value.length,t.value.length)}catch(e){}
 }
-$('edta').addEventListener('input',()=>{if(!EDC)return;const v=$('edta').value.replace(/\s+/g,' ').trim();let w=v;if((EDC.f==='ser'||EDC.f==='m')&&/^\d+$/.test(v))w=+v;EDC.row[EDC.f]=w;{const _o=EDC.row.__o&&EDC.row.__o[EDC.f];const _ch=_o===undefined||w!==_o;if(EDC.row.fl&&EDC.row.fl[EDC.f]!==undefined)EDC.row.fl[EDC.f]=_ch?false:!!(EDC.row.__f0&&EDC.row.__f0[EDC.f])}fxSave(EDC.row,EDC.f,w);try{gsTouch(EDC.row)}catch(_){}EDC.c.textContent=v;EDC.c.classList.toggle('flag',!!(EDC.row.fl&&EDC.row.fl[EDC.f]));okVis()});
-function doneNext(){if(!EDC)return;const cur=EDC.c;const nx=[...document.querySelectorAll('#scaler td.ed.flag')].find(x=>cur.compareDocumentPosition(x)&4);closeEd();if(nx)nx.click()}
+$('edta').addEventListener('input',()=>{if(!EDC)return;const v=$('edta').value.replace(/\s+/g,' ').trim();let w=v;if((EDC.f==='ser'||EDC.f==='m')&&/^\d+$/.test(v))w=+v;EDC.row[EDC.f]=w;{const _o=EDC.row.__o&&EDC.row.__o[EDC.f];const _ch=_o===undefined||w!==_o;if(EDC.row.fl&&EDC.row.fl[EDC.f]!==undefined)EDC.row.fl[EDC.f]=_ch?false:!!(EDC.row.__f0&&EDC.row.__f0[EDC.f])}fxSave(EDC.row,EDC.f,w);try{gsTouch(EDC.row)}catch(_){}EDC.c.textContent=v;EDC.c.classList.toggle('flag',!!(EDC.row.fl&&EDC.row.fl[EDC.f]));okVis();infUpd()});
+function doneNext(){if(!EDC)return;const cur=EDC.c;const nx=[...document.querySelectorAll('#scaler td.ed.flag')].find(x=>cur.compareDocumentPosition(x)&4);if(nx)nx.click();else closeEd()}
 $('edta').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();doneNext()}else if(e.key==='Escape')closeEd()});
 $('eddone').addEventListener('click',doneNext);$('edok').addEventListener('click',okSave);
 $('scaler').addEventListener('click',e=>{const c=e.target.closest('td.ed');if(c)openEd(c,rowOf(c),c.dataset.f)});
@@ -4637,7 +4641,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   <div id="bulk" class="actions" hidden style="align-items:center;border:1px dashed var(--line);border-radius:8px;padding:8px"><b>الإجراء للكل:</b><select id="bulks" class="fkind" aria-label="الجلسة"></select><select id="bulkk" class="fkind" aria-label="القسم"></select><select id="bulksel" class="fkind" aria-label="الإجراء للكل"></select><label class="opt"><input type="checkbox" id="bulkE" checked> اللي ملوش إجراء بس</label><button id="bulkgo" type="button">تطبيق على الكل</button><button id="undo" type="button" class="sec" disabled>↶ تراجع</button></div>
   <p id="msg" class="hint"></p>
  </div>
- <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="eddone" type="button">تم</button></div></div></div>
+ <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><div id="edinf" hidden style="background:#12263F;color:#fff;border-radius:8px;padding:5px 8px;font-size:.78rem;line-height:1.6"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="eddone" type="button">تم</button></div></div></div>
   <div id="bigbar" class="noprint"><button id="bsm" type="button" class="sec" aria-label="تصغير">−</button><button id="blg" type="button" class="sec" aria-label="تكبير">+</button><span class="sp"></span><button id="bpr" type="button" class="sec">🖨 طباعة</button><button id="bcl" type="button">✕ إغلاق</button></div>
   <div id="view"><div id="scaler"></div></div>
 </div>
@@ -5069,7 +5073,8 @@ function rowOf(td){const s=window.__result&&window.__result.sessions[+td.dataset
 const SER=(r,i)=>r.ser!==undefined?r.ser:i+1;
 const FLD={ser:'المسلسل',m:'الرول',no:'رقم الدعوى',yr:'السنة القضائية',pl:'المدعي',df:'المدعي عليه',dec:'القرار',prev:'الجلسة السابقة',next:'الجلسة القادمة'};
 let EDC=null;
-function closeEd(){if(EDC&&EDC.c)EDC.c.classList.remove('act');EDC=null;$('edbox').hidden=true;$('orig').hidden=true}
+function closeEd(){try{$('edinf').hidden=true}catch(e){}if(EDC&&EDC.c)EDC.c.classList.remove('act');EDC=null;$('edbox').hidden=true;$('orig').hidden=true}
+function infUpd(){const d=$('edinf');if(!d)return;if(!EDC||!FXF.pl||!('pl' in EDC.row)){if(d)d.hidden=true;return}const r=EDC.row,f=EDC.f,es=s=>String(s==null?'':s).replace(/[<>&]/g,x=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[x]));const fl=[...document.querySelectorAll('#scaler td.ed.flag')];const i=fl.indexOf(EDC.c);const cnt=fl.length?(i>=0?'<b style="color:#C9A24B">'+(i+1)+' من '+fl.length+'</b> محتاج تصحيح · ':'<b style="color:#C9A24B">'+fl.length+'</b> محتاج تصحيح · '):'';const o=(r.__o&&r.__o[f]!==undefined&&r.__o[f]!==r[f])?' <s style="color:#ff9b9b">'+es(r.__o[f])+'</s>':'';const nm=(k,l)=>l+': '+(k===f?'<b style="color:#C9A24B">'+es(r[k])+'</b>'+o:es(r[k]));d.innerHTML=cnt+'دعوى <b>'+es(r.no)+(r.yr?' / '+es(r.yr):'')+'</b> · رول '+es(r.m)+'<br>'+nm('pl','المدعي')+'<br>'+nm('df','المدعى عليه');d.hidden=false}
 function okVis(){const b=$('edok');if(b)b.hidden=!(EDC&&EDC.row.fl&&EDC.row.fl[EDC.f])}
 function okSave(){if(!EDC)return;const r=EDC.row,f=EDC.f;if(!r.fl||!r.fl[f])return;const o=(r.__o&&r.__o[f]!==undefined)?r.__o[f]:r[f];OKS=okLd();OKS[f+'|'+o]=1;try{localStorage.setItem(OKK,JSON.stringify(OKS))}catch(e){}r.fl[f]=false;if(r.__f0)r.__f0[f]=false;EDC.c.classList.remove('flag');try{gsTouch(r)}catch(_){}try{parent.GS&&parent.GS.applyOk&&parent.GS.applyOk(f,o)}catch(_){}doneNext()}
 function openEd(c,row,f){
@@ -5078,10 +5083,10 @@ function openEd(c,row,f){
  EDC={c,row,f};c.classList.add('act');
  $('edlbl').textContent='تعديل: '+(FLD[f]||f);
  $('edbox').hidden=false;const t=$('edta');t.value=f==='ser'?c.textContent:(row[f]==null?'':row[f]);
- okVis();showOrig(row);try{if(matchMedia('(max-width:700px)').matches)c.scrollIntoView({block:'center'})}catch(e){}t.focus({preventScroll:true});try{t.setSelectionRange(t.value.length,t.value.length)}catch(e){}
+ okVis();showOrig(row);infUpd();try{if(matchMedia('(max-width:700px)').matches)setTimeout(()=>{const s=$('stk'),h=s?s.getBoundingClientRect().height:0,r=c.getBoundingClientRect();if(r.top<h+6||r.top>h+70||r.bottom>innerHeight-8)window.scrollBy(0,r.top-h-14)},30)}catch(e){}t.focus({preventScroll:true});try{t.setSelectionRange(t.value.length,t.value.length)}catch(e){}
 }
-$('edta').addEventListener('input',()=>{if(!EDC)return;const v=$('edta').value.replace(/\s+/g,' ').trim();let w=v;if((EDC.f==='ser'||EDC.f==='m')&&/^\d+$/.test(v))w=+v;EDC.row[EDC.f]=w;{const _o=EDC.row.__o&&EDC.row.__o[EDC.f];const _ch=_o===undefined||w!==_o;if(EDC.row.fl&&EDC.row.fl[EDC.f]!==undefined)EDC.row.fl[EDC.f]=_ch?false:!!(EDC.row.__f0&&EDC.row.__f0[EDC.f])}fxSave(EDC.row,EDC.f,w);try{gsTouch(EDC.row)}catch(_){}EDC.c.textContent=v;EDC.c.classList.toggle('flag',!!(EDC.row.fl&&EDC.row.fl[EDC.f]));okVis()});
-function doneNext(){if(!EDC)return;const cur=EDC.c;const nx=[...document.querySelectorAll('#scaler td.ed.flag')].find(x=>cur.compareDocumentPosition(x)&4);closeEd();if(nx)nx.click()}
+$('edta').addEventListener('input',()=>{if(!EDC)return;const v=$('edta').value.replace(/\s+/g,' ').trim();let w=v;if((EDC.f==='ser'||EDC.f==='m')&&/^\d+$/.test(v))w=+v;EDC.row[EDC.f]=w;{const _o=EDC.row.__o&&EDC.row.__o[EDC.f];const _ch=_o===undefined||w!==_o;if(EDC.row.fl&&EDC.row.fl[EDC.f]!==undefined)EDC.row.fl[EDC.f]=_ch?false:!!(EDC.row.__f0&&EDC.row.__f0[EDC.f])}fxSave(EDC.row,EDC.f,w);try{gsTouch(EDC.row)}catch(_){}EDC.c.textContent=v;EDC.c.classList.toggle('flag',!!(EDC.row.fl&&EDC.row.fl[EDC.f]));okVis();infUpd()});
+function doneNext(){if(!EDC)return;const cur=EDC.c;const nx=[...document.querySelectorAll('#scaler td.ed.flag')].find(x=>cur.compareDocumentPosition(x)&4);if(nx)nx.click();else closeEd()}
 $('edta').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();doneNext()}else if(e.key==='Escape')closeEd()});
 $('eddone').addEventListener('click',doneNext);
 $('scaler').addEventListener('click',e=>{const c=e.target.closest('td.ed');if(c)openEd(c,rowOf(c),c.dataset.f)});
@@ -5864,7 +5869,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   
   <p id="msg" class="hint"></p>
  </div>
- <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="eddone" type="button">تم</button></div></div></div>
+ <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><div id="edinf" hidden style="background:#12263F;color:#fff;border-radius:8px;padding:5px 8px;font-size:.78rem;line-height:1.6"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="eddone" type="button">تم</button></div></div></div>
   <div id="bigbar" class="noprint"><button id="bsm" type="button" class="sec" aria-label="تصغير">−</button><button id="blg" type="button" class="sec" aria-label="تكبير">+</button><span class="sp"></span><button id="bpr" type="button" class="sec">🖨 طباعة</button><button id="bcl" type="button">✕ إغلاق</button></div>
   <div id="view"><div id="scaler"></div></div>
 </div>
@@ -6297,7 +6302,8 @@ function rowOf(td){const s=window.__result&&window.__result.sessions[+td.dataset
 const SER=(r,i)=>r.ser!==undefined?r.ser:i+1;
 const FLD={note:'ملاحظات',ser:'المسلسل',m:'الرول',no:'رقم الدعوى',yr:'السنة القضائية',pl:'المدعي',df:'المدعي عليه',dec:'القرار',prev:'الجلسة السابقة',next:'الجلسة القادمة'};
 let EDC=null;
-function closeEd(){if(EDC&&EDC.c)EDC.c.classList.remove('act');EDC=null;$('edbox').hidden=true;$('orig').hidden=true}
+function closeEd(){try{$('edinf').hidden=true}catch(e){}if(EDC&&EDC.c)EDC.c.classList.remove('act');EDC=null;$('edbox').hidden=true;$('orig').hidden=true}
+function infUpd(){const d=$('edinf');if(!d)return;if(!EDC||!FXF.pl||!('pl' in EDC.row)){if(d)d.hidden=true;return}const r=EDC.row,f=EDC.f,es=s=>String(s==null?'':s).replace(/[<>&]/g,x=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[x]));const fl=[...document.querySelectorAll('#scaler td.ed.flag')];const i=fl.indexOf(EDC.c);const cnt=fl.length?(i>=0?'<b style="color:#C9A24B">'+(i+1)+' من '+fl.length+'</b> محتاج تصحيح · ':'<b style="color:#C9A24B">'+fl.length+'</b> محتاج تصحيح · '):'';const o=(r.__o&&r.__o[f]!==undefined&&r.__o[f]!==r[f])?' <s style="color:#ff9b9b">'+es(r.__o[f])+'</s>':'';const nm=(k,l)=>l+': '+(k===f?'<b style="color:#C9A24B">'+es(r[k])+'</b>'+o:es(r[k]));d.innerHTML=cnt+'دعوى <b>'+es(r.no)+(r.yr?' / '+es(r.yr):'')+'</b> · رول '+es(r.m)+'<br>'+nm('pl','المدعي')+'<br>'+nm('df','المدعى عليه');d.hidden=false}
 function okVis(){const b=$('edok');if(b)b.hidden=!(EDC&&EDC.row.fl&&EDC.row.fl[EDC.f])}
 function okSave(){if(!EDC)return;const r=EDC.row,f=EDC.f;if(!r.fl||!r.fl[f])return;const o=(r.__o&&r.__o[f]!==undefined)?r.__o[f]:r[f];OKS=okLd();OKS[f+'|'+o]=1;try{localStorage.setItem(OKK,JSON.stringify(OKS))}catch(e){}r.fl[f]=false;if(r.__f0)r.__f0[f]=false;EDC.c.classList.remove('flag');try{gsTouch(r)}catch(_){}try{parent.GS&&parent.GS.applyOk&&parent.GS.applyOk(f,o)}catch(_){}doneNext()}
 function openEd(c,row,f){
@@ -6306,10 +6312,10 @@ function openEd(c,row,f){
  EDC={c,row,f};c.classList.add('act');
  $('edlbl').textContent='تعديل: '+(FLD[f]||f);
  $('edbox').hidden=false;const t=$('edta');t.value=f==='ser'?c.textContent:(row[f]==null?'':row[f]);
- okVis();showOrig(row);try{if(matchMedia('(max-width:700px)').matches)c.scrollIntoView({block:'center'})}catch(e){}t.focus({preventScroll:true});try{t.setSelectionRange(t.value.length,t.value.length)}catch(e){}
+ okVis();showOrig(row);infUpd();try{if(matchMedia('(max-width:700px)').matches)setTimeout(()=>{const s=$('stk'),h=s?s.getBoundingClientRect().height:0,r=c.getBoundingClientRect();if(r.top<h+6||r.top>h+70||r.bottom>innerHeight-8)window.scrollBy(0,r.top-h-14)},30)}catch(e){}t.focus({preventScroll:true});try{t.setSelectionRange(t.value.length,t.value.length)}catch(e){}
 }
-$('edta').addEventListener('input',()=>{if(!EDC)return;const v=$('edta').value.replace(/\s+/g,' ').trim();let w=v;if((EDC.f==='ser'||EDC.f==='m')&&/^\d+$/.test(v))w=+v;EDC.row[EDC.f]=w;{const _o=EDC.row.__o&&EDC.row.__o[EDC.f];const _ch=_o===undefined||w!==_o;if(EDC.row.fl&&EDC.row.fl[EDC.f]!==undefined)EDC.row.fl[EDC.f]=_ch?false:!!(EDC.row.__f0&&EDC.row.__f0[EDC.f])}fxSave(EDC.row,EDC.f,w);try{gsTouch(EDC.row)}catch(_){}EDC.c.textContent=v;EDC.c.classList.toggle('flag',!!(EDC.row.fl&&EDC.row.fl[EDC.f]));okVis()});
-function doneNext(){if(!EDC)return;const cur=EDC.c;const nx=[...document.querySelectorAll('#scaler td.ed.flag')].find(x=>cur.compareDocumentPosition(x)&4);closeEd();if(nx)nx.click()}
+$('edta').addEventListener('input',()=>{if(!EDC)return;const v=$('edta').value.replace(/\s+/g,' ').trim();let w=v;if((EDC.f==='ser'||EDC.f==='m')&&/^\d+$/.test(v))w=+v;EDC.row[EDC.f]=w;{const _o=EDC.row.__o&&EDC.row.__o[EDC.f];const _ch=_o===undefined||w!==_o;if(EDC.row.fl&&EDC.row.fl[EDC.f]!==undefined)EDC.row.fl[EDC.f]=_ch?false:!!(EDC.row.__f0&&EDC.row.__f0[EDC.f])}fxSave(EDC.row,EDC.f,w);try{gsTouch(EDC.row)}catch(_){}EDC.c.textContent=v;EDC.c.classList.toggle('flag',!!(EDC.row.fl&&EDC.row.fl[EDC.f]));okVis();infUpd()});
+function doneNext(){if(!EDC)return;const cur=EDC.c;const nx=[...document.querySelectorAll('#scaler td.ed.flag')].find(x=>cur.compareDocumentPosition(x)&4);if(nx)nx.click();else closeEd()}
 $('edta').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();doneNext()}else if(e.key==='Escape')closeEd()});
 $('eddone').addEventListener('click',doneNext);
 $('scaler').addEventListener('click',e=>{const c=e.target.closest('td.ed');if(c)openEd(c,rowOf(c),c.dataset.f)});
