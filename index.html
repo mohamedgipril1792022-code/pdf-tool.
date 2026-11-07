@@ -30,6 +30,8 @@
 
 
 
+
+
 <style>
 :root{--bg:#F4F1EA;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1B3A5C;--accfg:#fff;--head:#e4dfd2}
 @media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#C9A24B;--accfg:#12263F;--head:#2a3542}}
@@ -63,7 +65,7 @@ body{display:flex;flex-direction:column}
 <button role="tab" data-k="xl" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg>رول إكسيل</button>
 <button role="tab" data-k="tools" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5 5L21 12.6 12.6 21a2 2 0 0 1-2.8 0L3 14.2a2 2 0 0 1 0-2.8L11.4 3a4 4 0 0 0 3.3 3.3z" transform="scale(.9) translate(1.3 1.3)"/></svg>أدوات</button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT">استخراج PDF</span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ٥٥</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">استخراج PDF</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ٥٧</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
 <div id="sub" hidden></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -254,6 +256,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    <ul class="files" id="flist"></ul>
    <div class="fbar"><button id="clrf" type="button" class="sec" hidden>مسح كل الملفات</button></div>
   </div>
+<style>details.cfg{border:1px solid var(--line);border-radius:10px;padding:0;background:var(--card)}details.cfg>summary{cursor:pointer;list-style:none;padding:10px 12px;font-weight:800;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}details.cfg>summary::-webkit-details-marker{display:none}details.cfg>summary .cs{font-weight:600;font-size:.82rem;opacity:.85}details.cfg>summary .cs b{color:#b45309}details.cfg[open]>summary{border-bottom:1px solid var(--line)}details.cfg>.cfgb{padding:10px 12px;display:flex;flex-direction:column;gap:12px}</style>
+<details id="cfgbox" class="cfg noprint" data-cd="1"><summary><span>⚙ إعدادات</span><span id="cfgSum" style="display:contents"></span></summary><div class="cfgb">
   <div>
    <label for="suff">نهايات أرقام الدعاوى</label>
    <div class="addrow"><input id="suff" type="text" dir="ltr" inputmode="numeric" placeholder="اكتب نهاية، مثلًا 51"><button id="addsuf" type="button">إضافة</button></div>
@@ -262,8 +266,17 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   <div class="row">
    <div><label for="court">المحكمة</label><input id="court" type="text" value="مجلس الدولة - هيئة مفوضي الدولة"></div>
    <div><label for="dept">الدائرة</label><input id="dept" type="text" value="الأولى مفوضين"></div>
-   <input id="sdate" type="hidden">
   </div>
+</div></details>
+<input id="sdate" type="hidden">
+<script>(function(){var d=document.getElementById('cfgbox'),o=document.getElementById('cfgSum');if(!d||!o)return;var q=0;function g(i){return document.getElementById(i)}
+function upd(){q=0;var p=[],ch=g('chips');var s=ch?[].map.call(ch.children,function(x){return x.textContent.replace(/[×✕x]/g,'').trim()}).filter(Boolean):[];p.push('النهايات: '+(s.length?s.join('، '):'لا يوجد'));
+var se=g('secs');if(se&&se.offsetParent!==null||(se&&se.closest('details'))){var cb=se.querySelectorAll('input[type=checkbox]');if(cb.length){var on=[].filter.call(cb,function(x){return x.checked}).length;p.push(on===cb.length?'كل الأقسام ✓':'<b>'+on+' من '+cb.length+' أقسام</b>')}}
+var c=g('court'),dp=g('dept');if(c&&dp&&g('cfgbox').dataset.cd){p.push((c.value||'—')+' · '+(dp.value||'—'))}
+o.innerHTML=p.map(function(x){return '<span class="cs">'+(/^</.test(x)?x:x.replace(/&/g,'&amp;').replace(/</g,'&lt;'))+'</span>'}).join('')}
+function sch(){if(!q){q=1;setTimeout(upd,60)}}
+['chips','secs'].forEach(function(i){var e=g(i);if(e)new MutationObserver(sch).observe(e,{childList:true,subtree:true,characterData:true})});
+d.addEventListener('input',sch);d.addEventListener('change',sch);d.addEventListener('click',sch);upd();setTimeout(upd,400)})();<@@/script>
   <div class="actions">
    <button id="go" type="button">اعمل الصفحة</button>
    <div id="exp" class="actions" hidden><button id="big" type="button" class="sec">⤢ توسيع</button><button id="prt" type="button" class="sec">🖨 طباعة</button><button id="xl" type="button" class="sec">📊 Excel</button><button id="wd" type="button" class="sec">📝 Word</button></div>
@@ -1081,12 +1094,23 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    <ul class="files" id="flist"></ul>
    <div class="fbar"><button id="clrf" type="button" class="sec" hidden>مسح كل الملفات</button></div>
   </div>
+<style>details.cfg{border:1px solid var(--line);border-radius:10px;padding:0;background:var(--card)}details.cfg>summary{cursor:pointer;list-style:none;padding:10px 12px;font-weight:800;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}details.cfg>summary::-webkit-details-marker{display:none}details.cfg>summary .cs{font-weight:600;font-size:.82rem;opacity:.85}details.cfg>summary .cs b{color:#b45309}details.cfg[open]>summary{border-bottom:1px solid var(--line)}details.cfg>.cfgb{padding:10px 12px;display:flex;flex-direction:column;gap:12px}</style>
+<details id="cfgbox" class="cfg noprint"><summary><span>⚙ إعدادات</span><span id="cfgSum" style="display:contents"></span></summary><div class="cfgb">
   <div>
    <label for="suff">نهايات أرقام الدعاوى</label>
    <div class="addrow"><input id="suff" type="text" dir="ltr" inputmode="numeric" placeholder="اكتب نهاية، مثلًا 51"><button id="addsuf" type="button">إضافة</button></div>
    <div id="chips" class="chips"></div>
   </div>
   <div><label>الأقسام</label><div id="secs" style="display:flex;flex-direction:column;gap:6px"></div></div>
+</div></details>
+<script>(function(){var d=document.getElementById('cfgbox'),o=document.getElementById('cfgSum');if(!d||!o)return;var q=0;function g(i){return document.getElementById(i)}
+function upd(){q=0;var p=[],ch=g('chips');var s=ch?[].map.call(ch.children,function(x){return x.textContent.replace(/[×✕x]/g,'').trim()}).filter(Boolean):[];p.push('النهايات: '+(s.length?s.join('، '):'لا يوجد'));
+var se=g('secs');if(se&&se.offsetParent!==null||(se&&se.closest('details'))){var cb=se.querySelectorAll('input[type=checkbox]');if(cb.length){var on=[].filter.call(cb,function(x){return x.checked}).length;p.push(on===cb.length?'كل الأقسام ✓':'<b>'+on+' من '+cb.length+' أقسام</b>')}}
+var c=g('court'),dp=g('dept');if(c&&dp&&g('cfgbox').dataset.cd){p.push((c.value||'—')+' · '+(dp.value||'—'))}
+o.innerHTML=p.map(function(x){return '<span class="cs">'+(/^</.test(x)?x:x.replace(/&/g,'&amp;').replace(/</g,'&lt;'))+'</span>'}).join('')}
+function sch(){if(!q){q=1;setTimeout(upd,60)}}
+['chips','secs'].forEach(function(i){var e=g(i);if(e)new MutationObserver(sch).observe(e,{childList:true,subtree:true,characterData:true})});
+d.addEventListener('input',sch);d.addEventListener('change',sch);d.addEventListener('click',sch);upd();setTimeout(upd,400)})();<@@/script>
   <div class="row"><input id="sdate" type="hidden"></div>
   <div class="actions">
    <button id="go" type="button">اعمل الصفحة</button>
@@ -1977,11 +2001,22 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    <ul class="files" id="flist"></ul>
    <div class="fbar"><button id="clrf" type="button" class="sec" hidden>مسح كل الملفات</button></div>
   </div>
+<style>details.cfg{border:1px solid var(--line);border-radius:10px;padding:0;background:var(--card)}details.cfg>summary{cursor:pointer;list-style:none;padding:10px 12px;font-weight:800;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}details.cfg>summary::-webkit-details-marker{display:none}details.cfg>summary .cs{font-weight:600;font-size:.82rem;opacity:.85}details.cfg>summary .cs b{color:#b45309}details.cfg[open]>summary{border-bottom:1px solid var(--line)}details.cfg>.cfgb{padding:10px 12px;display:flex;flex-direction:column;gap:12px}</style>
+<details id="cfgbox" class="cfg noprint"><summary><span>⚙ إعدادات</span><span id="cfgSum" style="display:contents"></span></summary><div class="cfgb">
   <div>
    <label for="suff">نهايات أرقام الدعاوى</label>
    <div class="addrow"><input id="suff" type="text" dir="ltr" inputmode="numeric" placeholder="اكتب نهاية، مثلًا 51"><button id="addsuf" type="button">إضافة</button></div>
    <div id="chips" class="chips"></div>
   </div>
+</div></details>
+<script>(function(){var d=document.getElementById('cfgbox'),o=document.getElementById('cfgSum');if(!d||!o)return;var q=0;function g(i){return document.getElementById(i)}
+function upd(){q=0;var p=[],ch=g('chips');var s=ch?[].map.call(ch.children,function(x){return x.textContent.replace(/[×✕x]/g,'').trim()}).filter(Boolean):[];p.push('النهايات: '+(s.length?s.join('، '):'لا يوجد'));
+var se=g('secs');if(se&&se.offsetParent!==null||(se&&se.closest('details'))){var cb=se.querySelectorAll('input[type=checkbox]');if(cb.length){var on=[].filter.call(cb,function(x){return x.checked}).length;p.push(on===cb.length?'كل الأقسام ✓':'<b>'+on+' من '+cb.length+' أقسام</b>')}}
+var c=g('court'),dp=g('dept');if(c&&dp&&g('cfgbox').dataset.cd){p.push((c.value||'—')+' · '+(dp.value||'—'))}
+o.innerHTML=p.map(function(x){return '<span class="cs">'+(/^</.test(x)?x:x.replace(/&/g,'&amp;').replace(/</g,'&lt;'))+'</span>'}).join('')}
+function sch(){if(!q){q=1;setTimeout(upd,60)}}
+['chips','secs'].forEach(function(i){var e=g(i);if(e)new MutationObserver(sch).observe(e,{childList:true,subtree:true,characterData:true})});
+d.addEventListener('input',sch);d.addEventListener('change',sch);d.addEventListener('click',sch);upd();setTimeout(upd,400)})();<@@/script>
   <div style="display:none"><label>الأقسام</label><div id="secs" style="display:flex;flex-direction:column;gap:6px"></div></div>
   <div class="row"><input id="sdate" type="hidden"></div>
   <details id="clsbox"><summary><span>تصنيف الأحكام</span><span id="clsMini"></span></summary>
@@ -7519,7 +7554,7 @@ function show(k){
   const sub=document.getElementById('sub'),g=GROUPS[top];sub.hidden=g.length<2;
   if(sub.dataset.g!==top){sub.dataset.g=top;sub.innerHTML=g.length<2?'':g.map(x=>'<button data-k="'+x+'" aria-selected="false">'+SUBL[x]+'</button>').join('');sub.querySelectorAll('button').forEach(b=>b.onclick=()=>show(b.dataset.k))}
   sub.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.k===k)));
-  const vt=document.getElementById('vbT');if(vt)vt.textContent={gs:'البحث العام',pdf:'رول PDF',xl:'رول إكسيل',tools:'أدوات'}[top];
+  const vt=document.getElementById('vbTx')||document.getElementById('vbT');if(vt)vt.textContent={gs:'البحث العام',pdf:'رول PDF',xl:'رول إكسيل',tools:'أدوات'}[top];
   document.querySelectorAll('#views iframe').forEach(f=>{
     const on=f.dataset.k===k;f.classList.toggle('on',on);
     if(on&&!loaded[k]){loaded[k]=1;f.srcdoc=build(k)}
