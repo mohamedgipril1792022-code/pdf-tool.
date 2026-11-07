@@ -28,6 +28,8 @@
 
 
 
+
+
 <style>
 :root{--bg:#F4F1EA;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1B3A5C;--accfg:#fff;--head:#e4dfd2}
 @media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#C9A24B;--accfg:#12263F;--head:#2a3542}}
@@ -61,7 +63,7 @@ body{display:flex;flex-direction:column}
 <button role="tab" data-k="xl" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg>رول إكسيل</button>
 <button role="tab" data-k="tools" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5 5L21 12.6 12.6 21a2 2 0 0 1-2.8 0L3 14.2a2 2 0 0 1 0-2.8L11.4 3a4 4 0 0 0 3.3 3.3z" transform="scale(.9) translate(1.3 1.3)"/></svg>أدوات</button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT">استخراج PDF</span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ٥٣</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT">استخراج PDF</span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ٥٥</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
 <div id="sub" hidden></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -225,7 +227,7 @@ if(r.fl)for(var f in r.fl)if(r.fl[f]){flg++;break}})})});
 var L=[];if(miss.length)L.push('دعاوى من غير رقم أو سنة: '+miss.length);if(bad.length)L.push('أرقام/سنوات شكلها غريب: '+bad.slice(0,8).join('، ')+(bad.length>8?' …':''));if(dup.length)L.push('دعاوى مكررة في نفس الجلسة: '+dup.slice(0,8).join('، ')+(dup.length>8?' …':''));if(flg)L.push('صفوف متعلّم عليها للمراجعة: '+flg);
 if(!L.length){bar.hidden=true;return}
 bar.hidden=false;bar.innerHTML='⚠ '+L.length+' ملاحظة قبل الطباعة <button type="button">التفاصيل</button><ul hidden>'+L.map(function(x){return'<li>'+x.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</li>'}).join('')+'</ul>';bar.querySelector('button').onclick=function(){var u=bar.querySelector('ul');u.hidden=!u.hidden}}
-new MutationObserver(function(){if(!q){q=1;setTimeout(scan,150)}}).observe(sc,{childList:true})}
+new MutationObserver(function(){if(!q){q=1;setTimeout(scan,150)}}).observe(sc,{childList:true});['input','click'].forEach(function(ev){document.addEventListener(ev,function(){if(!q){q=1;setTimeout(scan,250)}})})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go()})();<@@/script>
 
 <script>(function(){document.addEventListener('keydown',function(e){var tg=(e.target&&e.target.tagName)||'',typing=/INPUT|TEXTAREA|SELECT/.test(tg)||(e.target&&e.target.isContentEditable);
@@ -1052,7 +1054,7 @@ if(r.fl)for(var f in r.fl)if(r.fl[f]){flg++;break}})})});
 var L=[];if(miss.length)L.push('دعاوى من غير رقم أو سنة: '+miss.length);if(bad.length)L.push('أرقام/سنوات شكلها غريب: '+bad.slice(0,8).join('، ')+(bad.length>8?' …':''));if(dup.length)L.push('دعاوى مكررة في نفس الجلسة: '+dup.slice(0,8).join('، ')+(dup.length>8?' …':''));if(flg)L.push('صفوف متعلّم عليها للمراجعة: '+flg);
 if(!L.length){bar.hidden=true;return}
 bar.hidden=false;bar.innerHTML='⚠ '+L.length+' ملاحظة قبل الطباعة <button type="button">التفاصيل</button><ul hidden>'+L.map(function(x){return'<li>'+x.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</li>'}).join('')+'</ul>';bar.querySelector('button').onclick=function(){var u=bar.querySelector('ul');u.hidden=!u.hidden}}
-new MutationObserver(function(){if(!q){q=1;setTimeout(scan,150)}}).observe(sc,{childList:true})}
+new MutationObserver(function(){if(!q){q=1;setTimeout(scan,150)}}).observe(sc,{childList:true});['input','click'].forEach(function(ev){document.addEventListener(ev,function(){if(!q){q=1;setTimeout(scan,250)}})})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go()})();<@@/script>
 
 <script>(function(){document.addEventListener('keydown',function(e){var tg=(e.target&&e.target.tagName)||'',typing=/INPUT|TEXTAREA|SELECT/.test(tg)||(e.target&&e.target.isContentEditable);
@@ -1933,7 +1935,7 @@ table.s2 td.cls.ag{background:#f4b6b6}table.s2 td.cls.ok{background:#c6e8c6}tabl
 #clsMini{font-weight:700;font-size:.85rem;margin-inline-start:auto;display:flex;gap:6px}
 #clsMini i{font-style:normal;border-radius:999px;padding:1px 9px;color:#000}
 #clsMini .ag{background:#f4b6b6}#clsMini .ok{background:#c6e8c6}#clsMini .un{background:#e2e2e2}
-html,body{overflow-x:hidden}.wrap,.panel{min-width:0;max-width:100%}ul.files li .fn{overflow-wrap:anywhere;min-width:0}
+html,body{overflow-x:clip}.wrap,.panel{min-width:0;max-width:100%}ul.files li .fn{overflow-wrap:anywhere;min-width:0}
 </style>
 </head>
 <body>
@@ -1948,7 +1950,7 @@ if(r.fl)for(var f in r.fl)if(r.fl[f]){flg++;break}})})});
 var L=[];if(miss.length)L.push('دعاوى من غير رقم أو سنة: '+miss.length);if(bad.length)L.push('أرقام/سنوات شكلها غريب: '+bad.slice(0,8).join('، ')+(bad.length>8?' …':''));if(dup.length)L.push('دعاوى مكررة في نفس الجلسة: '+dup.slice(0,8).join('، ')+(dup.length>8?' …':''));if(flg)L.push('صفوف متعلّم عليها للمراجعة: '+flg);
 if(!L.length){bar.hidden=true;return}
 bar.hidden=false;bar.innerHTML='⚠ '+L.length+' ملاحظة قبل الطباعة <button type="button">التفاصيل</button><ul hidden>'+L.map(function(x){return'<li>'+x.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</li>'}).join('')+'</ul>';bar.querySelector('button').onclick=function(){var u=bar.querySelector('ul');u.hidden=!u.hidden}}
-new MutationObserver(function(){if(!q){q=1;setTimeout(scan,150)}}).observe(sc,{childList:true})}
+new MutationObserver(function(){if(!q){q=1;setTimeout(scan,150)}}).observe(sc,{childList:true});['input','click'].forEach(function(ev){document.addEventListener(ev,function(){if(!q){q=1;setTimeout(scan,250)}})})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go()})();<@@/script>
 
 <script>(function(){document.addEventListener('keydown',function(e){var tg=(e.target&&e.target.tagName)||'',typing=/INPUT|TEXTAREA|SELECT/.test(tg)||(e.target&&e.target.isContentEditable);
@@ -4595,7 +4597,7 @@ if(r.fl)for(var f in r.fl)if(r.fl[f]){flg++;break}})})});
 var L=[];if(miss.length)L.push('دعاوى من غير رقم أو سنة: '+miss.length);if(bad.length)L.push('أرقام/سنوات شكلها غريب: '+bad.slice(0,8).join('، ')+(bad.length>8?' …':''));if(dup.length)L.push('دعاوى مكررة في نفس الجلسة: '+dup.slice(0,8).join('، ')+(dup.length>8?' …':''));if(flg)L.push('صفوف متعلّم عليها للمراجعة: '+flg);
 if(!L.length){bar.hidden=true;return}
 bar.hidden=false;bar.innerHTML='⚠ '+L.length+' ملاحظة قبل الطباعة <button type="button">التفاصيل</button><ul hidden>'+L.map(function(x){return'<li>'+x.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</li>'}).join('')+'</ul>';bar.querySelector('button').onclick=function(){var u=bar.querySelector('ul');u.hidden=!u.hidden}}
-new MutationObserver(function(){if(!q){q=1;setTimeout(scan,150)}}).observe(sc,{childList:true})}
+new MutationObserver(function(){if(!q){q=1;setTimeout(scan,150)}}).observe(sc,{childList:true});['input','click'].forEach(function(ev){document.addEventListener(ev,function(){if(!q){q=1;setTimeout(scan,250)}})})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go()})();<@@/script>
 
 <script>(function(){document.addEventListener('keydown',function(e){var tg=(e.target&&e.target.tagName)||'',typing=/INPUT|TEXTAREA|SELECT/.test(tg)||(e.target&&e.target.isContentEditable);
@@ -5801,7 +5803,7 @@ table.s2 td.cls.ag{background:#f4b6b6}table.s2 td.cls.ok{background:#c6e8c6}tabl
 #clsMini{font-weight:700;font-size:.85rem;margin-inline-start:auto;display:flex;gap:6px}
 #clsMini i{font-style:normal;border-radius:999px;padding:1px 9px;color:#000}
 #clsMini .ag{background:#f4b6b6}#clsMini .ok{background:#c6e8c6}#clsMini .un{background:#e2e2e2}
-html,body{overflow-x:hidden}.wrap,.panel{min-width:0;max-width:100%}ul.files li .fn{overflow-wrap:anywhere;min-width:0}
+html,body{overflow-x:clip}.wrap,.panel{min-width:0;max-width:100%}ul.files li .fn{overflow-wrap:anywhere;min-width:0}
 </style>
 </head>
 <body>
@@ -5816,7 +5818,7 @@ if(r.fl)for(var f in r.fl)if(r.fl[f]){flg++;break}})})});
 var L=[];if(miss.length)L.push('دعاوى من غير رقم أو سنة: '+miss.length);if(bad.length)L.push('أرقام/سنوات شكلها غريب: '+bad.slice(0,8).join('، ')+(bad.length>8?' …':''));if(dup.length)L.push('دعاوى مكررة في نفس الجلسة: '+dup.slice(0,8).join('، ')+(dup.length>8?' …':''));if(flg)L.push('صفوف متعلّم عليها للمراجعة: '+flg);
 if(!L.length){bar.hidden=true;return}
 bar.hidden=false;bar.innerHTML='⚠ '+L.length+' ملاحظة قبل الطباعة <button type="button">التفاصيل</button><ul hidden>'+L.map(function(x){return'<li>'+x.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</li>'}).join('')+'</ul>';bar.querySelector('button').onclick=function(){var u=bar.querySelector('ul');u.hidden=!u.hidden}}
-new MutationObserver(function(){if(!q){q=1;setTimeout(scan,150)}}).observe(sc,{childList:true})}
+new MutationObserver(function(){if(!q){q=1;setTimeout(scan,150)}}).observe(sc,{childList:true});['input','click'].forEach(function(ev){document.addEventListener(ev,function(){if(!q){q=1;setTimeout(scan,250)}})})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go()})();<@@/script>
 
 <script>(function(){document.addEventListener('keydown',function(e){var tg=(e.target&&e.target.tagName)||'',typing=/INPUT|TEXTAREA|SELECT/.test(tg)||(e.target&&e.target.isContentEditable);
@@ -6838,7 +6840,7 @@ if(eb&&ta){
 :root{--bg:#F4F1EA;--card:#fff;--fg:#1c2530;--mut:#5d6b7a;--line:#cfd6de;--acc:#1B3A5C;--accfg:#fff;--head:#e4dfd2;--ok:#1d7a46;--bad:#c0392b;--last:#fff6d6}
 @media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--mut:#9aa8b7;--line:#35414e;--acc:#C9A24B;--accfg:#12263F;--head:#2a3542;--ok:#5ccf92;--bad:#ff8a7a;--last:#3a3517}}
 *{box-sizing:border-box}
-html,body{overflow-x:hidden}
+html,body{overflow-x:clip}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:Cairo,Tajawal,"Segoe UI",Tahoma,Arial,sans-serif;font-size:16px;line-height:1.5;padding:16px max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px))}
 .wrap{max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:16px;min-width:0}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
@@ -7122,7 +7124,7 @@ drawList();
 :root{--bg:#F4F1EA;--card:#fff;--fg:#1c2530;--mut:#5d6b7a;--line:#cfd6de;--acc:#1B3A5C;--accfg:#fff;--head:#e4dfd2;--ok:#1d7a46;--bad:#c0392b}
 @media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--mut:#9aa8b7;--line:#35414e;--acc:#C9A24B;--accfg:#12263F;--head:#2a3542;--ok:#5ccf92;--bad:#ff8a7a}}
 *{box-sizing:border-box}
-html,body{overflow-x:hidden}
+html,body{overflow-x:clip}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:Cairo,Tajawal,"Segoe UI",Tahoma,Arial,sans-serif;font-size:16px;line-height:1.5;padding:16px max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px))}
 .wrap{max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:16px;min-width:0}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
