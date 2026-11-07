@@ -33,9 +33,6 @@
 
 
 
-
-
-
 <style>
 :root{--bg:#F4F1EA;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1B3A5C;--accfg:#fff;--head:#e4dfd2}
 @media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#C9A24B;--accfg:#12263F;--head:#2a3542}}
@@ -69,7 +66,7 @@ body{display:flex;flex-direction:column}
 <button role="tab" data-k="xl" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg>رول إكسيل</button>
 <button role="tab" data-k="tools" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5 5L21 12.6 12.6 21a2 2 0 0 1-2.8 0L3 14.2a2 2 0 0 1 0-2.8L11.4 3a4 4 0 0 0 3.3 3.3z" transform="scale(.9) translate(1.3 1.3)"/></svg>أدوات</button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">استخراج PDF</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ٦١</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">استخراج PDF</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ٥٨</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
 <div id="sub" hidden></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -151,7 +148,7 @@ button.fx{padding:2px 9px;font-size:1.1rem;line-height:1.2}
 .sheet2 *{color:#000}
 .t2{font-size:17pt;font-weight:700;text-align:center;margin-bottom:3mm}
 table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:11pt;font-weight:700}
-table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}table.s2 td[data-f="m"],table.s2 td[data-f="ser"]{white-space:nowrap;word-break:keep-all;overflow-wrap:normal}
+table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}
 table.s2 th{background:#9DC3E6;font-size:9.5pt}
 table.s2 bdi{white-space:nowrap;font-size:10pt;letter-spacing:-.1pt}
 table.s2 td.sec{background:#FFE699;font-size:14pt}
@@ -502,7 +499,7 @@ function tableHtml(chunk,title){
    :'<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>');}
  return `<div class="pg"><h2>${esc(title)}</h2>
  <div class="meta"><div>محكمة /  ${esc($('court').value)}</div><div>دائرة /  ${esc($('dept').value)}</div><div>تاريخ الجلسة /  ${esc(dB(toAr(dShow($('sdate').value.trim()))))}</div></div>
- <table class="t"><colgroup><col style="width:9mm"><col style="width:16.5mm"><col style="width:23mm"><col style="width:18mm"><col style="width:10mm"><col style="width:17.5mm"></colgroup>
+ <table class="t"><colgroup><col style="width:7mm"><col style="width:16.5mm"><col style="width:25mm"><col style="width:18mm"><col style="width:10mm"><col style="width:17.5mm"></colgroup>
  <thead><tr><th rowspan="2">رقم<br>الرول</th><th rowspan="2">رقم<br>الدعوى</th><th colspan="2">الخصوم</th><th rowspan="2">الجلسة<br>السابقة</th><th rowspan="2">القرار</th></tr><tr><th>المدعى</th><th>المدعى عليه</th></tr></thead>
  <tbody>${body.join('')}</tbody></table></div>`;
 }
@@ -707,7 +704,7 @@ function exportXlsx(by){
 function exportDocx(by){
  const pages=pagesData(by),meta=metaLines();
  const mm=v=>Math.round(v*56.7);
- const W=[17.5,10,18,23,16.5,9].map(mm); // من الشمال لليمين
+ const W=[17.5,10,18,25,16.5,7].map(mm); // من الشمال لليمين
  const grid='<w:tblGrid>'+W.concat([mm(4)],W).map(w=>`<w:gridCol w:w="${w}"/>`).join('')+'</w:tblGrid>';
  const run=(t,sz,b)=>`<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/>${b?'<w:b/><w:bCs/>':''}<w:sz w:val="${sz}"/><w:szCs w:val="${sz}"/><w:rtl/></w:rPr><w:t xml:space="preserve">${X(t)}</w:t></w:r>`;
  const para=(t,sz,jc)=>{const lines=String(t).split('\n');return `<w:p><w:pPr><w:bidi/><w:spacing w:before="0" w:after="0" w:line="240" w:lineRule="auto"/><w:jc w:val="${jc}"/></w:pPr>${lines.map((l,i)=>(i?'<w:r><w:br/></w:r>':'')+run(l,sz,1)).join('')}</w:p>`};
@@ -997,7 +994,7 @@ button.fx{padding:2px 9px;font-size:1.1rem;line-height:1.2}
 .sheet2 *{color:#000}
 .t2{font-size:17pt;font-weight:700;text-align:center;margin-bottom:3mm}
 table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:11pt;font-weight:700}
-table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}table.s2 td[data-f="m"],table.s2 td[data-f="ser"]{white-space:nowrap;word-break:keep-all;overflow-wrap:normal}
+table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}
 table.s2 th{background:#9DC3E6;font-size:9.5pt}
 table.s2 bdi{white-space:nowrap;font-size:10pt;letter-spacing:-.1pt}
 table.s2 td.sec{background:#FFE699;font-size:14pt}
@@ -1357,7 +1354,7 @@ function tableHtml(chunk,title){
    :'<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>');}
  return `<div class="pg"><h2>${esc(title)}</h2>
  <div class="meta"><div>محكمة /  ${esc($('court').value)}</div><div>دائرة /  ${esc($('dept').value)}</div><div>تاريخ الجلسة /  ${esc(dB(toAr(dShow($('sdate').value.trim()))))}</div></div>
- <table class="t"><colgroup><col style="width:9mm"><col style="width:16.5mm"><col style="width:23mm"><col style="width:18mm"><col style="width:10mm"><col style="width:17.5mm"></colgroup>
+ <table class="t"><colgroup><col style="width:7mm"><col style="width:16.5mm"><col style="width:25mm"><col style="width:18mm"><col style="width:10mm"><col style="width:17.5mm"></colgroup>
  <thead><tr><th rowspan="2">رقم<br>الرول</th><th rowspan="2">رقم<br>الدعوى</th><th colspan="2">الخصوم</th><th rowspan="2">الجلسة<br>السابقة</th><th rowspan="2">القرار</th></tr><tr><th>المدعى</th><th>المدعى عليه</th></tr></thead>
  <tbody>${body.join('')}</tbody></table></div>`;
 }
@@ -1612,7 +1609,7 @@ function exportXlsx(by){
 function exportDocx(by){
  const pages=pagesData(by),meta=metaLines();
  const mm=v=>Math.round(v*56.7);
- const W=[17.5,10,18,23,16.5,9].map(mm); // من الشمال لليمين
+ const W=[17.5,10,18,25,16.5,7].map(mm); // من الشمال لليمين
  const grid='<w:tblGrid>'+W.concat([mm(4)],W).map(w=>`<w:gridCol w:w="${w}"/>`).join('')+'</w:tblGrid>';
  const run=(t,sz,b)=>`<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/>${b?'<w:b/><w:bCs/>':''}<w:sz w:val="${sz}"/><w:szCs w:val="${sz}"/><w:rtl/></w:rPr><w:t xml:space="preserve">${X(t)}</w:t></w:r>`;
  const para=(t,sz,jc)=>{const lines=String(t).split('\n');return `<w:p><w:pPr><w:bidi/><w:spacing w:before="0" w:after="0" w:line="240" w:lineRule="auto"/><w:jc w:val="${jc}"/></w:pPr>${lines.map((l,i)=>(i?'<w:r><w:br/></w:r>':'')+run(l,sz,1)).join('')}</w:p>`};
@@ -1882,7 +1879,7 @@ button.fx{padding:2px 9px;font-size:1.1rem;line-height:1.2}
 .sheet2 *{color:#000}
 .t2{font-size:17pt;font-weight:700;text-align:center;margin-bottom:3mm}
 table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:11pt;font-weight:700}
-table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}table.s2 td[data-f="m"],table.s2 td[data-f="ser"]{white-space:nowrap;word-break:keep-all;overflow-wrap:normal}
+table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}
 table.s2 th{background:#9DC3E6;font-size:9.5pt}
 table.s2 bdi{white-space:nowrap;font-size:10pt;letter-spacing:-.1pt}
 table.s2 td.sec{background:#FFE699;font-size:14pt}
@@ -2264,7 +2261,7 @@ function tableHtml(chunk,title){
    :'<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>');}
  return `<div class="pg"><h2>${esc(title)}</h2>
  <div class="meta"><div>محكمة /  ${esc($('court').value)}</div><div>دائرة /  ${esc($('dept').value)}</div><div>تاريخ الجلسة /  ${esc(dB(toAr(dShow($('sdate').value.trim()))))}</div></div>
- <table class="t"><colgroup><col style="width:9mm"><col style="width:16.5mm"><col style="width:23mm"><col style="width:18mm"><col style="width:10mm"><col style="width:17.5mm"></colgroup>
+ <table class="t"><colgroup><col style="width:7mm"><col style="width:16.5mm"><col style="width:25mm"><col style="width:18mm"><col style="width:10mm"><col style="width:17.5mm"></colgroup>
  <thead><tr><th rowspan="2">رقم<br>الرول</th><th rowspan="2">رقم<br>الدعوى</th><th colspan="2">الخصوم</th><th rowspan="2">الجلسة<br>السابقة</th><th rowspan="2">القرار</th></tr><tr><th>المدعى</th><th>المدعى عليه</th></tr></thead>
  <tbody>${body.join('')}</tbody></table></div>`;
 }
@@ -2523,7 +2520,7 @@ function exportXlsx(by){
 function exportDocx(by){
  const pages=pagesData(by),meta=metaLines();
  const mm=v=>Math.round(v*56.7);
- const W=[17.5,10,18,23,16.5,9].map(mm); // من الشمال لليمين
+ const W=[17.5,10,18,25,16.5,7].map(mm); // من الشمال لليمين
  const grid='<w:tblGrid>'+W.concat([mm(4)],W).map(w=>`<w:gridCol w:w="${w}"/>`).join('')+'</w:tblGrid>';
  const run=(t,sz,b)=>`<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/>${b?'<w:b/><w:bCs/>':''}<w:sz w:val="${sz}"/><w:szCs w:val="${sz}"/><w:rtl/></w:rPr><w:t xml:space="preserve">${X(t)}</w:t></w:r>`;
  const para=(t,sz,jc)=>{const lines=String(t).split('\n');return `<w:p><w:pPr><w:bidi/><w:spacing w:before="0" w:after="0" w:line="240" w:lineRule="auto"/><w:jc w:val="${jc}"/></w:pPr>${lines.map((l,i)=>(i?'<w:r><w:br/></w:r>':'')+run(l,sz,1)).join('')}</w:p>`};
@@ -4567,7 +4564,7 @@ body.big #bigbar{display:flex}
 .sheet2 *{color:#000}
 .t2{font-size:17pt;font-weight:700;text-align:center;margin-bottom:3mm}
 table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:11pt;font-weight:700}
-table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}table.s2 td[data-f="m"],table.s2 td[data-f="ser"]{white-space:nowrap;word-break:keep-all;overflow-wrap:normal}
+table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}
 table.s2 th{background:#9DC3E6;font-size:9.5pt}
 table.s2 bdi{white-space:nowrap;font-size:10pt;letter-spacing:-.1pt}
 table.s2 td.sec{background:#FFE699;font-size:14pt}
@@ -4664,27 +4661,15 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    <div class="fbar"><button id="clrf" type="button" class="sec" hidden>مسح كل الملفات</button></div>
   </div>
   <div>
-   <label for="q">بحث</label>
-   <input id="q" type="text" autocomplete="off" placeholder="رقم دعوى أو اسم">
-  </div>
-<style>details.cfg{border:1px solid var(--line);border-radius:10px;padding:0;background:var(--card)}details.cfg>summary{cursor:pointer;list-style:none;padding:10px 12px;font-weight:800;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}details.cfg>summary::-webkit-details-marker{display:none}details.cfg>summary .cs{font-weight:600;font-size:.82rem;opacity:.85}details.cfg>summary .cs b{color:#b45309}details.cfg[open]>summary{border-bottom:1px solid var(--line)}details.cfg>.cfgb{padding:10px 12px;display:flex;flex-direction:column;gap:12px}</style>
-<details id="cfgbox" class="cfg noprint"><summary><span>⚙ إعدادات</span><span id="cfgSum" style="display:contents"></span></summary><div class="cfgb">
-  <div>
    <label for="suff">نهايات أرقام الدعاوى</label>
    <div class="addrow"><input id="suff" type="text" dir="ltr" inputmode="numeric" placeholder="51"><button id="addsuf" type="button">إضافة</button></div>
    <div id="chips" class="chips"></div>
   </div>
+  <div>
+   <label for="q">بحث</label>
+   <input id="q" type="text" autocomplete="off" placeholder="رقم دعوى أو اسم">
+  </div>
   <details id="secbox"><summary style="font-weight:700;cursor:pointer;padding:4px 0">الأقسام</summary><div id="secs" style="display:flex;flex-direction:column;gap:6px;margin-top:8px"></div></details>
-  <details id="sesbox"><summary style="font-weight:700;cursor:pointer;padding:4px 0">الجلسات</summary><div id="stabs" class="noprint"></div></details>
-</div></details>
-<script>(function(){var d=document.getElementById('cfgbox'),o=document.getElementById('cfgSum');if(!d||!o)return;var q=0;function g(i){return document.getElementById(i)}
-function upd(){q=0;var p=[],ch=g('chips');var s=ch?[].map.call(ch.children,function(x){return x.textContent.replace(/[×✕x]/g,'').trim()}).filter(Boolean):[];p.push('النهايات: '+(s.length?s.join('، '):'لا يوجد'));
-var se=g('secs');if(se&&se.offsetParent!==null||(se&&se.closest('details'))){var cb=se.querySelectorAll('input[type=checkbox]');if(cb.length){var on=[].filter.call(cb,function(x){return x.checked}).length;p.push(on===cb.length?'كل الأقسام ✓':'<b>'+on+' من '+cb.length+' أقسام</b>')}}
-if(window.__sesLbl)p.push('جلسة '+window.__sesLbl);var c=g('court'),dp=g('dept');if(c&&dp&&g('cfgbox').dataset.cd){p.push((c.value||'—')+' · '+(dp.value||'—'))}
-o.innerHTML=p.map(function(x){return '<span class="cs">'+(/^</.test(x)?x:x.replace(/&/g,'&amp;').replace(/</g,'&lt;'))+'</span>'}).join('')}
-window.__cfgUpd=upd;function sch(){if(!q){q=1;setTimeout(upd,60)}}
-['chips','secs'].forEach(function(i){var e=g(i);if(e)new MutationObserver(sch).observe(e,{childList:true,subtree:true,characterData:true})});
-d.addEventListener('input',sch);d.addEventListener('change',sch);d.addEventListener('click',sch);upd();setTimeout(upd,400)})();<@@/script>
   <input id="sdate" type="hidden">
   <div class="actions">
    <button id="go" type="button">تطبيق</button>
@@ -4696,16 +4681,7 @@ d.addEventListener('input',sch);d.addEventListener('change',sch);d.addEventListe
  </div>
  <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><div id="edinf" hidden style="background:#12263F;color:#fff;border-radius:8px;padding:5px 8px;font-size:.78rem;line-height:1.6"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="eddone" type="button">تم</button></div></div></div>
   <div id="bigbar" class="noprint"><button id="bsm" type="button" class="sec" aria-label="تصغير">−</button><button id="blg" type="button" class="sec" aria-label="تكبير">+</button><span class="sp"></span><button id="bpr" type="button" class="sec">🖨 طباعة</button><button id="bcl" type="button">✕ إغلاق</button></div>
-  <style>
-#stabs,#ctabs{display:flex;gap:6px;overflow-x:auto;padding:6px 2px;margin:4px 0;scrollbar-width:thin}
-#ctabs{padding-top:0}
-#stabs button,#ctabs button{flex:none;white-space:nowrap;font:inherit;font-weight:700;border-radius:999px;padding:7px 14px;min-height:0;border:1.5px solid var(--acc);background:transparent;color:var(--acc);cursor:pointer}
-#ctabs button{font-size:.85rem;padding:5px 11px;border-width:1px}
-#stabs button.on,#ctabs button.on{background:var(--acc);color:#fff}
-#stabs button i,#ctabs button i{font-style:normal;opacity:.8;font-weight:600;margin-inline-start:5px;font-size:.85em}
-@media screen{.sheet2.xh,.sheet2 .xh{display:none!important}}
-</style>
-<div id="view"><div id="scaler"></div></div>
+  <div id="view"><div id="scaler"></div></div>
 </div>
 <script>
 
@@ -5131,7 +5107,7 @@ function tableHtml(chunk,title){
    :'<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>');}
  return `<div class="pg"><h2>${esc(title)}</h2>
  <div class="meta"><div>محكمة /  ${esc($('court').value)}</div><div>دائرة /  ${esc($('dept').value)}</div><div>تاريخ الجلسة /  ${esc(dB(toAr(dShow($('sdate').value.trim()))))}</div></div>
- <table class="t"><colgroup><col style="width:9mm"><col style="width:16.5mm"><col style="width:23mm"><col style="width:18mm"><col style="width:10mm"><col style="width:17.5mm"></colgroup>
+ <table class="t"><colgroup><col style="width:7mm"><col style="width:16.5mm"><col style="width:25mm"><col style="width:18mm"><col style="width:10mm"><col style="width:17.5mm"></colgroup>
  <thead><tr><th rowspan="2">رقم<br>الرول</th><th rowspan="2">رقم<br>الدعوى</th><th colspan="2">الخصوم</th><th rowspan="2">الجلسة<br>السابقة</th><th rowspan="2">القرار</th></tr><tr><th>المدعى</th><th>المدعى عليه</th></tr></thead>
  <tbody>${body.join('')}</tbody></table></div>`;
 }
@@ -5211,36 +5187,9 @@ function build(){
  closeEd();clearOne();
  $('scaler').innerHTML=res.map((s,i)=>{CURD=s.date;CURS=i;return sheetHtml(s.by)}).join('');CURD=null;
  window.__result={sessions:res,by:res[0].by,total};$('exp').hidden=false;drawBulk();
- drawSesbar(res);drawTabs(res);
+ drawSesbar(res);
  say(`${toAr(kept)} دعوى من ${toAr(total)} في ${toAr(res.length)} جلسة`,'ok');fit();
 }
-function drawTabs(res){
- let sb=$('stabs'),cb=$('ctabs');
- if(!cb){cb=document.createElement('div');cb.id='ctabs';cb.className='noprint';const v=$('view');v.parentNode.insertBefore(cb,v)}
- const sheets=[...$('scaler').querySelectorAll(':scope>.sheet2')];
- sheets.forEach((sh,i)=>{const ks=Object.keys(res[i].by);let j=0;[...sh.children].forEach(el=>{if(el.tagName==='TABLE'){el.dataset.sk=ks[j]||'';j++}})});
- let si=res.findIndex(s=>(s.date||'')===TABSEL.d);if(si<0)si=0;
- const sh=(i,sk)=>{
-  TABSEL.d=res[i].date||'';TABSEL.k=sk;
-  sheets.forEach((x,n)=>x.classList.toggle('xh',n!==i));
-  const ks=Object.keys(res[i].by);
-  if(sk!=='*'&&ks.indexOf(sk)<0)sk=TABSEL.k=ks[0]||'*';
-  const sheet=sheets[i];const kids=[...sheet.children];
-  kids.forEach(el=>{if(el.tagName==='TABLE')el.classList.toggle('xh',sk!=='*'&&el.dataset.sk!==sk);else if(el.classList.contains('gap2'))el.classList.toggle('xh',sk!=='*')});
-  sb.innerHTML=res.map((s,n)=>{const c=Object.values(s.by).reduce((a,r)=>a+r.length,0);return `<button type="button" data-i="${n}" class="${n===i?'on':''}">${esc(dB(toAr(dShow(s.date||'بدون تاريخ'))))}<i>${toAr(c)}</i></button>`}).join('');
-  cb.hidden=ks.length<2;
-  cb.innerHTML=ks.length<2?'':ks.map(k=>`<button type="button" data-k="${esc(k)}" class="${k===sk?'on':''}">${esc(k)}<i>${toAr(res[i].by[k].length)}</i></button>`).join('')+`<button type="button" data-k="*" class="${sk==='*'?'on':''}">الكل</button>`;
-  sb.hidden=res.length<2&&false;
-  window.__sesLbl=res[i].date?dB(toAr(dShow(res[i].date))):'';try{const m=document.querySelector('#sesbox summary');if(m)m.innerHTML='الجلسات'+(res[i].date?' · <bdi>'+dB(toAr(dShow(res[i].date)))+'</bdi>':'')}catch(e){}try{window.__cfgUpd&&window.__cfgUpd()}catch(e){}
-  try{fit()}catch(e){}
- };
- sb.onclick=e=>{const x=e.target.closest('button[data-i]');if(!x)return;const i=+x.dataset.i;sh(i,TABSEL.k==='*'?'*':(Object.keys(res[i].by).find(k=>res[i].by[k].length>=5)||Object.keys(res[i].by)[0]))};
- cb.onclick=e=>{const x=e.target.closest('button[data-k]');if(!x)return;sh(si2(),x.dataset.k)};
- const si2=()=>{const n=res.findIndex(s=>(s.date||'')===TABSEL.d);return n<0?0:n};
- {const K=Object.keys(res[si].by);sh(si,TABSEL.k&&TABSEL.d===(res[si].date||'')?TABSEL.k:(K.find(k=>res[si].by[k].length>=5)||K[0]||'*'))}
-}
-const TABSEL={d:'',k:''};
-function hideTabs(){const a=$('stabs'),b=$('ctabs');if(a){a.hidden=true;a.innerHTML=''}if(b){b.hidden=true;b.innerHTML=''}}
 function drawSesbar(res){
  const b=$('sesbar');
  b.innerHTML='<button type="button" class="sec" data-p="all">🖨 طباعة الكل</button>'+res.map((s,i)=>{const n=Object.values(s.by).reduce((t,a)=>t+a.length,0);
@@ -5303,7 +5252,7 @@ function sessionsOf(){
  }
  return [...m.values()].sort((a,b)=>dateKey(a.date)-dateKey(b.date));
 }
-function clearResult(){hideTabs();window.__result=null;try{$('bulk').hidden=true}catch(e){}$('scaler').innerHTML='';$('exp').hidden=true;$('sesbar').hidden=true;$('sesbar').innerHTML='';clearOne();try{closeEd()}catch(e){}$('view').style.height='auto'}
+function clearResult(){window.__result=null;try{$('bulk').hidden=true}catch(e){}$('scaler').innerHTML='';$('exp').hidden=true;$('sesbar').hidden=true;$('sesbar').innerHTML='';clearOne();try{closeEd()}catch(e){}$('view').style.height='auto'}
 function renderFiles(){
  try{gsSync()}catch(e){console.error(e)}
  drawSecs();
@@ -5428,7 +5377,7 @@ function exportXlsx(by){
 function exportDocx(by){
  const pages=pagesData(by),meta=metaLines();
  const mm=v=>Math.round(v*56.7);
- const W=[17.5,10,18,23,16.5,9].map(mm); // من الشمال لليمين
+ const W=[17.5,10,18,25,16.5,7].map(mm); // من الشمال لليمين
  const grid='<w:tblGrid>'+W.concat([mm(4)],W).map(w=>`<w:gridCol w:w="${w}"/>`).join('')+'</w:tblGrid>';
  const run=(t,sz,b)=>`<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/>${b?'<w:b/><w:bCs/>':''}<w:sz w:val="${sz}"/><w:szCs w:val="${sz}"/><w:rtl/></w:rPr><w:t xml:space="preserve">${X(t)}</w:t></w:r>`;
  const para=(t,sz,jc)=>{const lines=String(t).split('\n');return `<w:p><w:pPr><w:bidi/><w:spacing w:before="0" w:after="0" w:line="240" w:lineRule="auto"/><w:jc w:val="${jc}"/></w:pPr>${lines.map((l,i)=>(i?'<w:r><w:br/></w:r>':'')+run(l,sz,1)).join('')}</w:p>`};
@@ -5575,7 +5524,7 @@ function tableHtml2(kind,rows,hd,hn){
  rows.forEach(fxApply);
  const cols=hd?['ser','m','no','yr','pl','df','prev','next'].filter(()=>true):null;
  const showDec=rows.some(r=>String(r.dec||'').trim()),showNext=rows.some(r=>String(r.next||'').trim());
- const W={ser:4.5,m:7.5,no:10,yr:5,pl:13,df:11,prev:12,dec:9,next:12,act:17};
+ const W={ser:5,m:5,no:10,yr:5,pl:13,df:11,prev:12,dec:9,next:12,act:17};
  const ks=['ser','m','no','yr','pl','df','prev'].concat(showDec?['dec']:[]).concat(showNext?['next']:[]);
  const tot=ks.reduce((a,k)=>a+W[k],0)+W.act;
  const cg='<colgroup>'+ks.map(k=>`<col style="width:${(W[k]*100/tot).toFixed(2)}%">`).join('')+`<col class="actc" style="width:${(W.act*100/tot).toFixed(2)}%"></colgroup>`;
@@ -5816,7 +5765,7 @@ button.fx{padding:2px 9px;font-size:1.1rem;line-height:1.2}
 .sheet2 *{color:#000}
 .t2{font-size:17pt;font-weight:700;text-align:center;margin-bottom:3mm}
 table.s2{width:100%;table-layout:fixed;border-collapse:collapse;direction:rtl;font-size:11pt;font-weight:700}
-table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}table.s2 td[data-f="m"],table.s2 td[data-f="ser"]{white-space:nowrap;word-break:keep-all;overflow-wrap:normal}
+table.s2 td,table.s2 th{border:.3mm solid #000;text-align:center;vertical-align:middle;padding:1.6mm .8mm;word-break:break-word}
 table.s2 th{background:#9DC3E6;font-size:9.5pt}
 table.s2 bdi{white-space:nowrap;font-size:10pt;letter-spacing:-.1pt}
 table.s2 td.sec{background:#FFE699;font-size:14pt}
@@ -5938,27 +5887,15 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    <div class="fbar"><button id="clrf" type="button" class="sec" hidden>مسح كل الملفات</button></div>
   </div>
   <div>
-   <label for="q">بحث</label>
-   <input id="q" type="text" autocomplete="off" placeholder="رقم دعوى أو اسم">
-  </div>
-<style>details.cfg{border:1px solid var(--line);border-radius:10px;padding:0;background:var(--card)}details.cfg>summary{cursor:pointer;list-style:none;padding:10px 12px;font-weight:800;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}details.cfg>summary::-webkit-details-marker{display:none}details.cfg>summary .cs{font-weight:600;font-size:.82rem;opacity:.85}details.cfg>summary .cs b{color:#b45309}details.cfg[open]>summary{border-bottom:1px solid var(--line)}details.cfg>.cfgb{padding:10px 12px;display:flex;flex-direction:column;gap:12px}</style>
-<details id="cfgbox" class="cfg noprint"><summary><span>⚙ إعدادات</span><span id="cfgSum" style="display:contents"></span></summary><div class="cfgb">
-  <div>
    <label for="suff">نهايات أرقام الدعاوى</label>
    <div class="addrow"><input id="suff" type="text" dir="ltr" inputmode="numeric" placeholder="51"><button id="addsuf" type="button">إضافة</button></div>
    <div id="chips" class="chips"></div>
   </div>
+  <div>
+   <label for="q">بحث</label>
+   <input id="q" type="text" autocomplete="off" placeholder="رقم دعوى أو اسم">
+  </div>
   <details id="secbox"><summary style="font-weight:700;cursor:pointer;padding:4px 0">الأقسام</summary><div id="secs" style="display:flex;flex-direction:column;gap:6px;margin-top:8px"></div></details>
-  <details id="sesbox"><summary style="font-weight:700;cursor:pointer;padding:4px 0">الجلسات</summary><div id="stabs" class="noprint"></div></details>
-</div></details>
-<script>(function(){var d=document.getElementById('cfgbox'),o=document.getElementById('cfgSum');if(!d||!o)return;var q=0;function g(i){return document.getElementById(i)}
-function upd(){q=0;var p=[],ch=g('chips');var s=ch?[].map.call(ch.children,function(x){return x.textContent.replace(/[×✕x]/g,'').trim()}).filter(Boolean):[];p.push('النهايات: '+(s.length?s.join('، '):'لا يوجد'));
-var se=g('secs');if(se&&se.offsetParent!==null||(se&&se.closest('details'))){var cb=se.querySelectorAll('input[type=checkbox]');if(cb.length){var on=[].filter.call(cb,function(x){return x.checked}).length;p.push(on===cb.length?'كل الأقسام ✓':'<b>'+on+' من '+cb.length+' أقسام</b>')}}
-if(window.__sesLbl)p.push('جلسة '+window.__sesLbl);var c=g('court'),dp=g('dept');if(c&&dp&&g('cfgbox').dataset.cd){p.push((c.value||'—')+' · '+(dp.value||'—'))}
-o.innerHTML=p.map(function(x){return '<span class="cs">'+(/^</.test(x)?x:x.replace(/&/g,'&amp;').replace(/</g,'&lt;'))+'</span>'}).join('')}
-window.__cfgUpd=upd;function sch(){if(!q){q=1;setTimeout(upd,60)}}
-['chips','secs'].forEach(function(i){var e=g(i);if(e)new MutationObserver(sch).observe(e,{childList:true,subtree:true,characterData:true})});
-d.addEventListener('input',sch);d.addEventListener('change',sch);d.addEventListener('click',sch);upd();setTimeout(upd,400)})();<@@/script>
   <input id="sdate" type="hidden">
   <details id="clsbox"><summary><span>تصنيف الأحكام</span><span id="clsMini"></span></summary>
    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
@@ -5979,16 +5916,7 @@ d.addEventListener('input',sch);d.addEventListener('change',sch);d.addEventListe
  </div>
  <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><div id="edinf" hidden style="background:#12263F;color:#fff;border-radius:8px;padding:5px 8px;font-size:.78rem;line-height:1.6"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="eddone" type="button">تم</button></div></div></div>
   <div id="bigbar" class="noprint"><button id="bsm" type="button" class="sec" aria-label="تصغير">−</button><button id="blg" type="button" class="sec" aria-label="تكبير">+</button><span class="sp"></span><button id="bpr" type="button" class="sec">🖨 طباعة</button><button id="bcl" type="button">✕ إغلاق</button></div>
-  <style>
-#stabs,#ctabs{display:flex;gap:6px;overflow-x:auto;padding:6px 2px;margin:4px 0;scrollbar-width:thin}
-#ctabs{padding-top:0}
-#stabs button,#ctabs button{flex:none;white-space:nowrap;font:inherit;font-weight:700;border-radius:999px;padding:7px 14px;min-height:0;border:1.5px solid var(--acc);background:transparent;color:var(--acc);cursor:pointer}
-#ctabs button{font-size:.85rem;padding:5px 11px;border-width:1px}
-#stabs button.on,#ctabs button.on{background:var(--acc);color:#fff}
-#stabs button i,#ctabs button i{font-style:normal;opacity:.8;font-weight:600;margin-inline-start:5px;font-size:.85em}
-@media screen{.sheet2.xh,.sheet2 .xh{display:none!important}}
-</style>
-<div id="view"><div id="scaler"></div></div>
+  <div id="view"><div id="scaler"></div></div>
 </div>
 <script>
 
@@ -6410,7 +6338,7 @@ function tableHtml(chunk,title){
    :'<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>');}
  return `<div class="pg"><h2>${esc(title)}</h2>
  <div class="meta"><div>محكمة /  ${esc($('court').value)}</div><div>دائرة /  ${esc($('dept').value)}</div><div>تاريخ الجلسة /  ${esc(dB(toAr(dShow($('sdate').value.trim()))))}</div></div>
- <table class="t"><colgroup><col style="width:9mm"><col style="width:16.5mm"><col style="width:23mm"><col style="width:18mm"><col style="width:10mm"><col style="width:17.5mm"></colgroup>
+ <table class="t"><colgroup><col style="width:7mm"><col style="width:16.5mm"><col style="width:25mm"><col style="width:18mm"><col style="width:10mm"><col style="width:17.5mm"></colgroup>
  <thead><tr><th rowspan="2">رقم<br>الرول</th><th rowspan="2">رقم<br>الدعوى</th><th colspan="2">الخصوم</th><th rowspan="2">الجلسة<br>السابقة</th><th rowspan="2">القرار</th></tr><tr><th>المدعى</th><th>المدعى عليه</th></tr></thead>
  <tbody>${body.join('')}</tbody></table></div>`;
 }
@@ -6496,36 +6424,9 @@ function build(){
  closeEd();clearOne();
  $('scaler').innerHTML=res.map((s,i)=>{CURD=s.date;CURS=i;return sheetHtml(s.by)}).join('');CURD=null;
  window.__result={sessions:res,by:res[0].by,total};$('exp').hidden=false;drawCls(res);
- drawSesbar(res);drawTabs(res);
+ drawSesbar(res);
  say(`${toAr(kept)} دعوى من ${toAr(total)} في ${toAr(res.length)} جلسة`,'ok');fit();
 }
-function drawTabs(res){
- let sb=$('stabs'),cb=$('ctabs');
- if(!cb){cb=document.createElement('div');cb.id='ctabs';cb.className='noprint';const v=$('view');v.parentNode.insertBefore(cb,v)}
- const sheets=[...$('scaler').querySelectorAll(':scope>.sheet2')];
- sheets.forEach((sh,i)=>{const ks=Object.keys(res[i].by);let j=0;[...sh.children].forEach(el=>{if(el.tagName==='TABLE'){el.dataset.sk=ks[j]||'';j++}})});
- let si=res.findIndex(s=>(s.date||'')===TABSEL.d);if(si<0)si=0;
- const sh=(i,sk)=>{
-  TABSEL.d=res[i].date||'';TABSEL.k=sk;
-  sheets.forEach((x,n)=>x.classList.toggle('xh',n!==i));
-  const ks=Object.keys(res[i].by);
-  if(sk!=='*'&&ks.indexOf(sk)<0)sk=TABSEL.k=ks[0]||'*';
-  const sheet=sheets[i];const kids=[...sheet.children];
-  kids.forEach(el=>{if(el.tagName==='TABLE')el.classList.toggle('xh',sk!=='*'&&el.dataset.sk!==sk);else if(el.classList.contains('gap2'))el.classList.toggle('xh',sk!=='*')});
-  sb.innerHTML=res.map((s,n)=>{const c=Object.values(s.by).reduce((a,r)=>a+r.length,0);return `<button type="button" data-i="${n}" class="${n===i?'on':''}">${esc(dB(toAr(dShow(s.date||'بدون تاريخ'))))}<i>${toAr(c)}</i></button>`}).join('');
-  cb.hidden=ks.length<2;
-  cb.innerHTML=ks.length<2?'':ks.map(k=>`<button type="button" data-k="${esc(k)}" class="${k===sk?'on':''}">${esc(k)}<i>${toAr(res[i].by[k].length)}</i></button>`).join('')+`<button type="button" data-k="*" class="${sk==='*'?'on':''}">الكل</button>`;
-  sb.hidden=res.length<2&&false;
-  window.__sesLbl=res[i].date?dB(toAr(dShow(res[i].date))):'';try{const m=document.querySelector('#sesbox summary');if(m)m.innerHTML='الجلسات'+(res[i].date?' · <bdi>'+dB(toAr(dShow(res[i].date)))+'</bdi>':'')}catch(e){}try{window.__cfgUpd&&window.__cfgUpd()}catch(e){}
-  try{fit()}catch(e){}
- };
- sb.onclick=e=>{const x=e.target.closest('button[data-i]');if(!x)return;const i=+x.dataset.i;sh(i,TABSEL.k==='*'?'*':(Object.keys(res[i].by).find(k=>res[i].by[k].length>=5)||Object.keys(res[i].by)[0]))};
- cb.onclick=e=>{const x=e.target.closest('button[data-k]');if(!x)return;sh(si2(),x.dataset.k)};
- const si2=()=>{const n=res.findIndex(s=>(s.date||'')===TABSEL.d);return n<0?0:n};
- {const K=Object.keys(res[si].by);sh(si,TABSEL.k&&TABSEL.d===(res[si].date||'')?TABSEL.k:(K.find(k=>res[si].by[k].length>=5)||K[0]||'*'))}
-}
-const TABSEL={d:'',k:''};
-function hideTabs(){const a=$('stabs'),b=$('ctabs');if(a){a.hidden=true;a.innerHTML=''}if(b){b.hidden=true;b.innerHTML=''}}
 function drawSesbar(res){
  const b=$('sesbar');
  b.innerHTML=res.map((s,i)=>{const n=Object.values(s.by).reduce((t,a)=>t+a.length,0);
@@ -6588,7 +6489,7 @@ function sessionsOf(){
  }
  return [...m.values()].sort((a,b)=>dateKey(a.date)-dateKey(b.date));
 }
-function clearResult(){hideTabs();window.__result=null;try{drawCls(null)}catch(e){}$('scaler').innerHTML='';$('exp').hidden=true;$('sesbar').hidden=true;$('sesbar').innerHTML='';clearOne();try{closeEd()}catch(e){}$('view').style.height='auto'}
+function clearResult(){window.__result=null;try{drawCls(null)}catch(e){}$('scaler').innerHTML='';$('exp').hidden=true;$('sesbar').hidden=true;$('sesbar').innerHTML='';clearOne();try{closeEd()}catch(e){}$('view').style.height='auto'}
 function renderFiles(){
  try{gsSync()}catch(e){console.error(e)}
  drawSecs();
@@ -6712,7 +6613,7 @@ function exportXlsx(by){
 function exportDocx(by){
  const pages=pagesData(by),meta=metaLines();
  const mm=v=>Math.round(v*56.7);
- const W=[17.5,10,18,23,16.5,9].map(mm); // من الشمال لليمين
+ const W=[17.5,10,18,25,16.5,7].map(mm); // من الشمال لليمين
  const grid='<w:tblGrid>'+W.concat([mm(4)],W).map(w=>`<w:gridCol w:w="${w}"/>`).join('')+'</w:tblGrid>';
  const run=(t,sz,b)=>`<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/>${b?'<w:b/><w:bCs/>':''}<w:sz w:val="${sz}"/><w:szCs w:val="${sz}"/><w:rtl/></w:rPr><w:t xml:space="preserve">${X(t)}</w:t></w:r>`;
  const para=(t,sz,jc)=>{const lines=String(t).split('\n');return `<w:p><w:pPr><w:bidi/><w:spacing w:before="0" w:after="0" w:line="240" w:lineRule="auto"/><w:jc w:val="${jc}"/></w:pPr>${lines.map((l,i)=>(i?'<w:r><w:br/></w:r>':'')+run(l,sz,1)).join('')}</w:p>`};
