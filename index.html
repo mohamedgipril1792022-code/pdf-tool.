@@ -50,6 +50,8 @@
 
 
 
+
+
 <style>
 :root{--bg:#F4F1EA;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1B3A5C;--accfg:#fff;--head:#e4dfd2}
 @media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#C9A24B;--accfg:#12263F;--head:#2a3542}}
@@ -83,7 +85,7 @@ body{display:flex;flex-direction:column}
 <button role="tab" data-k="xl" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg>رول إكسيل</button>
 <button role="tab" data-k="tools" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5 5L21 12.6 12.6 21a2 2 0 0 1-2.8 0L3 14.2a2 2 0 0 1 0-2.8L11.4 3a4 4 0 0 0 3.3 3.3z" transform="scale(.9) translate(1.3 1.3)"/></svg>أدوات</button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">استخراج PDF</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ٧٥</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🔍 تشخيص</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">استخراج PDF</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ٧٧</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🔍 تشخيص</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
 <div id="sub" hidden></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -2917,6 +2919,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     <button class="btn alt" id="topicBtn" disabled onclick="topicAll(this)">تصنيف بالموضوع</button>
   </div>
 </header>
+<div id="pipeRow" class="hrow" hidden style="padding:6px 10px;background:#7a1f1f"><span style="color:#fff;font-size:13px;font-weight:700;flex:1">⚙ تشغيل تلقائي: تقسيم ← أرقام ← تصنيف</span><button class="btn" id="pipeStopBtn" type="button" style="background:#fff;color:#7a1f1f">⏹ إيقاف</button></div>
 <div id="grid" class="shut"></div>
 
 <div id="panel">
@@ -2981,7 +2984,7 @@ const freeC=c=>{try{c.width=c.height=0}catch(e){}};
 let pdf=null,srcFile=null,N=0,ratio=1.414,starts=new Set([1]),skip=new Set();
 let names={},groups=[],pageGroup={},srcBytes=null;
 // ===== عدة ملفات: كل ملف له حالته (علامات البداية والتجاهل والأسماء) والمتغيرات فوق هي بتاعة الملف الحالي =====
-const F=[];let cur=-1,expBusy=false;
+const F=[];let cur=-1,expBusy=false;let pipeBusy=false,pipeStop=false;
 function ctxGet(st){st.starts=starts;st.skip=skip;st.names=names;st.srcBytes=srcBytes}
 function ctxSet(st){pdf=st.pdf;srcFile=st.srcFile;N=st.N;ratio=st.ratio;starts=st.starts;skip=st.skip;names=st.names;srcBytes=st.srcBytes;cropCache=st.cropCache}
 function saveCur(){if(cur>=0&&F[cur])ctxGet(F[cur])}
@@ -3012,9 +3015,17 @@ function drawFiles(){
 function totalGroups(){return F.reduce((t,st,i)=>t+(i===cur?groups.length:calc(st.N,st.skip,st.starts).length),0)}
 const io=new IntersectionObserver(es=>{es.forEach(e=>{const d=e.target;if(e.isIntersecting){if(!d._drawn&&!d._drawing){d._drawing=true;drawThumb(d).then(()=>{d._drawn=true}).catch(()=>{}).finally(()=>{d._drawing=false})}}else if(d._drawn){d._drawn=false;const c=d.querySelector('canvas');if(c){c.width=12;c.height=Math.max(12,Math.round(12*ratio))}}})},{rootMargin:'500px'});
 
-$('file').onchange=async e=>{
-  const fl=[...e.target.files];e.target.value='';if(!fl.length)return;
-  if(autoBusy||expBusy){$('status').textContent='استنى لحد ما العملية الحالية تخلص';return}
+const FDB=(()=>{let p=null;const open=()=>p||(p=new Promise(r=>{try{const q=indexedDB.open('sp_files',1);q.onupgradeneeded=()=>q.result.createObjectStore('f');q.onsuccess=()=>r(q.result);q.onerror=()=>r(null);q.onblocked=()=>r(null)}catch(e){r(null)}}));
+ const key=f=>f.name+'|'+f.size+'|'+f.lastModified;
+ const all=async()=>{const db=await open();if(!db)return[];return new Promise(r=>{try{const q=db.transaction('f').objectStore('f').openCursor(),o=[];q.onsuccess=()=>{const c=q.result;if(c){o.push({k:c.key,f:c.value.f,t:c.value.t||0});c.continue()}else r(o)};q.onerror=()=>r([])}catch(e){r([])}})};
+ return {all:async()=>(await all()).sort((a,b)=>a.t-b.t),
+  async put(f){const db=await open();if(!db)return;try{db.transaction('f','readwrite').objectStore('f').put({f,t:Date.now()},key(f))}catch(e){}
+   try{const L=(await all()).sort((a,b)=>b.t-a.t).slice(8);if(L.length){const st=db.transaction('f','readwrite').objectStore('f');L.forEach(x=>st.delete(x.k))}}catch(e){}},
+  async del(f){const db=await open();if(!db)return;try{db.transaction('f','readwrite').objectStore('f').delete(key(f))}catch(e){}}}})();
+$('file').onchange=e=>{const fl=[...e.target.files];e.target.value='';if(fl.length)addFiles(fl,false)};
+async function addFiles(fl,restored){
+  if(!fl.length)return;
+  if(autoBusy||expBusy||pipeBusy){$('status').textContent='استنى لحد ما العملية الحالية تخلص';return}
   $('status').textContent='جاري الفتح...';
   let first=-1,bad=[],dup=0,fk=0;
   for(const f of fl){
@@ -3023,7 +3034,9 @@ $('file').onchange=async e=>{
     try{
       const doc=await pdfjsLib.getDocument({url:URL.createObjectURL(f)}).promise;
       const p1=await doc.getPage(1),v=p1.getViewport({scale:1});
-      F.push({srcFile:f,pdf:doc,N:doc.numPages,ratio:v.height/v.width,starts:new Set([1]),skip:new Set(),names:{},srcBytes:null,cropCache:loadSaved(f,doc.numPages)});
+      const mk=loadMarks(f,doc.numPages);
+      F.push({srcFile:f,pdf:doc,N:doc.numPages,ratio:v.height/v.width,starts:mk?mk.s:new Set([1]),skip:mk?mk.k:new Set(),names:mk?mk.nm:{},srcBytes:null,cropCache:loadSaved(f,doc.numPages)});
+      if(!restored)FDB.put(f);
       if(first<0)first=F.length-1;
     }catch(err){bad.push(f.name)}
   }
@@ -3033,12 +3046,14 @@ $('file').onchange=async e=>{
   if(bad.length)msg.push('تعذّر فتح: '+bad.join('، '));
   if(dup&&first<0&&!bad.length)msg.push('الملف ده مضاف قبل كده');
   if(msg.length)$('status').textContent=msg.join(' ');
-};
+  if(!restored&&first>=0)setTimeout(pipeRun,300);
+}
 $('fsel').onchange=e=>{if(autoBusy||expBusy){drawFiles();return}switchTo(+e.target.value)};
 $('rmf').onclick=()=>{
   if(autoBusy||expBusy||cur<0)return;
   if(!confirm('حذف الملف ده من القائمة؟ (علاماته وأسماؤه هتتمسح)'))return;
   try{F[cur].pdf.destroy()}catch(e){}
+  FDB.del(F[cur].srcFile);
   F.splice(cur,1);cur=-1;
   if(F.length){switchTo(Math.min(+$('fsel').value,F.length-1))}
   else{
@@ -3113,12 +3128,23 @@ let cropCache={};
 // مناطق القص كنسب من الصفحة: [x0,x1,y0,y1]
 const CROP_NUM=[.68,.98,.012,.14];   // الرقم المكتوب بخط اليد (أعلى اليمين)
 const CROP_CASE_FALLBACK=[.06,.97,.28,.5];  // لو التحديد التلقائي فشل: من المقامة من لحد الوقائع (تقريبي)
+const CDB=(()=>{let p=null;const open=()=>p||(p=new Promise(r=>{try{const q=indexedDB.open('sp_crops',1);q.onupgradeneeded=()=>q.result.createObjectStore('c');q.onsuccess=()=>r(q.result);q.onerror=()=>r(null);q.onblocked=()=>r(null)}catch(e){r(null)}}));
+ return {async get(k){const db=await open();if(!db)return null;return new Promise(r=>{try{const q=db.transaction('c').objectStore('c').get(k);q.onsuccess=()=>r(q.result||null);q.onerror=()=>r(null)}catch(e){r(null)}})},
+  async put(k,v){const db=await open();if(!db)return;try{db.transaction('c','readwrite').objectStore('c').put(v,k)}catch(e){}},
+  async prune(){const db=await open();if(!db)return;try{const lim=Date.now()-30*864e5,tx=db.transaction('c','readwrite'),q=tx.objectStore('c').openCursor();q.onsuccess=()=>{const c=q.result;if(!c)return;if(!c.value||!(c.value.t>lim))c.delete();c.continue()}}catch(e){}}}})();
+setTimeout(()=>CDB.prune(),6000);
 function cropNum(n){
   const cc=cropCache,doc=pdf;
   if(cc[n])return Promise.resolve(cc[n]);
   const pk='pc'+n;
   if(cc[pk])return cc[pk];
-  return cc[pk]=qRun(()=>cropNum0(n,cc,doc)).finally(()=>{delete cc[pk]});
+  const fk=srcFile?'v1|'+saveKey(srcFile,N)+'|'+n:null;
+  return cc[pk]=(async()=>{
+    if(fk){const h=await CDB.get(fk);if(h&&h.num&&h.cas)return cc[n]={num:h.num,cas:h.cas}}
+    const r=await qRun(()=>cropNum0(n,cc,doc));
+    if(fk)CDB.put(fk,{num:r.num,cas:r.cas,t:Date.now()});
+    return r;
+  })().finally(()=>{delete cc[pk]});
 }
 async function cropNum0(n,cc,doc){
   if(cc[n])return cc[n];
@@ -3466,6 +3492,20 @@ function snVote(list){
 
 // الأحكام الممسوحة (مفيهاش نص مخزّن): الرقم بيتقرا من ترويسة صفحات التكملة "تابع الحكم في الدعوى رقم ..."
 let hdrChain=Promise.resolve(),hdrPend=0,hdrDone=0;
+const HK=(()=>{let co=false;try{co=matchMedia('(pointer:coarse)').matches}catch(e){}const hc=navigator.hardwareConcurrency||4;return co?Math.min(3,Math.max(2,hc-2)):Math.min(4,Math.max(2,hc-1))})();
+let hdrAct=0;const hdrQ=[];
+function hdrSlot(f){return new Promise((res,rej)=>{hdrQ.push({f,res,rej});hdrPump()})}
+function hdrPump(){while(hdrAct<HK&&hdrQ.length){const j=hdrQ.shift();hdrAct++;j.f().then(j.res,j.rej).finally(()=>{hdrAct--;hdrPump()})}}
+// تحليل الصورة في Worker (بيمنع تهنيج الشاشة)؛ لو الـ Worker مش شغال بنحلل في الصفحة نفسها
+const SNW=(()=>{let ws=null,id=0,rr=0,dead=false;const pend={};
+ function init(){try{
+  const names=['snMedian','snInk','snUnder','snMorph','snComps','snWeights','snClassify','snReadRun','snHeaderTry','snReadHeader','snResample','snPlausible','snScore','snReadHeaderMS','snLabel','snReadLines','snReadPageLine','snVote'];
+  const code='const SN='+JSON.stringify(SN)+';const SN_TPL='+JSON.stringify(SN_TPL)+';const SN_T=SN_TPL.map(t=>({d:t.d,a:t.a,b:Float32Array.from(t.b,ch=>(+ch)/9)}));const SN_K='+JSON.stringify(SN_K)+';const SN_KS='+JSON.stringify(SN_KS)+';\n'+names.map(n=>window[n].toString()).join('\n')+'\nonmessage=e=>{const d=e.data;let r=null;try{r=snReadHeaderMS(d.gr,d.W,d.H)}catch(x){}postMessage({id:d.id,r:r})};';
+  const url=URL.createObjectURL(new Blob([code],{type:'text/javascript'}));
+  ws=[0,1].map(()=>{const w=new Worker(url);w.onmessage=e=>{const f=pend[e.data.id];if(f){delete pend[e.data.id];f(e.data.r)}};w.onerror=()=>{dead=true;Object.keys(pend).forEach(k=>{const f=pend[k];delete pend[k];f(undefined)})};return w});
+ }catch(e){dead=true}}
+ return {run(gr,W,H){if(dead)return Promise.resolve(undefined);if(!ws)init();if(dead)return Promise.resolve(undefined);
+  return new Promise(res=>{const i=++id;pend[i]=res;try{const c=gr.slice();ws[rr++%ws.length].postMessage({id:i,gr:c,W,H},[c.buffer])}catch(e){delete pend[i];res(undefined)}})}}})();
 function hdrStatus(){
   if((typeof autoBusy!=='undefined'&&autoBusy)||expBusy)return;
   $('status').textContent=hdrPend?('· قراءة أرقام الدعاوى '+fmt(hdrDone)+' / '+fmt(hdrDone+hdrPend)):('· '+fmt(N)+' صفحة');
@@ -3473,9 +3513,10 @@ function hdrStatus(){
 function hdrRead(p,doc,cc){
   const k='h'+p;
   if(cc[k])return cc[k];
-  hdrPend++;hdrStatus();
-  const pr=hdrChain.then(async()=>{
+  hdrPend++;hdrStatus();let skipped=false;
+  const pr=hdrSlot(async()=>{
     let res=null;
+    if(pipeStop){skipped=true;hdrPend--;if(!hdrPend)hdrDone=0;hdrStatus();return null}
     try{
       const pg=await doc.getPage(p),v0=pg.getViewport({scale:1}),v=pg.getViewport({scale:SN.SCALE/v0.width});
       const c=document.createElement('canvas');c.width=SN.W;c.height=SN.H;
@@ -3483,13 +3524,14 @@ function hdrRead(p,doc,cc){
       await pg.render({canvasContext:x,viewport:v,transform:[1,0,0,1,-SN.X0,0]}).promise;
       const d=x.getImageData(0,0,SN.W,SN.H).data,gr=new Uint8Array(SN.W*SN.H);
       for(let i=0;i<gr.length;i++)gr[i]=(d[i*4]*77+d[i*4+1]*150+d[i*4+2]*29)>>8;
-      res=snReadHeaderMS(gr,SN.W,SN.H);freeC(c);try{pg.cleanup()}catch(e){}
+      freeC(c);try{pg.cleanup()}catch(e){}
+      res=await SNW.run(gr,SN.W,SN.H);if(res===undefined)res=snReadHeaderMS(gr,SN.W,SN.H);
     }catch(e){res=null}
     cc['r'+p]=res;
     hdrPend--;if(hdrPend)hdrDone++;else hdrDone=0;hdrStatus();
     return res;
   });
-  hdrChain=pr;return cc[k]=pr;
+  hdrChain=pr;pr.then(()=>{if(skipped)delete cc[k]});return cc[k]=pr;
 }
 const avgD=r=>r.d.reduce((a,b)=>a+b,0)/r.d.length;
 // السنة الغالبة في الملف (لو أغلب القراءات متفقة عليها) — بتتستخدم بس لو سنة الحكم نفسه ماتقراتش
@@ -3586,10 +3628,12 @@ async function caseInfoG(g){
   const cc=cropCache,doc=pdf,key='i'+g.start;
   let inf=await caseInfo(g.start);
   if(inf&&inf.no)return inf;
+  if(pipeStop)return {no:null};
   const fast=rollFast();                       // رول الحكم + اسم الملف: نقرا صفحة واحدة بس لكل حكم والباقي بيتحسم من الرول
   const ps=g.pages.length>1?g.pages.slice(1,fast?2:5):g.pages.slice(0,1),rs=[];
   for(const p of ps){
     rs.push(await hdrRead(p,doc,cc));
+    if(rs.length===1&&rs[0]&&rs[0].no&&avgD(rs[0].no)<15&&snPlausible(rs[0])&&rs[0].yr&&avgD(rs[0].yr)<40)break;   // قراءة واضحة جدًا من أول صفحة: كفاية
     // خروج بدري: لو صفحتين متفقين على نفس الرقم بقراءة واضحة، مش لازم نكمّل
     const o2=rs.filter(r=>r&&r.no&&avgD(r.no)<25&&snPlausible(r));
     if(o2.length>=2&&o2[0].no.s===o2[1].no.s&&o2[0].yr&&o2[1].yr&&o2[0].yr.s===o2[1].yr.s)break;
@@ -3671,12 +3715,13 @@ function loadSaved(f,n){
   }catch(e){}
   return c;
 }
+function loadMarks(f,n){try{const o=JSON.parse(localStorage.getItem(saveKey(f,n))||'null');if(o&&o.v===1&&Array.isArray(o.s)){const st=new Set(o.s.filter(x=>x>=1&&x<=n));st.add(1);return {s:st,k:new Set((o.k||[]).filter(x=>x>=1&&x<=n)),nm:(o.nm&&typeof o.nm==='object')?o.nm:{}}}}catch(e){}return null}
 function persist(){
   try{
     if(!srcFile)return;
     const c={};
     for(const k in cropCache){const v=cropCache[k];if(/^[ti]\d+$/.test(k)&&v&&(k[0]==='t'||v.no))c[k]=k[0]==='t'?{cat:v.cat,sc:v.sc,manual:!!v.manual,txt:v.txt,src:v.src}:{no:v.no,yr:v.yr||null,q:!!v.q,rl:!!v.rl,pl:v.pl,mem:v.mem}}
-    localStorage.setItem(saveKey(srcFile,N),JSON.stringify({v:1,t:Date.now(),c}));
+    localStorage.setItem(saveKey(srcFile,N),JSON.stringify({v:1,t:Date.now(),c,s:[...starts],k:[...skip],nm:names}));
   }catch(e){}
 }
 /* ===== الرولات: رولات المرافعة (متنوع / تسجيل حسب اسم الشيت) + رول الحكم ===== */
@@ -3910,7 +3955,7 @@ async function getTess(){
       try{
         if(tessPool.length===1)e.w=await loadTess();
         else{const T=await loadTess().then(()=>window.Tesseract);e.w=await T.createWorker('ara');try{await e.w.setParameters({tessedit_pageseg_mode:'6'})}catch(_){}}
-      }catch(err){tessPool.splice(tessPool.indexOf(e),1);if(tessPool.length)continue;throw err}
+      }catch(err){tessPool.splice(tessPool.indexOf(e),1);if(tessPool.length&&!tessDead){await new Promise(r=>setTimeout(r,60));continue}throw err}
       return {w:e.w,free:()=>{e.busy=false}};
     }
     await new Promise(r=>setTimeout(r,60));
@@ -4009,6 +4054,7 @@ function sortRows(){
 }
 async function topicAll(btn){
   if(topicBusy||!pdf)return;
+  if(!pipeBusy)pipeStop=false;
   topicBusy=true;sortAllow=true;if(btn)btn.disabled=true;
   const keepTxt=btn?btn.textContent:'',keep=cur;
   let fail=0,n=0;
@@ -4020,7 +4066,7 @@ async function topicAll(btn){
       const rows=[...$('list').children];
       let gi=0,stop=false;
       const lane=async()=>{
-        while(!stop){
+        while(!stop&&!pipeStop){
           const g=groups[gi++];if(!g)break;
           if(btn)btn.textContent='تصنيف '+fmt(++n)+' / '+fmt(total);$('status').textContent='· تصنيف '+fmt(n)+' من '+fmt(total);
           const row0=rows.find(r=>r._g===g);
@@ -4120,6 +4166,7 @@ function numSummary(){
 }
 async function readNums(btn){
   if(numBusy||!pdf)return;
+  if(!pipeBusy)pipeStop=false;
   numBusy=true;if(btn)btn.disabled=true;
   const keepTxt=btn?btn.textContent:'',keep=cur;
   try{
@@ -4141,8 +4188,10 @@ async function readNums(btn){
     numSummary();
   }
 }
+const rowIO=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){rowIO.unobserve(e.target);const f=e.target._load;e.target._load=null;if(f)f()}})},{rootMargin:'400px'});
 function refresh(){
   compute();
+  rowIO.disconnect();
   document.querySelectorAll('.pg').forEach(d=>{
     const p=+d.dataset.p,gi=pageGroup[p];
     d.classList.toggle('skip',skip.has(p));
@@ -4162,13 +4211,13 @@ function refresh(){
     r._g=g;r.innerHTML='<img class="cr ph" alt=""><span class="tp"></span><span class="wn" hidden title="الرقم ممكن يكون غلط: قارنه بصورة الرقم">⚠ راجع الرقم</span><span class="qb" hidden><button class="btn alt" data-t="m" type="button">متنوع</button><button class="btn alt" data-t="r" type="button">تسجيل</button></span><input value="'+nameOf(g,i).replace(/"/g,'&quot;')+'"><span class="rg">ص '+fmt(g.pages[0])+' ('+fmt(g.pages.length)+')</span><button class="btn alt" data-z>عرض</button><button class="btn" data-d>تحميل</button><button class="btn alt pr" data-pr title="طباعة" aria-label="طباعة">🖨</button><img class="cn" alt="">';
     const im=r.querySelector('.cr');im.onclick=()=>zoom(g.start);
     const cn=r.querySelector('.cn');cn.onclick=()=>zoom(g.start);
-    cropNum(g.start).then(u=>{im.src=u.num;im.classList.remove('ph');cn.src=u.cas;cn.classList.add('on')}).catch(()=>{});
+    r._load=()=>{cropNum(g.start).then(u=>{im.src=u.num;im.classList.remove('ph');cn.src=u.cas;cn.classList.add('on')}).catch(()=>{})};rowIO.observe(r);
     const inpEl=r.querySelector('input');
     const applyInf=inf=>{r._inf=inf;{const w=r.querySelector('.wn');if(w)w.hidden=!inf.q}rollFix(g,inf,r);const n0=names[g.start];if(inf.no&&(n0===undefined||n0==='')&&document.activeElement!==inpEl)inpEl.value=caseTitle(inf);applyFilter()};
     const cinf=cropCache['i'+g.start];
     if(cinf&&cinf.no)applyInf(cinf);            // نتيجة اتقرت قبل كده: نعرضها من غير إعادة قراءة
     if(numsOn)numPend.push(caseInfoG(g).then(applyInf).catch(()=>{}));   // القراءة بس لما أضغط الزرار أو "تلقائي الكل"
-    r.querySelector('input').oninput=e=>{names[g.start]=e.target.value};
+    r.querySelector('input').oninput=e=>{names[g.start]=e.target.value;clearTimeout(window._pt);window._pt=setTimeout(()=>{try{persist()}catch(e){}},900)};
     r.querySelector('[data-z]').onclick=()=>zoom(g.start,g.pages);
     r.querySelector('[data-d]').onclick=()=>exportOne(g,i,r.querySelector('[data-d]'));
     r.querySelector('[data-pr]').onclick=()=>printGroup(g,r.querySelector('[data-pr]'));
@@ -4179,6 +4228,7 @@ function refresh(){
   });
   sortRows();
   applyFilter();
+  clearTimeout(window._pt);window._pt=setTimeout(()=>{try{persist()}catch(e){}},900);
 }
 function resetMarks(){starts=new Set([1]);skip=new Set();names={};refresh()}
 
@@ -4563,6 +4613,44 @@ async function exportAll(){
   ctxSet(F[keep]);compute();
   expBusy=false;$('zipBtn').disabled=false;$('mixBtn').disabled=false;drawFiles();
 }
+// ===== تشغيل تلقائي بعد إضافة الملفات: تقسيم (لو لسه) ← قراءة الأرقام ← التصنيف بالموضوع، وبزرار إيقاف =====
+async function pipeRun(){
+  if(pipeBusy||!F.length||autoBusy||expBusy||numBusy||topicBusy)return;
+  pipeBusy=true;pipeStop=false;$('pipeRow').hidden=false;
+  try{
+    saveCur();
+    const need=F.map((st,i)=>st.starts.size<=1&&st.N>3?i:-1).filter(i=>i>=0);
+    if(need.length){
+      const keep=cur;autoBusy=true;autoStop=false;$('autoBtn').textContent='إيقاف';
+      try{
+        for(const fi of need){
+          if(pipeStop)break;
+          if(fi!==cur)switchTo(fi);
+          starts=new Set([1]);refresh();
+          await autoRun('ملف '+fmt(fi+1)+' من '+fmt(F.length)+' · ');
+          if(pipeStop){starts=new Set([1]);refresh()}
+          saveCur();persist();
+        }
+      }finally{autoBusy=false;autoStop=false;$('autoBtn').textContent='تلقائي'}
+      if(cur!==keep)switchTo(keep);else refresh();
+    }
+    if(!pipeStop)await readNums($('numBtn'));
+    if(!pipeStop)await topicAll($('topicBtn'));
+  }catch(e){$('status').textContent='خطأ: '+e.message}
+  const stopped=pipeStop;
+  pipeBusy=false;$('pipeRow').hidden=true;
+  try{saveCur();persist()}catch(e){}
+  if(stopped)$('status').textContent='· اتوقف التشغيل التلقائي (اللي اتقرا اتحفظ)';
+  pipeStop=false;
+}
+$('pipeStopBtn').addEventListener('click',()=>{pipeStop=true;autoStop=true;$('pipeStopBtn').disabled=true;setTimeout(()=>{$('pipeStopBtn').disabled=false},1500)});
+async function restoreFiles(){
+  const L=await FDB.all();if(!L.length)return;
+  $('status').textContent='جاري استرجاع الملفات...';
+  await addFiles(L.map(x=>x.f),true);
+  if(F.length&&F.some(st=>st.starts.size<=1&&st.N>3||calc(st.N,st.skip,st.starts).some(g=>!st.cropCache['t'+g.start])))pipeRun();
+}
+setTimeout(restoreFiles,200);
 <@@/script>
 </body>
 </html>
