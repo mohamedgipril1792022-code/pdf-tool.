@@ -60,6 +60,10 @@
 
 
 
+
+
+
+
 <style>
 :root{--bg:#F4F1EA;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1B3A5C;--accfg:#fff;--head:#e4dfd2}
 @media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#C9A24B;--accfg:#12263F;--head:#2a3542}}
@@ -93,7 +97,7 @@ body{display:flex;flex-direction:column}
 <button role="tab" data-k="xl" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg>رول إكسيل</button>
 <button role="tab" data-k="tools" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5 5L21 12.6 12.6 21a2 2 0 0 1-2.8 0L3 14.2a2 2 0 0 1 0-2.8L11.4 3a4 4 0 0 0 3.3 3.3z" transform="scale(.9) translate(1.3 1.3)"/></svg>أدوات</button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ٨١</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ٨٢</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
 <div id="sub" hidden></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -116,6 +120,17 @@ var days=last?Math.floor((now-last)/D):0;var tx=document.createElement('span');t
 var b1=document.createElement('button'),b2=document.createElement('button');var st='font:inherit;font-weight:800;border:0;border-radius:8px;padding:6px 10px;cursor:pointer';b1.style.cssText=st+';background:#12263F;color:#fff';b2.style.cssText=st+';background:transparent;color:#12263F';b1.textContent='احفظ الآن';b2.textContent='بعدين';
 b1.onclick=function(){document.getElementById('bkS').click();d.remove()};b2.onclick=function(){try{localStorage.setItem('bk:snooze',String(Date.now()))}catch(e){}d.remove()};d.append(tx,b1,b2);var v=document.getElementById('verBar');v.parentNode.insertBefore(d,v.nextSibling)}
 setTimeout(show,2500)})();</script>
+<script>(function(){var D=864e5;function snz(){try{return +localStorage.getItem('mh:snooze')||0}catch(e){return 0}}
+function show(){if(Date.now()-snz()<3*D)return;var q;try{q=indexedDB.open('pdftool_mohal',1);q.onupgradeneeded=function(){q.result.createObjectStore('k')}}catch(e){return}
+q.onerror=function(){};q.onsuccess=function(){var db=q.result,g;try{g=db.transaction('k').objectStore('k').get('meta')}catch(e){return}
+g.onsuccess=function(){var m=g.result;db.close();if(!m||!m.savedAt)return;var age=Math.floor((Date.now()-m.savedAt)/D);if(age<30)return;
+var d=document.createElement('div');d.id='mhRem';d.dir='rtl';d.style.cssText='order:2;flex:none;display:flex;align-items:center;gap:8px;padding:8px 12px;background:#C9A24B;color:#12263F;font-weight:800;font-size:.85rem';
+var tx=document.createElement('span');tx.style.flex='1';tx.textContent='ملف المحال اتحدّث من '+age+' يوم — حدّثه بأحدث سجل وارد';
+var st='font:inherit;font-weight:800;border:0;border-radius:8px;padding:6px 10px;cursor:pointer',b1=document.createElement('button'),b2=document.createElement('button');
+b1.style.cssText=st+';background:#12263F;color:#fff';b2.style.cssText=st+';background:transparent;color:#12263F';b1.textContent='حدّثه';b2.textContent='بعدين';
+b1.onclick=function(){var t=document.querySelector('#tabs button[data-k="gs"]');if(t)t.click();setTimeout(function(){try{document.querySelector('#views iframe[data-k="gs"]').contentWindow.postMessage('open-mh','*')}catch(e){}},700);d.remove()};
+b2.onclick=function(){try{localStorage.setItem('mh:snooze',String(Date.now()))}catch(e){}d.remove()};d.append(tx,b1,b2);var v=document.getElementById('verBar');v.parentNode.insertBefore(d,v.nextSibling)}}}
+setTimeout(show,3500)})();</script>
 <script>(function(){var G=['gs','pdf','xl','tools'];function act(d){if(d.kb==='tab'&&G[d.n-1])document.querySelector('#tabs button[data-k="'+G[d.n-1]+'"]').click();if(d.kb==='save')document.getElementById('bkS').click()}
 addEventListener('message',function(e){if(e.data&&e.data.kb)act(e.data)});
 addEventListener('keydown',function(e){if(e.altKey&&/^[1-4]$/.test(e.key)){e.preventDefault();act({kb:'tab',n:+e.key})}else if((e.ctrlKey||e.metaKey)&&/^[sS]$/.test(e.key)){e.preventDefault();act({kb:'save'})}})})();</script>
@@ -7250,14 +7265,14 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <div class="wrap">
  <section class="panel" aria-label="بحث">
   <h1>البحث العام</h1>
-  <div class="row2"><div><label for="smode">البحث بـ</label><select id="smode"><option value="no">رقم الدعوى</option><option value="nm">الاسم (المدعي / المدعى عليه)</option></select></div><div><label for="sscope">في</label><select id="sscope"><option value="all">كل الرولات</option><option value="xl">الإكسيل بس</option><option value="pdf">الـ PDF بس</option></select></div></div>
+  <div class="row2"><div><label for="smode">البحث بـ</label><select id="smode"><option value="no">رقم الدعوى</option><option value="nm">الاسم (المدعي / المدعى عليه)</option></select></div><div><label for="sscope">في</label><select id="sscope"><option value="all">كل الرولات</option><option value="xl">الإكسيل بس</option><option value="pdf">الـ PDF بس</option><option value="mh">المحال بس</option></select></div></div>
   <div class="sbar"><input id="q" type="text" placeholder="رقم الدعوى أو 1234/2020" aria-label="كلمة البحث"><button id="go" type="button">بحث</button></div>
   <p class="hint">بيدوّر برقم الدعوى أو بالاسم في الرولات المحفوظة (PDF وإكسيل، أو واحد منهم) ويعرض مراحل الدعوى مرتبة بالتاريخ لحد آخر إجراء. الإجراء مرتبط بالجلسة اللي اتاخد فيها.</p>
   <div id="res"></div>
  </section>
  <button id="tgr" type="button" class="sec" style="width:100%;margin:0 0 10px;padding:10px;font:inherit;font-weight:800;border-radius:10px;border:1.5px solid var(--acc);background:var(--card);color:var(--acc);cursor:pointer" aria-expanded="false">📁 الرولات المضافة ▾</button>
  <section class="panel" id="rollsP" aria-label="الرولات" hidden>
-  <div class="tabs" role="tablist"><button type="button" role="tab" data-t="pdf" aria-selected="true">PDF</button><button type="button" role="tab" data-t="xl" aria-selected="false">إكسيل</button></div>
+  <div class="tabs" role="tablist"><button type="button" role="tab" data-t="pdf" aria-selected="true">PDF</button><button type="button" role="tab" data-t="xl" aria-selected="false">إكسيل</button><button type="button" role="tab" data-t="mh" aria-selected="false">المحال</button></div>
   <div id="sp-pdf" class="sp">
    <div class="actions"><div style="flex:1 1 150px"><label for="kpdf">نوع الرول</label><select id="kpdf"><option value="mf">تحضير (المفوضين)</option><option value="mr">مرافعة</option><option value="ah">أحكام</option></select></div></div>
    <div><label for="fpdf">إضافة / استبدال رولات PDF</label><input id="fpdf" type="file" accept="application/pdf,.pdf" multiple></div>
@@ -7270,6 +7285,12 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    <div><label for="fxl">إضافة / استبدال رولات إكسيل</label><input id="fxl" type="file" accept=".xls,.xlsx,.xlsm,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" multiple></div>
    <p id="mxl" class="hint"></p>
    <ul class="rl" id="lxl"></ul>
+  </div>
+  <div id="sp-mh" class="sp" hidden>
+   <div><label for="fmh">سجل الوارد (المحال) — PDF</label><input id="fmh" type="file" accept="application/pdf,.pdf" multiple></div>
+   <p id="mmh" class="hint"></p>
+   <div class="actions"><button type="button" id="cmh" class="sec" hidden>مسح ملف المحال</button></div>
+   <p class="hint">بيتحفظ في البرنامج. ارفع أحدث سجل وارد كل شهر — الدعاوى الجديدة بتتضاف والموجودة بتتحدّث. بيتدوّر فيه برقم الدعوى الجديد، وتبويب طباعة الرول بيستخدمه عشان يكتب «محالة من…» تحت الدعاوى الجديدة.</p>
   </div>
   <p class="hint">لو رفعت رول بنفس الاسم بيتبدّل القديم، والإجراءات اللي اتاخدت على الدعاوى بتفضل زي ما هي. الرولات بتتحفظ في المتصفح لحد ما تمسحها.</p>
  </section>
@@ -7298,6 +7319,68 @@ const jget=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v==nul
 const jset=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 if(!G){$('res').innerHTML='<span class="err">التخزين العام مش متاح.</span>';return}
 
+/* ===== قارئ سجل الوارد (المحال) ===== */
+const MH_AR='٠١٢٣٤٥٦٧٨٩',mhEn=s=>String(s==null?'':s).replace(/[٠-٩]/g,d=>MH_AR.indexOf(d)),mhAr=s=>String(s==null?'':s).replace(/\d/g,d=>MH_AR[d]);
+function mhKey(s){return mhEn(s).replace(/[اأإآ\s\u064B-\u065F\u0640]/g,'').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/ؤ/g,'و').replace(/ئ/g,'ي')}
+const MH_RULES=[[/ستئنف.*قهر/,'KEEP'],[/سيوط.*وادي/,'KEEP'],[/تديب/,'KEEP'],[/سكندر/,'الإسكندرية'],[/طنط/,'طنطا'],[/كفر.?ل?ش/,'كفر الشيخ'],[/قليوب/,'القليوبية'],[/منصور/,'المنصورة'],[/دميط/,'دمياط'],[/سمعيل/,'الإسماعيلية'],[/^ل?نقض/,'النقض'],[/سوهج/,'سوهاج'],[/^ل?غربي/,'الغربية'],[/صلح.*زرع/,'هيئة الإصلاح الزراعي'],[/دريه.*رئس|دريه.*رئاس|^رئس/,'الإدارية للرئاسة'],[/دريه.*مليه/,'الإدارية للمالية'],[/دريه.*تعليم|دريه.*تربيه/,'الإدارية للتعليم'],[/دريه.*دفع/,'الإدارية للدفاع'],[/دريه.*صحه/,'الإدارية للصحة'],[/دريه.*عدل/,'الإدارية للعدل'],[/ستئنف/,'د/14 استئنافي'],[/^د$|دريد$/,'د/14 استئنافي'],[/^ل?سيوط$/,'أسيوط'],[/^ل?سون$/,'أسوان'],[/^ل?قصر$/,'الأقصر'],[/^ل?مني$/,'المنيا'],[/بحر.*حمر/,'البحر الأحمر'],[/^ل?بحير/,'البحيرة'],[/^ل?منوفي/,'المنوفية'],[/^ل?شرقي/,'الشرقية'],[/^ل?فيوم/,'الفيوم'],[/بنيسويف/,'بني سويف'],[/^ل?قن$/,'قنا'],[/^ل?بورسعيد$/,'بورسعيد'],[/^ل?جيز/,'الجيزة']];
+function mhSrc(raw){
+  const r=String(raw||'').replace(/اإل/g,'الإ').replace(/األ/g,'الأ').replace(/لال/g,'للأ').replace(/اال/g,'الا').replace(/\s+/g,' ').trim(),k=mhKey(r);
+  for(const [re,n] of MH_RULES){if(re.test(k))return n==='KEEP'?r:n}
+  return r}
+function mhParse(pages){ // pages: [[{s,x,y}]]
+  const out=[];let skipped=0;
+  for(const items of pages){
+    const rows=[];const sorted=items.filter(i=>i.s&&i.s.trim()).sort((a,b)=>b.y-a.y||b.x-a.x);
+    for(const it of sorted){const last=rows[rows.length-1];if(last&&Math.abs(last.y-it.y)<=2.5)last.c.push(it);else rows.push({y:it.y,c:[it]})}
+    for(const rw of rows){
+      const c=rw.c.sort((a,b)=>b.x-a.x).map(i=>i.s.trim());
+      if(!c.length||!/^\d{4}\/\d{1,2}\/\d{1,2}$/.test(mhEn(c[0])))continue;
+      let f=1;while(f<c.length&&!/^[\d\/]+$/.test(mhEn(c[f])))f++;
+      let j=-1;for(let q=f+2;q<c.length-1;q++){if(/^\d{1,6}$/.test(mhEn(c[q]))&&/^(79|80|81)$/.test(mhEn(c[q+1]))&&/^[\d\/]+$/.test(mhEn(c[q-1]))&&/^[\d\/]+$/.test(mhEn(c[q-2])))j=q}
+      if(j<0){skipped++;continue}
+      const src=c.slice(1,f).filter(x=>x!=='باليد').join(' ');
+      const oy=mhEn(c[j-1]),on=mhEn(c[j-2]);
+      out.push({d:mhEn(c[0]).replace(/\//g,'/'),src:mhSrc(src),raw:src,on,oy,no:mhEn(c[j]),ny:mhEn(c[j+1]),c:c.slice(j+2).join(' ')});
+    }
+  }
+  return{rows:out,skipped}}
+
+const MH={map:null,by:null,at:0,
+ db(){return new Promise(r=>{try{const q=indexedDB.open('pdftool_mohal',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onsuccess=()=>r(q.result);q.onerror=()=>r(null);q.onblocked=()=>r(null)}catch(e){r(null)}})},
+ async get(){const d=await this.db();return d?new Promise(r=>{try{const q=d.transaction('k').objectStore('k').get('data');q.onsuccess=()=>r(q.result||null);q.onerror=()=>r(null)}catch(e){r(null)}}):null},
+ async put(v){const d=await this.db();return d?new Promise(r=>{const t=d.transaction('k','readwrite');t.objectStore('k').put(v,'data');t.objectStore('k').put({savedAt:v.savedAt,n:v.rows.length},'meta');t.oncomplete=()=>r(true);t.onerror=()=>r(false)}):false},
+ async clear(){const d=await this.db();if(d)await new Promise(r=>{const t=d.transaction('k','readwrite');t.objectStore('k').clear();t.oncomplete=()=>r()})},
+ set(d){if(d&&d.rows&&d.rows.length){this.map=new Map(d.rows.map(x=>[x.no+'/'+x.ny,x]));this.by=new Map();d.rows.forEach(x=>{(this.by.get(x.no)||this.by.set(x.no,[]).get(x.no)).push(x)});this.at=d.savedAt||0;this.rows=d.rows}else{this.map=null;this.by=null;this.at=0;this.rows=[]}},
+ async load(){this.set(await this.get());this.info()},
+ find(n,y){if(!this.by)return[];const a=this.by.get(String(n))||[];return y?a.filter(x=>x.ny===y||x.ny.endsWith(y)||y.endsWith(x.ny)):a},
+ info(){const e=$('mmh'),c=$('cmh');if(!e)return;c.hidden=!this.map;
+  if(!this.map){e.textContent='لسه مفيش ملف محال محفوظ.';return}
+  const ds=this.rows.map(x=>x.d).filter(x=>/^20\d\d/.test(x)).sort(),age=Math.floor((Date.now()-this.at)/864e5);
+  e.textContent='محفوظ: '+toAr(this.rows.length)+' دعوى محالة'+(ds.length?' · ورود من '+toAr(ds[0])+' إلى '+toAr(ds[ds.length-1]):'')+(age>=30?' — ⚠ اتحدّث من '+toAr(age)+' يوم، ارفع أحدث سجل':'')}
+};
+let PJ=null;
+function loadPdfJs(){return PJ||(PJ=new Promise((res,rej)=>{if(window.pdfjsLib)return res();const q=document.createElement('script');q.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';q.onload=()=>{try{pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'}catch(e){}res()};q.onerror=()=>{PJ=null;rej(new Error('مكتبة PDF ماتحمّلتش — اتأكد من الإنترنت.'))};document.head.appendChild(q)}))}
+$('fmh').addEventListener('change',async e=>{
+ const fs=[...e.target.files];e.target.value='';if(!fs.length)return;const m=$('mmh');
+ try{
+  await loadPdfJs();const map=new Map();(MH.rows||[]).forEach(x=>map.set(x.no+'/'+x.ny,x));let add=0,skip=0;
+  for(let i=0;i<fs.length;i++){
+   const doc=await pdfjsLib.getDocument({data:new Uint8Array(await fs[i].arrayBuffer())}).promise,pages=[];
+   for(let p=1;p<=doc.numPages;p++){const tc=await(await doc.getPage(p)).getTextContent();pages.push(tc.items.map(z=>({s:z.str,x:z.transform[4],y:z.transform[5]})));m.textContent='قراءة '+fs[i].name+' — صفحة '+toAr(p)+' من '+toAr(doc.numPages)+' (ملف '+toAr(i+1)+' من '+toAr(fs.length)+')'}
+   const r=mhParse(pages);skip+=r.skipped;r.rows.forEach(x=>{map.set(x.no+'/'+x.ny,x);add++})}
+  const d={name:fs.map(f=>f.name).join(' + '),savedAt:Date.now(),rows:[...map.values()]},ok=await MH.put(d);MH.set(d);MH.info();
+  m.textContent+=' · اتقرا '+toAr(add)+' سطر'+(skip?' وتجاهلت '+toAr(skip)+' سطر مالوش رقم دعوى جديد':'')+(ok?' · اتحفظ':' · (ماتحفظش — المتصفح مانع التخزين)');
+  if($('q').value.trim())search();
+ }catch(err){m.textContent='حصل خطأ: '+(err.message||err)}
+});
+$('cmh').addEventListener('click',async()=>{if(!confirm('تمسح ملف المحال المحفوظ؟'))return;await MH.clear();MH.set(null);MH.info();if($('q').value.trim())search()});
+function mhBlock(h,n,y,force){
+ if(!MH.map)return force?'<span class="hint">ملف المحال مش محفوظ — ارفعه من «الرولات المضافة ← المحال».</span>':'';
+ if(!h.length)return force?'<span class="hint">دعوى '+esc(toAr(n))+(y?' / '+esc(toAr(y)):'')+' غير موجودة في المحال.</span>':'';
+ return h.slice(0,20).map(x=>'<div style="border:1.5px solid var(--acc);border-radius:10px;padding:8px 10px;margin-bottom:8px"><b>محالة — دعوى '+esc(toAr(x.no))+' / '+esc(toAr(x.ny))+'</b><br>من <b>'+esc(x.src)+'</b> · رقم قديم '+esc(toAr(x.on))+' / '+esc(toAr(x.oy))+' · ورود '+dB(toAr(x.d))+(x.c?' · الدائرة '+esc(toAr(x.c)):'')+'</div>').join('')}
+MH.load();
+window.addEventListener('message',e=>{if(e.data==='open-mh'){const p=$('rollsP');if(p&&p.hidden)$('tgr').click();const b=document.querySelector('.tabs button[data-t="mh"]');if(b)b.click();$('mmh').scrollIntoView({block:'center'})}});
+
 // ===== البحث =====
 const isPdf=k=>k==='mf'||k==='mr'||k==='ah';
 const nz=s=>String(toEn(s==null?'':s)).replace(/[ً-ْـ‎‏]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/ؤ/g,'و').replace(/ئ/g,'ي').replace(/\s+/g,' ').replace(/(^| )عبد /g,'$1عبد').trim();
@@ -7310,6 +7393,8 @@ function search(){
   const q=toEn(q0),pt=q.split(/[\/\\\-\s]+/).filter(Boolean);n=(pt[0]||'').replace(/\D/g,'').replace(/^0+/,'');y=(pt[1]||'').replace(/\D/g,'');
   if(!n){o.innerHTML='<span class="err">اكتب رقم الدعوى.</span>';return}
  }else{words=nz(q0).split(' ').filter(Boolean);if(!words.length){o.innerHTML='<span class="err">اكتب اسم.</span>';return}}
+ const mhH=mode==='no'?MH.find(n,y):[];
+ if(scope==='mh'){o.innerHTML=mode!=='no'?'<span class="hint">المحال بيتدوّر فيه برقم الدعوى بس.</span>':mhBlock(mhH,n,y,true);return}
  const hits=[],seenH=new Set();let fuzzy=0;
  for(const rec of G.all()){
   const pdf=isPdf(rec.kind);
@@ -7328,6 +7413,7 @@ function search(){
    hits.push({d:r[0]||'',k:rec.kind,sec:r[1],m:r[2],no:String(r[3]),yr:String(r[4]),pl:r[5],df:r[6],prev:r[7],dec:r[8],next:r[9],note:r[10],file:rec.name,approx});
   }
  }
+ if(!hits.length&&scope==='all'&&mhH.length){o.innerHTML=mhBlock(mhH,n,y,false);return}
  if(!hits.length){o.innerHTML='<span class="hint">مفيش نتيجة في '+(scope==='xl'?'رولات الإكسيل':scope==='pdf'?'رولات الـ PDF':'الرولات المحفوظة')+'.'+(G.all().length?'':' (مفيش رولات محفوظة لسه)')+'</span>';return}
  const ord={mf:0,mr:1,xm:1,ah:2,xa:2,sp:3};
  hits.sort((a,b)=>dateKey(a.d)-dateKey(b.d)||(ord[a.k]-ord[b.k]));
@@ -7365,7 +7451,7 @@ function search(){
   return `<details class="gd"><summary><b>${esc(toAr(last.no))} / ${esc(toAr(last.yr))}</b> — ${esc(ref.pl||'')}${ref.df?' ضد '+esc(ref.df):''} <span class="hint">(${toAr(g.length)} ظهور — آخرها ${dTxt(last.d)})</span></summary><div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">${inner}</div></details>`;
  }).join('');
  const pdfNote=hits.some(h=>isPdf(h.k))?'<p class="hint">نتائج الـ PDF قراءتها تقريبية وممكن يكون فيها أخطاء'+(fuzzy?'، وفيه '+toAr(fuzzy)+' نتيجة برقم قريب (علامة ≈)':'')+'.</p>':'';
- o.innerHTML=(groups.length>1?`<p class="hint ok">${toAr(total)} دعوى</p>`:'')+pdfNote+gHtml;
+ o.innerHTML=(scope==='all'?mhBlock(mhH,n,y,false):'')+(groups.length>1?`<p class="hint ok">${toAr(total)} دعوى</p>`:'')+pdfNote+gHtml;
  o._hits=hits;
 }
 function setAct(h,v){
@@ -7389,7 +7475,7 @@ $('q').addEventListener('keydown',e=>{if(e.key==='Enter')search()});
 // ===== إدارة الرولات =====
 document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{
  document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-selected',String(x===b)));
- $('sp-pdf').hidden=b.dataset.t!=='pdf';$('sp-xl').hidden=b.dataset.t!=='xl';
+ $('sp-pdf').hidden=b.dataset.t!=='pdf';$('sp-xl').hidden=b.dataset.t!=='xl';$('sp-mh').hidden=b.dataset.t!=='mh';
 }));
 function drawList(){
  for(const [id,ks] of [['lpdf',['mf','mr','ah']],['lxl',['xm','xa','sp']]]){
@@ -8221,7 +8307,7 @@ input[type=search]{width:100%;padding:7px 10px;border:1px solid var(--line);bord
 .c{display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:0 .6mm;line-height:1.2;font-weight:700}
 .c .t{display:block;max-width:100%}
 .ex{position:relative}
-.ex svg{position:absolute;z-index:2;pointer-events:none;overflow:visible}
+.mhn{position:absolute;top:.4mm;inset-inline-start:14mm;inset-inline-end:1mm;font-size:8pt;font-weight:700;white-space:nowrap;overflow:hidden;line-height:1.2}.mhn.no{color:#b00000}.ex svg{position:absolute;z-index:2;pointer-events:none;overflow:visible}
 .ex svg path{fill:none;stroke:#222;stroke-width:1.5px;vector-effect:non-scaling-stroke}
 .ex svg polygon{fill:#222}
 
@@ -8249,10 +8335,11 @@ input[type=search]{width:100%;padding:7px 10px;border:1px solid var(--line);bord
       <h2>١. ملف الرول</h2>
       <div class="drop" id="drop" tabindex="0" role="button" aria-label="اختيار ملف الرول">
         <strong id="dropTitle">اسحب ملف الإكسيل هنا أو اضغط للاختيار</strong>
-        <span id="dropSub">xlsx أو xlsm. القراءة بتتم على جهازك ومفيش حاجة بتترفع. آخر رول بترفعه بيتحفظ لحد ما ترفع غيره.</span>
+        <span id="dropSub">xlsx أو xlsm أو xls أو xlsb أو ods أو csv. القراءة بتتم على جهازك ومفيش حاجة بتترفع. آخر رول بترفعه بيتحفظ لحد ما ترفع غيره.</span>
       </div>
-      <input type="file" id="file" accept=".xlsx,.xlsm" hidden>
+      <input type="file" id="file" accept=".xlsx,.xlsm,.xls,.xlsb,.ods,.csv" hidden>
       <div class="row" style="margin-top:8px"><button id="sample" type="button">تجربة بعينة</button><span class="stat" id="status" role="status"></span></div>
+      <p class="hint" id="mhst" style="margin-top:8px"></p>
     </div>
 
     <div id="secBox" hidden>
@@ -8433,9 +8520,13 @@ function buildPages(sec,total0){
       r.style.cssText='grid-template-columns:'+cols+';grid-template-rows:'+caseH.toFixed(3)+'mm'+(hasEx?' '+exH.toFixed(3)+'mm':'');
       const A=cell(a[0],11);A.style.gridRow=hasEx?'1 / 3':'1';r.appendChild(A);
       const sz=[11.5,9,10,10,10,9.5,9.5];
-      for(let i=1;i<8;i++){const c=cell(i===5&&isUrgent(sec)?'جديد':a[i],sz[i-1]);c.style.gridRow='1';r.appendChild(c);}
+      const nt=MH.note(a,sec);
+      for(let i=1;i<8;i++){const c=cell(i===5&&isUrgent(sec)?'جديد':a[i],sz[i-1]);c.style.gridRow='1';
+        if(i===5&&nt&&!hasEx){c.firstChild.textContent=(isUrgent(sec)?'جديد':(a[i]||'جديد'))+'\n'+(nt.s||nt.t);c.firstChild.style.whiteSpace='pre-line';c.dataset.fs=7;c.style.fontSize='7pt';if(!nt.ok)c.style.color='#b00000'}
+        r.appendChild(c);}
       if(hasEx){const ex=document.createElement('div');ex.className='ex';ex.style.cssText='grid-row:2;grid-column:2 / span 7';
         if(hasArrow)ex.appendChild(arrowSvg(COLMM[0],exH));
+        if(nt){const n=document.createElement('div');n.className='mhn'+(nt.ok?'':' no');n.textContent=nt.t;ex.appendChild(n);}
         r.appendChild(ex);}
       tbl.appendChild(r);
     }
@@ -8550,11 +8641,42 @@ function setSections(list,label){
   $('#status').textContent=list.length?label+' · '+list.length+' قسم · '+list.reduce((a,s)=>a+s.rows.length,0)+' قضية':'مفيش أقسام فيها جدول رول في الملف ده.';
   $('#q').value='';renderChips();renderList();renderPreview();
 }
+
+/* ---------- صيغ إكسيل تانية (xls / xlsb / ods / csv) عن طريق SheetJS ---------- */
+let XL=null;
+function loadXL(){return XL||(XL=new Promise((res,rej)=>{if(window.XLSX)return res();const q=document.createElement('script');q.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';q.onload=()=>res();q.onerror=()=>{XL=null;rej(new Error('مكتبة الإكسيل ماتحمّلتش — اتأكد من الإنترنت (الصيغة دي محتاجاها).'))};document.head.appendChild(q)}))}
+function cellStr(v){
+  if(v==null)return'';
+  if(v instanceof Date){const d=new Date(v.getTime()+12*36e5);return d.getFullYear()+'/'+pad(d.getMonth()+1)+'/'+pad(d.getDate())}
+  if(typeof v==='number')return String(Math.round(v*1e6)/1e6);
+  return String(v);
+}
+async function parseAny(buf,name){
+  await loadXL();
+  const wb=XLSX.read(buf,{type:'array',cellDates:true}),out=[];
+  for(const sn of wb.SheetNames){
+    const aoa=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,raw:true,defval:'',blankrows:true}).map(r=>r.map(cellStr));
+    let hr=-1;for(let i=0;i<aoa.length&&i<40;i++){if(aoa[i].some(x=>/رقم\s*الدعو/.test(x))){hr=i;break}}
+    if(hr<0)continue;
+    const h=aoa[hr].map(x=>x.replace(/\s+/g,' ').trim()),cI=h.findIndex(x=>/رقم\s*الدعو/.test(x));
+    const find=(re,fb)=>{const i=h.findIndex(x=>re.test(x));return i>=0?i:fb};
+    const col=[find(/^م$/,cI-1),cI,find(/^ق$/,cI+1),find(/^المدعي$/,cI+2),find(/المدعى\s*عليه/,cI+3),find(/الجلسة\s*السابقة/,cI+4),find(/نوع\s*القرار/,cI+5),find(/الجلسة\s*القادمة/,cI+6)];
+    const rows=[];
+    for(let i=hr+1;i<aoa.length;i++){const a=col.map(c=>c>=0?(aoa[i][c]||'').trim():'');if(a[1]!=='')rows.push(a)}
+    const fe=i=>(aoa[i]||[]).find(x=>String(x).trim())||'';
+    const ttl=[0,1,2].map(i=>String(fe(i)).trim()),sess=String(fe(3)).trim().split(/\s{2,}/).filter(Boolean);
+    out.push({name:sn,ttl,sess,rows});
+  }
+  return out;
+}
+
 async function loadFile(f){
   if(!f)return;
   $('#status').textContent='جاري قراءة الملف...';
   try{
-    const list=await parseWorkbook(await f.arrayBuffer(),(a,b)=>{$('#status').textContent='قراءة التبويبات '+a+' / '+b;});
+    const buf=await f.arrayBuffer(),ext=(f.name.split('.').pop()||'').toLowerCase();let list=null,first=null;
+    if(ext==='xlsx'||ext==='xlsm'){try{list=await parseWorkbook(buf,(a,b)=>{$('#status').textContent='قراءة التبويبات '+a+' / '+b;})}catch(e){first=e}}
+    if(!list||!list.length){$('#status').textContent='قراءة الملف بالطريقة العامة…';try{list=await parseAny(buf,f.name)}catch(e){throw (first&&!/ماتحمّلتش/.test(e.message)?first:e)}}
     $('#dropTitle').textContent=f.name;setSections(list,'تم التحميل');
     if(list.length){const ok=await store.put({name:f.name,savedAt:Date.now(),sections:list.map(({name,ttl,sess,rows})=>({name,ttl,sess,rows}))});
       if(ok)$('#status').textContent+=' · اتحفظ في البرنامج';}
@@ -8575,6 +8697,35 @@ const store={
     $('#dropSub').textContent='الرول ده محفوظ ومش هيتمسح لحد ما ترفع رول جديد مكانه.';
   }
 })();
+
+/* ---------- المحال (ملف محفوظ من تبويب بحث المحال) ---------- */
+const MH={map:null,at:0,
+  dg:s=>String(s==null?'':s).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\D/g,''),
+  ar:s=>String(s==null?'':s).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]),
+  async load(){
+    try{
+      const db=await new Promise(r=>{try{const q=indexedDB.open('pdftool_mohal',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onsuccess=()=>r(q.result);q.onerror=()=>r(null);q.onblocked=()=>r(null)}catch(e){r(null)}});
+      if(db){const d=await new Promise(r=>{try{const q=db.transaction('k').objectStore('k').get('data');q.onsuccess=()=>r(q.result||null);q.onerror=()=>r(null)}catch(e){r(null)}});db.close();
+        if(d&&d.rows&&d.rows.length){this.map=new Map(d.rows.map(r=>[r.no+'/'+r.ny,r]));this.at=d.savedAt||0}else{this.map=null;this.at=0}}
+    }catch(e){}
+    this.status();
+  },
+  status(){
+    const e=$('#mhst');if(!e)return;
+    if(!this.map){e.textContent='ملف المحال مش محفوظ — ارفعه من البحث العام ← الرولات المضافة ← المحال عشان يتكتب تحت الدعاوى الجديدة إنها محالة من فين.';return}
+    const age=Math.floor((Date.now()-this.at)/864e5);
+    e.textContent='المحال: '+this.ar(this.map.size)+' دعوى محفوظة'+(age>=30?' — ⚠ اتحدّث من '+this.ar(age)+' يوم، حدّثه من البحث العام ← الرولات المضافة ← المحال':'');
+  },
+  isNew(a,sec){return /جديد/.test(a[5]||'')||isUrgent(sec)},
+  note(a,sec){
+    if(!this.map||!this.isNew(a,sec))return null;
+    const r=this.map.get(this.dg(a[1])+'/'+this.dg(a[2]));
+    return r?{t:'محالة من '+r.src+' — '+this.ar(r.on+' / '+r.oy)+' — ورود '+this.ar(r.d),s:'من '+r.src+' '+this.ar(r.on+'/'+r.oy),ok:true}:{t:'غير موجودة في المحال',ok:false};
+  }
+};
+MH.load().then(()=>{if(typeof renderPreview==='function'&&sections.length)renderPreview()});
+window.addEventListener('message',e=>{if(e.data==='rp-refresh')MH.load().then(()=>{if(sections.length){renderPreview();renderList()}})});
+
 function sampleData(){
   const who=['وزير الداخلية','محافظ القاهرة','وزير المالية','رئيس مجلس الوزراء','وزير العدل'];
   const rows=[];for(let i=1;i<=24;i++)rows.push([String(i),String(50100+i*7),'80','مدعٍ تجريبي رقم '+i,who[i%who.length],'2026/07/06','','']);
@@ -8750,7 +8901,7 @@ function page(chunk,pi,np,head,ro){
  const rows=[];
  for(let i=0;i<PER;i++){
   const it=chunk[i],n=pi*PER+i+1;
-  rows.push(it?`<tr><td>${toAr(n)}</td><td>${toAr(it.no)} / ${toAr(it.yr)}</td><td>${esc(it.pl)}</td><td>${esc(it.df)}</td><td><input class="reg" data-id="${esc(it.id)}" value="${esc(it.reg||'')}" aria-label="رقم القيد" inputmode="numeric"${ro?' disabled':''}></td><td><bdi dir="ltr">${dsp(it.date)}</bdi></td><td class="dcol noprint">${ro?'':`<button type="button" class="x bad" data-del="${esc(it.id)}" aria-label="حذف">×</button>`}</td></tr>`
+  rows.push(it?`<tr><td>${toAr(n)}</td><td>${toAr(it.no)} / ${toAr(it.yr)}</td><td>${esc(it.pl)}</td><td>${esc(it.df)}</td><td><input class="reg" data-id="${esc(it.id)}" value="${esc(toAr(it.reg||''))}" aria-label="رقم القيد" inputmode="numeric"${ro?' disabled':''}></td><td><bdi dir="ltr">${dsp(it.date)}</bdi></td><td class="dcol noprint">${ro?'':`<button type="button" class="x bad" data-del="${esc(it.id)}" aria-label="حذف">×</button>`}</td></tr>`
    :`<tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="dcol noprint"></td></tr>`);
  }
  const v=id=>esc(head[id]||'');
@@ -8780,7 +8931,8 @@ function fit(){
 window.addEventListener('resize',fit);
 window.addEventListener('beforeprint',()=>{$('scaler').style.marginRight='0';$('scaler').style.transform='none';$('view').style.height='auto'});
 window.addEventListener('afterprint',fit);
-$('scaler').addEventListener('input',e=>{const i=e.target.closest('input.reg');if(!i||VIEW>=0)return;const it=items.find(z=>z.id===i.dataset.id);if(it){it.reg=i.value;save()}});
+$('scaler').addEventListener('input',e=>{const i=e.target.closest('input.reg');if(!i||VIEW>=0)return;const it=items.find(z=>z.id===i.dataset.id);if(it){it.reg=toEn(i.value);save()}});
+$('scaler').addEventListener('change',e=>{const i=e.target.closest('input.reg');if(i&&VIEW<0)i.value=toAr(toEn(i.value))});
 $('scaler').addEventListener('click',e=>{const b=e.target.closest('button[data-del]');if(!b||VIEW>=0)return;items=items.filter(z=>z.id!==b.dataset.del);save();draw()});
 $('prt').addEventListener('click',()=>{if(!curSet().items.length){say('الكشف فاضي.','');return}window.print()});
 // ===== الأرشيف =====
@@ -8833,7 +8985,7 @@ const XH='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
 const TT='كشف بمذكرات الدفاع المحررة خلال الشهر';
 const HDR=['م','رقم الدعوى','المدعي','المدعي عليه','رقم القيد بسجل النسخ','تاريخ الجلسة المقدمة فيها'];
 const infoL=h=>['هيئة قضايا الدولة','فرع / قسم : '+(h.h_br||'')+'   —   لسنة : '+toAr(h.h_yr||''),'اختصاص العضو : '+(h.h_mem||'')+'   —   الدرجة : '+(h.h_gr||'')];
-const rowsOf=its=>its.map((it,i)=>[toAr(i+1),toAr(it.no)+' / '+toAr(it.yr),it.pl||'',it.df||'',it.reg||'',dsp(it.date)]);
+const rowsOf=its=>its.map((it,i)=>[toAr(i+1),toAr(it.no)+' / '+toAr(it.yr),it.pl||'',it.df||'',toAr(it.reg||''),dsp(it.date)]);
 function xlsxBlob(set){
  const h=set.head,L=infoL(h),R=rowsOf(set.items);let r=1,sd='';const mg=[];
  const colL=n=>String.fromCharCode(64+n);
@@ -9016,7 +9168,7 @@ function show(k){
   document.querySelectorAll('#views iframe').forEach(f=>{
     const on=f.dataset.k===k;f.classList.toggle('on',on);
     if(on&&!loaded[k]){loaded[k]=1;f.srcdoc=build(k)}
-    else if(on&&k==='nk'){try{f.contentWindow.postMessage('nk-refresh','*')}catch(e){}}
+    else if(on&&(k==='nk'||k==='rp')){try{f.contentWindow.postMessage(k+'-refresh','*')}catch(e){}}
   });
   try{localStorage.setItem('combined_tab',k);localStorage.setItem('sub_'+top,k)}catch(e){}
 }
