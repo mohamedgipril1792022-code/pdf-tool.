@@ -68,6 +68,8 @@
 
 
 
+
+
 <style>
 :root{--bg:#F4F1EA;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1B3A5C;--accfg:#fff;--head:#e4dfd2}
 @media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#C9A24B;--accfg:#12263F;--head:#2a3542}}
@@ -86,6 +88,13 @@ body{display:flex;flex-direction:column}
 #verBar{order:1;flex:none;display:flex;justify-content:space-between;align-items:center;padding:6px 12px;padding-top:max(6px,env(safe-area-inset-top,0px));background:#12263F;position:relative}
 #verBar .vb{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#C9A24B}#verBar .ttl{color:#fff;font-weight:800;font-size:1rem}#verBar .mb{font:inherit;font-size:20px;line-height:1;background:transparent;border:0;color:#fff;cursor:pointer;padding:2px 8px}
 #verBar .bk{display:none;position:absolute;top:100%;inset-inline-start:8px;z-index:50;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;box-shadow:0 6px 20px #0005}#verBar .bk.open{display:flex}#verBar .bk button{font:inherit;font-size:11.5px;font-weight:700;border:1px solid #1B3A5C;color:#1B3A5C;background:#fff;border-radius:999px;padding:1px 10px;cursor:pointer}#verBar .vb b{font-weight:800}#verBar .vb i{font-style:normal;opacity:.7}
+#tabCtl{display:none}
+@media (min-width:900px){#tabCtl{display:flex;gap:6px;justify-content:space-between;align-items:center;margin-bottom:4px}#tabCtl [role=button]{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:8px;color:#9fb1c6;cursor:pointer}#tabCtl [role=button]:hover{background:#ffffff1a;color:#fff}#tcP[aria-pressed="true"]{color:#C9A24B}#tcP:not([aria-pressed="true"]) svg{opacity:.55;transform:rotate(35deg)}#tcA svg{transition:transform .2s}
+body{transition:grid-template-columns .2s}
+body.tcol{grid-template-columns:64px 1fr}body.tcol #tcA svg{transform:rotate(180deg)}body.tcol #tcP{display:none}body.tcol #tabCtl{justify-content:center}
+body.tcol #tabs{padding-inline:8px}body.tcol #tabs button{font-size:0;gap:0;justify-content:center;padding:8px 0}
+body.tcol #tabs:hover{position:fixed;inset-block:0;inset-inline-start:0;width:200px;z-index:60;box-shadow:0 0 24px #0008;padding-inline:10px}
+body.tcol #tabs:hover button{font-size:.95rem;gap:12px;justify-content:flex-start;padding:8px 14px}body.tcol #tabs:hover #tcP{display:flex}body.tcol #tabs:hover #tabCtl{justify-content:space-between}}
 @media (min-width:900px){body{display:grid;grid-template-columns:200px 1fr;grid-template-rows:auto auto auto 1fr}
 #verBar{grid-column:2;grid-row:1}#bkRem{grid-column:2;grid-row:2}#sub{grid-column:2;grid-row:3}#views{grid-column:2;grid-row:4}
 #tabs{grid-column:1;grid-row:1/5;flex-direction:column;justify-content:flex-start;gap:6px;padding:14px 10px;border-top:0;border-inline-start:1px solid #0004;overflow:auto}
@@ -96,12 +105,13 @@ body{display:flex;flex-direction:column}
 <style>html,body{overflow-x:clip;max-width:100vw}iframe{max-width:100%}</style><style>@media(max-width:900px){input,select,textarea{font-size:16px!important}}</style></head>
 <body>
 <div id="tabs" role="tablist">
+<div id="tabCtl" aria-label="التحكم في الشريط الجانبي"><div id="tcA" role="button" tabindex="0" title="فتح / قفل الشريط" aria-label="فتح أو قفل الشريط الجانبي"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></div><div id="tcP" role="button" tabindex="0" title="تثبيت الشريط مفتوح" aria-label="تثبيت الشريط الجانبي" aria-pressed="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17v5M9 3h6l-1 6 3 3v2H7v-2l3-3z"/></svg></div></div>
 <button role="tab" data-k="gs" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>البحث العام</button>
 <button role="tab" data-k="pdf" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>رول PDF</button>
 <button role="tab" data-k="xl" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg>رول إكسيل</button>
 <button role="tab" data-k="tools" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5 5L21 12.6 12.6 21a2 2 0 0 1-2.8 0L3 14.2a2 2 0 0 1 0-2.8L11.4 3a4 4 0 0 0 3.3 3.3z" transform="scale(.9) translate(1.3 1.3)"/></svg>أدوات</button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ٨٢</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ٨٣</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
 <div id="sub" hidden></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -135,6 +145,13 @@ b1.style.cssText=st+';background:#12263F;color:#fff';b2.style.cssText=st+';backg
 b1.onclick=function(){var t=document.querySelector('#tabs button[data-k="gs"]');if(t)t.click();setTimeout(function(){try{document.querySelector('#views iframe[data-k="gs"]').contentWindow.postMessage('open-mh','*')}catch(e){}},700);d.remove()};
 b2.onclick=function(){try{localStorage.setItem('mh:snooze',String(Date.now()))}catch(e){}d.remove()};d.append(tx,b1,b2);var v=document.getElementById('verBar');v.parentNode.insertBefore(d,v.nextSibling)}}}
 setTimeout(show,3500)})();</script>
+<script>(function(){var d=document,b=d.body,A=d.getElementById('tcA'),P=d.getElementById('tcP');if(!A||!P)return;function g(k,df){try{var v=localStorage.getItem(k);return v==null?df:v==='1'}catch(e){return df}}function sv(k,v){try{localStorage.setItem(k,v?'1':'0')}catch(e){}}
+var col=g('tabs_col',false),pin=g('tabs_pin',true);function ap(){b.classList.toggle('tcol',col);P.setAttribute('aria-pressed',String(pin));A.title=col?'فتح الشريط':'قفل الشريط';d.querySelectorAll('#tabs button[role=tab]').forEach(function(x){x.title=(x.textContent||'').trim()})}
+function wide(){return window.matchMedia&&matchMedia('(min-width:900px)').matches}
+function tgA(){col=!col;sv('tabs_col',col);ap()}function tgP(){pin=!pin;sv('tabs_pin',pin);if(pin){col=false;sv('tabs_col',false)}ap()}
+[[A,tgA],[P,tgP]].forEach(function(p){p[0].addEventListener('click',p[1]);p[0].addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();p[1]()}})});
+d.getElementById('tabs').addEventListener('click',function(e){if(e.target.closest('button[role=tab]')&&wide()&&!pin&&!col){col=true;sv('tabs_col',true);ap()}});
+ap()})();</script>
 <script>(function(){var G=['gs','pdf','xl','tools'];function act(d){if(d.kb==='tab'&&G[d.n-1])document.querySelector('#tabs button[data-k="'+G[d.n-1]+'"]').click();if(d.kb==='save')document.getElementById('bkS').click()}
 addEventListener('message',function(e){if(e.data&&e.data.kb)act(e.data)});
 addEventListener('keydown',function(e){if(e.altKey&&/^[1-4]$/.test(e.key)){e.preventDefault();act({kb:'tab',n:+e.key})}else if((e.ctrlKey||e.metaKey)&&/^[sS]$/.test(e.key)){e.preventDefault();act({kb:'save'})}})})();</script>
@@ -5921,7 +5938,7 @@ const MHX={map:null,
   const sc=document.getElementById('scaler');if(!sc)return;
   sc.querySelectorAll('td.ed[data-f="prev"]').forEach(td=>{
    const old=td.querySelector('.mhn');if(old)old.remove();
-   if(!this.map||!/^موضوع/.test(td.dataset.k||''))return;
+   const kk=td.dataset.k||'';if(!this.map||!/موضوع/.test(kk)||/عاجل/.test(kk))return;
    const row=rowOf(td);if(!row||!/^\s*جديد[ةه]?\s*$/.test(String(row.prev||'')))return;
    const x=this.map.get(String(toEn(row.no)).replace(/\D/g,'')+'/'+String(toEn(row.yr)).replace(/\D/g,''));
    const d=document.createElement('div');d.className='mhn'+(x?'':' no');
