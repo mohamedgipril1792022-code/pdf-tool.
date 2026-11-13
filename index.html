@@ -64,6 +64,10 @@
 
 
 
+
+
+
+
 <style>
 :root{--bg:#F4F1EA;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1B3A5C;--accfg:#fff;--head:#e4dfd2}
 @media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#C9A24B;--accfg:#12263F;--head:#2a3542}}
@@ -4780,6 +4784,7 @@ button{padding:10px 16px;border-radius:8px;min-height:42px}
 #exp #prt,#exp #prtw{order:1}#exp #wd{order:2}#exp #xl{order:3}#exp #big{order:4}
 #ldbar{position:fixed;top:0;left:0;right:0;height:3px;z-index:60;overflow:hidden;pointer-events:none}#ldbar i{display:block;height:100%;width:40%;background:linear-gradient(90deg,transparent,#C9A24B,transparent);animation:ldb 1.1s linear infinite}@keyframes ldb{from{transform:translateX(-100%)}to{transform:translateX(350%)}}[dir=rtl] #ldbar i{animation-direction:reverse}@media print{#ldbar{display:none}}
 #chkbar{margin:8px 0;border:1.5px solid #d9a21b;background:#fff8e1;border-radius:10px;padding:8px 12px;font-size:.88rem;font-weight:700;color:#7a5a00}#chkbar button{font:inherit;font-size:.8rem;padding:2px 10px;min-height:0;margin-inline-start:8px;border-radius:6px}#chkbar ul{margin:6px 0 0;padding-inline-start:20px;font-weight:600;max-height:180px;overflow:auto}@media print{#chkbar{display:none!important}}
+.mhn{font-size:.72em;font-weight:700;margin-top:3px;line-height:1.35;color:#1b5e20}.mhn.no{color:#c0392b}@media (prefers-color-scheme:dark){.mhn{color:#7bd88f}.mhn.no{color:#ff8a80}}@media print{.mhn{color:#000}.mhn.no{color:#b00000}}
 </style>
 <style id="sheetfix">
 @media (max-width:700px){
@@ -5905,6 +5910,28 @@ function gsSync(){
  if(GSF)for(const n in _gsSig)if(!(n in cur))G.del(GSK,n);
  _gsSig=cur;
 }
+
+/* ===== المحال: بحث تلقائي للدعاوى «جديد» في الرول الموضوعي ===== */
+const MHX={map:null,
+ async load(){try{const db=await new Promise(r=>{try{const q=indexedDB.open('pdftool_mohal',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onsuccess=()=>r(q.result);q.onerror=()=>r(null);q.onblocked=()=>r(null)}catch(e){r(null)}});
+  if(db){const d=await new Promise(r=>{try{const q=db.transaction('k').objectStore('k').get('data');q.onsuccess=()=>r(q.result||null);q.onerror=()=>r(null)}catch(e){r(null)}});db.close();
+   this.map=d&&d.rows&&d.rows.length?new Map(d.rows.map(x=>[x.no+'/'+x.ny,x])):null}}catch(e){}
+  this.apply()},
+ apply(){
+  const sc=document.getElementById('scaler');if(!sc)return;
+  sc.querySelectorAll('td.ed[data-f="prev"]').forEach(td=>{
+   const old=td.querySelector('.mhn');if(old)old.remove();
+   if(!this.map||!/^موضوع/.test(td.dataset.k||''))return;
+   const row=rowOf(td);if(!row||!/^\s*جديد[ةه]?\s*$/.test(String(row.prev||'')))return;
+   const x=this.map.get(String(toEn(row.no)).replace(/\D/g,'')+'/'+String(toEn(row.yr)).replace(/\D/g,''));
+   const d=document.createElement('div');d.className='mhn'+(x?'':' no');
+   d.textContent=x?'محالة من '+x.src+' — '+toAr(x.on+' / '+x.oy)+' — ورود '+toAr(x.d):'غير موجودة في المحال';
+   td.appendChild(d)})}
+};
+{const sc=document.getElementById('scaler');if(sc)new MutationObserver(()=>{clearTimeout(MHX._t);MHX._t=setTimeout(()=>MHX.apply(),30)}).observe(sc,{childList:true})}
+MHX.load();
+window.addEventListener('message',e=>{if(e.data==='xm-refresh')MHX.load()});
+
 window.addEventListener('message',e=>{
  if(e.data&&e.data.gsDel){const n=e.data.gsDel,L0=state.files.length;
   state.files=state.files.filter(f=>f.name!==n);delete _gsSig[n];
@@ -8302,13 +8329,13 @@ input[type=search]{width:100%;padding:7px 10px;border:1px solid var(--line);bord
 .page .foot{position:absolute;bottom:4mm;left:0;right:0;text-align:center;font-size:8pt}
 .tbl{border-top:.25mm solid #222;border-inline-start:.25mm solid #222}
 .tr{display:grid;direction:rtl}
-.tr>div{border-bottom:.25mm solid #222;border-inline-end:.25mm solid #222}
+.tr>div{border-bottom:.25mm solid #222;border-inline-end:.25mm solid #222}.tr.hx>div:not(.ex){border-bottom:0}.tr.hx>div.ex{border-bottom:.25mm solid #222}
 .hd>div{background:#d9d9d9;font-weight:700;font-size:7.5pt;display:flex;align-items:center;justify-content:center;text-align:center}
 .c{display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:0 .6mm;line-height:1.2;font-weight:700}
 .c .t{display:block;max-width:100%}
 .ex{position:relative}
 .mhn{position:absolute;top:.4mm;inset-inline-start:14mm;inset-inline-end:1mm;font-size:8pt;font-weight:700;white-space:nowrap;overflow:hidden;line-height:1.2}.mhn.no{color:#b00000}.ex svg{position:absolute;z-index:2;pointer-events:none;overflow:visible}
-.ex svg path{fill:none;stroke:#222;stroke-width:1.5px;vector-effect:non-scaling-stroke}
+.ex svg path{fill:none;stroke:#222;stroke-width:3px;vector-effect:non-scaling-stroke}
 .ex svg polygon{fill:#222}
 
 #printRoot{position:absolute;left:-99999px;top:0;width:210mm}
@@ -8339,7 +8366,7 @@ input[type=search]{width:100%;padding:7px 10px;border:1px solid var(--line);bord
       </div>
       <input type="file" id="file" accept=".xlsx,.xlsm,.xls,.xlsb,.ods,.csv" hidden>
       <div class="row" style="margin-top:8px"><button id="sample" type="button">تجربة بعينة</button><span class="stat" id="status" role="status"></span></div>
-      <p class="hint" id="mhst" style="margin-top:8px"></p>
+      <p class="hint" id="mhst" hidden style="margin-top:8px"></p>
     </div>
 
     <div id="secBox" hidden>
@@ -8494,9 +8521,9 @@ async function parseWorkbook(buf,onProgress){
 const NS='http://www.w3.org/2000/svg';
 function cell(text,fs,cls){const d=document.createElement('div');d.className='c'+(cls?' '+cls:'');const s=document.createElement('span');s.className='t';s.textContent=text;d.appendChild(s);d.dataset.fs=fs;d.style.fontSize=fs+'pt';return d;}
 function arrowSvg(wa,exH){
-  const s=document.createElementNS(NS,'svg');s.setAttribute('viewBox','0 0 100 30');s.setAttribute('preserveAspectRatio','none');
-  s.style.cssText='top:.5mm;height:'+(exH-1)+'mm;width:'+(wa+11)+'mm;inset-inline-start:-'+wa+'mm';
-  s.innerHTML='<path d="M96,2 C95,26 52,31 14,17"/><polygon points="6,14.6 14.4,12.6 12,20.4"/>';
+  const s=document.createElementNS(NS,'svg');s.setAttribute('viewBox','0 0 100 24');s.setAttribute('preserveAspectRatio','none');
+  s.style.cssText='top:'+Math.max(.2,exH*0.1).toFixed(2)+'mm;height:3.4mm;width:9mm;inset-inline-start:'+((COLMM[1]-9)/2).toFixed(2)+'mm';
+  s.innerHTML='<path d="M98,12 L22,12"/><polygon points="2,12 28,1 28,23"/>';
   return s;
 }
 function buildPages(sec,total0){
@@ -8516,11 +8543,11 @@ function buildPages(sec,total0){
     LABELS.forEach(t=>{const d=document.createElement('div');d.textContent=t;hd.appendChild(d);});
     tbl.appendChild(hd);
     for(const a of sec.rows.slice(p*pp,(p+1)*pp)){
-      const r=document.createElement('div');r.className='tr';
+      const r=document.createElement('div');r.className='tr'+(hasEx?' hx':'');
       r.style.cssText='grid-template-columns:'+cols+';grid-template-rows:'+caseH.toFixed(3)+'mm'+(hasEx?' '+exH.toFixed(3)+'mm':'');
       const A=cell(a[0],11);A.style.gridRow=hasEx?'1 / 3':'1';r.appendChild(A);
       const sz=[11.5,9,10,10,10,9.5,9.5];
-      const nt=MH.note(a,sec);
+      const nt=null;
       for(let i=1;i<8;i++){const c=cell(i===5&&isUrgent(sec)?'جديد':a[i],sz[i-1]);c.style.gridRow='1';
         if(i===5&&nt&&!hasEx){c.firstChild.textContent=(isUrgent(sec)?'جديد':(a[i]||'جديد'))+'\n'+(nt.s||nt.t);c.firstChild.style.whiteSpace='pre-line';c.dataset.fs=7;c.style.fontSize='7pt';if(!nt.ok)c.style.color='#b00000'}
         r.appendChild(c);}
@@ -8711,12 +8738,12 @@ const MH={map:null,at:0,
     this.status();
   },
   status(){
-    const e=$('#mhst');if(!e)return;
+    const e=$('#mhst');return;
     if(!this.map){e.textContent='ملف المحال مش محفوظ — ارفعه من البحث العام ← الرولات المضافة ← المحال عشان يتكتب تحت الدعاوى الجديدة إنها محالة من فين.';return}
     const age=Math.floor((Date.now()-this.at)/864e5);
     e.textContent='المحال: '+this.ar(this.map.size)+' دعوى محفوظة'+(age>=30?' — ⚠ اتحدّث من '+this.ar(age)+' يوم، حدّثه من البحث العام ← الرولات المضافة ← المحال':'');
   },
-  isNew(a,sec){return /جديد/.test(a[5]||'')||isUrgent(sec)},
+  isNew(a,sec){return /موضوع/.test(sec.name)&&!isUrgent(sec)&&/^\s*جديد[ةه]?\s*$/.test(a[5]||'')},
   note(a,sec){
     if(!this.map||!this.isNew(a,sec))return null;
     const r=this.map.get(this.dg(a[1])+'/'+this.dg(a[2]));
@@ -9168,7 +9195,7 @@ function show(k){
   document.querySelectorAll('#views iframe').forEach(f=>{
     const on=f.dataset.k===k;f.classList.toggle('on',on);
     if(on&&!loaded[k]){loaded[k]=1;f.srcdoc=build(k)}
-    else if(on&&(k==='nk'||k==='rp')){try{f.contentWindow.postMessage(k+'-refresh','*')}catch(e){}}
+    else if(on&&(k==='nk'||k==='rp'||k==='xm')){try{f.contentWindow.postMessage(k+'-refresh','*')}catch(e){}}
   });
   try{localStorage.setItem('combined_tab',k);localStorage.setItem('sub_'+top,k)}catch(e){}
 }
