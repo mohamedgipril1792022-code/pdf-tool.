@@ -92,6 +92,8 @@
 
 
 
+
+
 <style>
 :root{--bg:#F4F1EA;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1B3A5C;--accfg:#fff;--head:#e4dfd2}
 @media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#C9A24B;--accfg:#12263F;--head:#2a3542}}
@@ -102,6 +104,9 @@ body{display:flex;flex-direction:column}
 #tabs button{flex:1;min-width:0;font:inherit;font-size:.82rem;font-weight:700;padding:6px 2px;min-height:54px;border-radius:12px;border:0;background:transparent;color:#9fb1c6;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;line-height:1.15;text-align:center}
 #tabs button svg{flex:none}
 #tabs button[aria-selected="true"]{background:#ffffff1a;color:#C9A24B}
+#tabs button[data-k=tools]{display:none}
+@media (max-width:899px){#tabs button[data-k=sp],#tabs button[data-k=nk],#tabs button[data-k=rp]{display:none}#tabs button[data-k=tools]{display:flex}
+#tabs button[data-k=gs]{order:1}#tabs button[data-k=pdf]{order:2}#tabs button[data-k=xl]{order:3}#tabs button[data-k=lens]{order:4}#tabs button[data-k=tools]{order:5}}
 @media (max-width:560px){#tabs{gap:2px}#tabs button{font-size:.6rem;padding:5px 1px;min-height:50px}#tabs button svg{width:20px;height:20px}}
 #views{flex:1;min-height:0;position:relative}
 #views iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg);display:none}
@@ -135,8 +140,9 @@ body.tcol #tabs:hover button{font-size:.95rem;gap:12px;justify-content:flex-star
 <button role="tab" data-k="nk" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="11" height="14" rx="1.5"/><path d="M5 7v14h11"/></svg>النسخ</button>
 <button role="tab" data-k="lens" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="M21 21l-6-6"/></svg>PDF Lens</button>
 <button role="tab" data-k="rp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V3h10v6"/><rect x="4" y="9" width="16" height="8" rx="2"/><path d="M7 14h10v7H7z"/></svg>طباعة الرول</button>
+<button role="tab" data-k="tools" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.2-.6-.6-2.2z"/></svg>أدوات</button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٠٤</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٠٦</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkT">🌓 المظهر: تلقائي</button><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
 <div id="sub" hidden></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -9582,16 +9588,29 @@ window.GS.ready.then(function(){try{window.GS.applyAll()}catch(e){console.error(
 (function(){
 'use strict';
 const $=s=>document.querySelector(s);
+const DRE=/@media\s*\(\s*prefers-color-scheme\s*:\s*dark\s*\)/g,DT=/@media\s*\(\s*prefers-color-scheme\s*:\s*dark\s*\)/;
+function themeMode(){try{return localStorage.getItem('theme')||'auto'}catch(e){return 'auto'}}
+function themeTxt(txt,m){m=m||themeMode();return m==='auto'?txt:txt.replace(DRE,m==='dark'?'@media all':'@media not all')}
+function restyle(doc,m){
+  try{doc.documentElement.style.colorScheme=m==='auto'?'':m}catch(e){}
+  doc.querySelectorAll('style').forEach(st=>{if(st._o===undefined)st._o=st.textContent;if(DT.test(st._o))st.textContent=themeTxt(st._o,m)});
+}
+function applyTheme(){
+  const m=themeMode();restyle(document,m);
+  document.querySelectorAll('#views iframe').forEach(f=>{try{if(f.contentDocument&&f.contentDocument.documentElement)restyle(f.contentDocument,m)}catch(e){}});
+  const b=document.getElementById('bkT');if(b)b.textContent='🌓 المظهر: '+({auto:'تلقائي',light:'فاتح',dark:'داكن'})[m];
+}
 const loaded={};
 function build(k){
   const tpl=document.getElementById('tpl-'+k).textContent.split('<@@/script').join('</script');
   const lm=document.getElementById('lib-main').textContent,lw=document.getElementById('lib-worker').textContent;const lp=document.getElementById('lib-pdflib').textContent;
   const DEFX='<style id="defx">.card,.wrap{min-width:0;max-width:100%}.actions,.addrow{flex-wrap:wrap}button,select,input,textarea{max-width:100%}details.cfg>summary,#sbar,.chips{min-width:0}@media(max-width:900px){input,select,textarea{font-size:16px!important}}</style>';
-  return tpl.replace('@@LIBMAIN@@',()=>lm).replace('@@LIBWORKER@@',()=>lw).replace('@@LIBPDFLIB@@',()=>lp).replace('</head>',DEFX+'</head>');
+  return themeTxt(tpl.replace('@@LIBMAIN@@',()=>lm).replace('@@LIBWORKER@@',()=>lw).replace('@@LIBPDFLIB@@',()=>lp).replace('</head>',DEFX+'</head>'));
 }
-const GROUPS={gs:['gs'],pdf:['mf','mr','ah'],xl:['xm','xa'],sp:['sp'],nk:['nk'],lens:['lens'],rp:['rp']};
+const GROUPS={gs:['gs'],pdf:['mf','mr','ah'],xl:['xm','xa'],sp:['sp'],nk:['nk'],lens:['lens'],rp:['rp'],tools:['nk','sp','rp']};
+const wideQ=window.matchMedia('(min-width:900px)');
 const SUBL={mf:'المفوضين',mr:'المرافعة',ah:'الأحكام',xm:'المرافعة',xa:'الأحكام',sp:'تقسيم الأحكام',nk:'النسخ',lens:'PDF Lens',rp:'طباعة الرول'};
-const topOf=k=>Object.keys(GROUPS).find(g=>GROUPS[g].includes(k))||'gs';
+const topOf=k=>(!wideQ.matches&&(k==='sp'||k==='nk'||k==='rp'))?'tools':(Object.keys(GROUPS).find(g=>GROUPS[g].includes(k))||'gs');
 function show(k){
   if(GROUPS[k]){let s=GROUPS[k][0];try{const v=localStorage.getItem('sub_'+k);if(v&&GROUPS[k].includes(v))s=v}catch(e){}k=s}
   const top=topOf(k);
@@ -9599,7 +9618,7 @@ function show(k){
   const sub=document.getElementById('sub'),g=GROUPS[top];sub.hidden=g.length<2;
   if(sub.dataset.g!==top){sub.dataset.g=top;sub.innerHTML=g.length<2?'':g.map(x=>'<button data-k="'+x+'" aria-selected="false">'+SUBL[x]+'</button>').join('');sub.querySelectorAll('button').forEach(b=>b.onclick=()=>show(b.dataset.k))}
   sub.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.k===k)));
-  const vt=document.getElementById('vbTx')||document.getElementById('vbT');if(vt)vt.textContent={gs:'البحث العام',pdf:'رول PDF',xl:'رول إكسيل',sp:'تقسيم الأحكام',nk:'النسخ',lens:'PDF Lens',rp:'طباعة الرول'}[top];
+  const vt=document.getElementById('vbTx')||document.getElementById('vbT');if(vt)vt.textContent={gs:'البحث العام',pdf:'رول PDF',xl:'رول إكسيل',sp:'تقسيم الأحكام',nk:'النسخ',lens:'PDF Lens',rp:'طباعة الرول',tools:'أدوات'}[top];
   document.querySelectorAll('#views iframe').forEach(f=>{
     const on=f.dataset.k===k;f.classList.toggle('on',on);
     if(on&&!loaded[k]){loaded[k]=1;f.srcdoc=build(k)}
@@ -9611,7 +9630,10 @@ window.__privateFrame=function(k){const f=document.createElement('iframe');f.set
 window.__ensure=function(k){const f=document.querySelector('#views iframe[data-k="'+k+'"]');if(!loaded[k]){loaded[k]=1;return new Promise(r=>{f.addEventListener('load',()=>setTimeout(()=>r(f),50),{once:true});f.srcdoc=build(k)})}return Promise.resolve(f)};
 document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>show(b.dataset.k));
 let k0='gs';try{const v=localStorage.getItem('combined_tab');if(v&&document.getElementById('tpl-'+v))k0=v}catch(e){}
+document.getElementById('bkT').onclick=e=>{e.stopPropagation();const m=themeMode(),n={auto:'light',light:'dark',dark:'auto'}[m];try{localStorage.setItem('theme',n)}catch(x){}applyTheme()};
+applyTheme();
 show(k0);
+try{wideQ.addEventListener('change',()=>{let c=k0;try{c=localStorage.getItem('combined_tab')||k0}catch(e){}if(GROUPS[c]&&!document.getElementById('tpl-'+c))c='gs';const sub=document.getElementById('sub');sub.dataset.g='';show(c)})}catch(e){}
 })();
 </script>
 <script>
