@@ -89,6 +89,7 @@
 
 
 
+
 <style>
 :root{--bg:#F4F1EA;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1B3A5C;--accfg:#fff;--head:#e4dfd2}
 @media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#C9A24B;--accfg:#12263F;--head:#2a3542}}
@@ -133,7 +134,7 @@ body.tcol #tabs:hover button{font-size:.95rem;gap:12px;justify-content:flex-star
 <button role="tab" data-k="lens" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="M21 21l-6-6"/></svg>PDF Lens</button>
 <button role="tab" data-k="rp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V3h10v6"/><rect x="4" y="9" width="16" height="8" rx="2"/><path d="M7 14h10v7H7z"/></svg>طباعة الرول</button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٠١</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٠٢</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
 <div id="sub" hidden></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -7717,6 +7718,7 @@ label.chk{display:flex;gap:6px;align-items:center;font-size:.9rem}
     <label class="chk">الدقة
       <select id="qual"><option value="1800">عادية (أسرع)</option><option value="2400">عالية (أدق وأبطأ)</option></select>
     </label>
+    <label class="chk"><input type="checkbox" id="crp" checked> قص الصفحة على النص وضبط الحجم تلقائيًا (أسرع)</label>
     <label class="chk"><input type="checkbox" id="trm" checked> اقرأ من «قبول الطعن شكلًا» لحد «وكيل المدعي» بس</label>
     <label class="chk"><input type="checkbox" id="rep" checked> شيل الترويسة والتذييل المتكررين</label>
   </div>
@@ -8010,7 +8012,7 @@ function deskewC(c){
 function rotC(c,deg){
   const sw=deg%180!==0,o=document.createElement('canvas');o.width=sw?c.height:c.width;o.height=sw?c.width:c.height;
   const x=o.getContext('2d',{willReadFrequently:true});x.fillStyle='#fff';x.fillRect(0,0,o.width,o.height);
-  x.translate(o.width/2,o.height/2);x.rotate(deg*Math.PI/180);x.drawImage(c,-c.width/2,-c.height/2);return o;
+  x.translate(o.width/2,o.height/2);x.rotate(deg*Math.PI/180);x.drawImage(c,-c.width/2,-c.height/2);x.setTransform(1,0,0,1,0,0);return o;
 }
 function oscore(r){let s=0;for(const w of((r.data&&r.data.words)||[])){const t=(w.text||'').replace(/[^ء-ي]/g,'');if(t.length>=2)s+=(w.confidence||0)*Math.min(t.length,6)}return s}
 async function fixOrient(c,full){
@@ -8024,8 +8026,43 @@ async function fixOrient(c,full){
   $('status').textContent='الصفحة كانت بالجنب/مقلوبة — اتعدّلت تلقائي';
   const o=rotC(c,best);c.width=c.height=0;o._rot=true;return{c:o,deg:best};
 }
+/* ===== قص الصفحة على النص + ضبط الحجم حسب مسافة السطور ===== */
+function cropScale(c,info){
+  try{
+    const DW=700,k=DW/c.width,w=DW,h=Math.max(8,Math.round(c.height*k)),t=document.createElement('canvas');t.width=w;t.height=h;
+    const x=t.getContext('2d',{willReadFrequently:true});x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(c,0,0,w,h);
+    const d=x.getImageData(0,0,w,h).data,g=new Uint8Array(w*h);for(let i=0;i<w*h;i++)g[i]=d[i*4];t.width=t.height=0;
+    const th=Math.min(165,otsu(g)*0.97),rows=new Float64Array(h),cols=new Float64Array(w);let tot=0;
+    for(let y=0;y<h;y++)for(let q=0;q<w;q++)if(g[y*w+q]<th){rows[y]++;cols[q]++;tot++}
+    if(tot<w*h*.003)return c;
+    const ok=(v,n)=>{const f=v/n;return f>.012&&f<.6};
+    const first=(a,n,rev)=>{const L=a.length;for(let i=0;i<L;i++){const j=rev?L-1-i:i;let c3=0;for(let q=0;q<3;q++){const jj=rev?j-q:j+q;if(jj>=0&&jj<L&&ok(a[jj],n))c3++}if(c3>=3)return j}return rev?L-1:0};
+    let y0=first(rows,w,0),y1=first(rows,w,1),x0=first(cols,h,0),x1=first(cols,h,1);
+    if(y1-y0<h*.1||x1-x0<w*.1){y0=0;y1=h-1;x0=0;x1=w-1}
+    const mx=Math.round(w*.025),my=Math.round(h*.02);
+    x0=Math.max(0,x0-mx);x1=Math.min(w-1,x1+mx);y0=Math.max(0,y0-my);y1=Math.min(h-1,y1+my);
+    // مسافة السطور من الارتباط الذاتي لإسقاط الحبر على الصفوف
+    const rh=y1-y0+1,pr=new Float64Array(rh);let m=0;
+    for(let y=0;y<rh;y++){let s2=0;for(let q=x0;q<=x1;q++)if(g[(y+y0)*w+q]<th)s2++;pr[y]=s2;m+=s2}
+    m/=rh;for(let y=0;y<rh;y++)pr[y]-=m;
+    let a0=0;for(let y=0;y<rh;y++)a0+=pr[y]*pr[y];
+    let bl=0,bv=0;const mxL=Math.min(120,Math.floor(rh/3)),ac=new Float64Array(mxL+4);
+    for(let L=6;L<=mxL;L++){let s3=0;for(let y=0;y+L<rh;y++)s3+=pr[y]*pr[y+L];s3/=(rh-L)/rh;ac[L]=s3;if(s3>bv){bv=s3;bl=L}}
+    for(const mu of[3,2]){const L2=bl*mu;if(L2<=mxL){let mv=0,ml=0;for(let L=L2-2;L<=L2+2;L++)if(L<=mxL&&ac[L]>mv){mv=ac[L];ml=L}if(mv>=bv*.8){bl=ml;bv=mv;break}}}
+    let sc=1;
+    if(bl&&bv>a0*.12){const pitch=bl/k;sc=64/pitch;sc=Math.max(.55,Math.min(1.35,sc));if(Math.abs(sc-1)<.12)sc=1}
+    const sx=Math.floor(x0/k),sy=Math.floor(y0/k),sw=Math.min(c.width-sx,Math.ceil((x1-x0+1)/k)),sh=Math.min(c.height-sy,Math.ceil((y1-y0+1)/k));
+    const full=(sw>c.width*.95&&sh>c.height*.95);
+    if(full&&sc===1)return c;
+    let ow=Math.round(sw*sc),oh=Math.round(sh*sc);const big=Math.max(ow,oh);if(big>3400){const f=3400/big;ow=Math.round(ow*f);oh=Math.round(oh*f)}
+    if(ow<700){const f=700/ow;ow=700;oh=Math.round(oh*f)}
+    const o=document.createElement('canvas');o.width=ow;o.height=oh;const ox=o.getContext('2d',{willReadFrequently:true});ox.fillStyle='#fff';ox.fillRect(0,0,ow,oh);ox.imageSmoothingQuality='high';ox.drawImage(c,sx,sy,sw,sh,0,0,ow,oh);
+    if(info)info.crop=[sx,sy,sw,sh,sc,bl/k];
+    o._rot=true;c.width=c.height=0;return o;
+  }catch(e){return c}
+}
 async function readSmart(maker,psm,lm){
-  let c=await maker(1),dg=0;if(psm==='3'){const fo=await fixOrient(c);c=fo.c;dg=fo.deg;if(dg)deskewC(c)}
+  let c=await maker(1),dg=0;if(psm==='3'){const fo=await fixOrient(c);c=fo.c;dg=fo.deg;if(dg)deskewC(c);if($('crp').checked)c=cropScale(c)}
   let r=await ocr(c,psm);
   if(psm==='3'&&!dg&&(r.data.text||'').replace(/\s/g,'').length<60){
     // نص قليل جدًا: غالبًا الصفحة مش معدولة — جرّب الاتجاهات التانية
