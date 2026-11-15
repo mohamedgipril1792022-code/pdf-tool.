@@ -90,6 +90,8 @@
 
 
 
+
+
 <style>
 :root{--bg:#F4F1EA;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1B3A5C;--accfg:#fff;--head:#e4dfd2}
 @media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#C9A24B;--accfg:#12263F;--head:#2a3542}}
@@ -134,7 +136,7 @@ body.tcol #tabs:hover button{font-size:.95rem;gap:12px;justify-content:flex-star
 <button role="tab" data-k="lens" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="M21 21l-6-6"/></svg>PDF Lens</button>
 <button role="tab" data-k="rp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V3h10v6"/><rect x="4" y="9" width="16" height="8" rx="2"/><path d="M7 14h10v7H7z"/></svg>طباعة الرول</button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٠٢</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٠٤</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
 <div id="sub" hidden></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -7719,6 +7721,7 @@ label.chk{display:flex;gap:6px;align-items:center;font-size:.9rem}
       <select id="qual"><option value="1800">عادية (أسرع)</option><option value="2400">عالية (أدق وأبطأ)</option></select>
     </label>
     <label class="chk"><input type="checkbox" id="crp" checked> قص الصفحة على النص وضبط الحجم تلقائيًا (أسرع)</label>
+    <label class="chk"><input type="checkbox" id="tplOn" checked> صحّح الفقرات المتكررة بتصحيحاتي القديمة</label>
     <label class="chk"><input type="checkbox" id="trm" checked> اقرأ من «قبول الطعن شكلًا» لحد «وكيل المدعي» بس</label>
     <label class="chk"><input type="checkbox" id="rep" checked> شيل الترويسة والتذييل المتكررين</label>
   </div>
@@ -7857,7 +7860,15 @@ function prep(c){
   const sm=new Float32Array(gw*gh);
   for(let gy=0;gy<gh;gy++)for(let gx=0;gx<gw;gx++){let a=0,m=0;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const yy=gy+dy,xx=gx+dx;if(yy>=0&&yy<gh&&xx>=0&&xx<gw){a+=bg[yy*gw+xx];m++}}sm[gy*gw+gx]=a/m}
   const hist=new Uint32Array(256);
-  for(let y=0;y<h;y++){const r=((y/bs)|0)*gw;for(let q=0;q<w;q++){const v=Math.min(255,g[y*w+q]*235/Math.max(sm[r+((q/bs)|0)],40));g[y*w+q]=v;hist[v|0]++}}
+  // استيفاء ثنائي بين مربعات الخلفية (بدل المربعات الحادة)
+  const X0=new Int32Array(w),X1=new Int32Array(w),XF=new Float32Array(w);
+  for(let q=0;q<w;q++){const fx=q/bs-.5,i0=Math.floor(fx);XF[q]=fx-i0;X0[q]=Math.max(0,Math.min(gw-1,i0));X1[q]=Math.max(0,Math.min(gw-1,i0+1))}
+  for(let y=0;y<h;y++){
+    const fy=y/bs-.5,j0=Math.floor(fy),wy=fy-j0,A=Math.max(0,Math.min(gh-1,j0))*gw,B=Math.max(0,Math.min(gh-1,j0+1))*gw;
+    for(let q=0;q<w;q++){
+      const f=XF[q],top=sm[A+X0[q]]*(1-f)+sm[A+X1[q]]*f,bot=sm[B+X0[q]]*(1-f)+sm[B+X1[q]]*f,bgv=top*(1-wy)+bot*wy;
+      const v=Math.min(255,g[y*w+q]*235/Math.max(bgv,40));g[y*w+q]=v;hist[v|0]++}
+  }
   let lo=0,hi=255,a=0;const t=n*.01;
   for(;lo<255;lo++){a+=hist[lo];if(a>t)break}a=0;
   for(;hi>0;hi--){a+=hist[hi];if(a>t)break}
@@ -8106,6 +8117,7 @@ function trimBody(txt){
 }
 function trimSafe(x){try{return trimBody(x)}catch(e){return x}}
 function packRes(r){const ft=vocabFix(r.data.text||'',r.data.words),t=(r._pg&&$('trm').checked)?trimSafe(ft):ft;return{text:t,ft:r._pg?ft:null,conf:Math.round(r.data.confidence||0),lw:lowWords(r.data.words,t),nums:r._nums||[]}}
+$('tplOn').onchange=()=>{render(true)};
 $('trm').onchange=()=>{let ch=false;for(const p in S.raw){const o=S.raw[p];if(o.ft){o.text=$('trm').checked?trimSafe(o.ft):o.ft;ch=true}}if(ch){render(true);save()}};
 function setChips(el,arr){
   const ch=el.querySelector('.chips'),ta=el.querySelector('textarea');if(!ch)return;el._lw=arr||[];
@@ -8198,7 +8210,7 @@ function tidy(raw){
 }
 function render(force){
   const nums=Object.keys(S.raw).map(Number).sort((a,b)=>a-b);
-  const P={};nums.forEach(p=>P[p]=tidy(S.raw[p].text));
+  const P={};nums.forEach(p=>P[p]=tidy(S.raw[p].text).map(tplApply));
   if($('rep').checked&&nums.length>=3){ // سطور مكررة في أغلب الصفحات
     const cnt={};
     nums.forEach(p=>{new Set(P[p].map(key).filter(k=>k.length>=8)).forEach(k=>cnt[k]=(cnt[k]||0)+1)});
@@ -8243,7 +8255,7 @@ const lbl=a=>/^\d/.test(a.p)?'صفحة '+a.p:a.p;
 const nk=w=>w.replace(/^[^\u0621-\u064A0-9A-Za-z]+|[^\u0621-\u064A0-9A-Za-z]+$/g,'');
 function fxLoad(){try{return JSON.parse(localStorage.getItem('lens:fix')||'{}')}catch(e){return{}}}
 function fxPut(F){try{localStorage.setItem('lens:fix',JSON.stringify(F))}catch(e){}updFx()}
-function updFx(){const F=fxLoad(),k=Object.keys(F);$('fxsum').textContent='ذاكرة التصحيحات — '+k.length+' كلمة ('+k.filter(x=>F[x].n>=2).length+' مفعّلة)'}
+function updFx(){const F=fxLoad(),k=Object.keys(F);$('fxsum').textContent='ذاكرة التصحيحات — '+k.length+' كلمة ('+k.filter(x=>F[x].n>=2).length+' مفعّلة) — '+tplLoad().length+' جملة'}
 function autofix(t){const F=fxLoad();let n=0;const o=t.replace(/\S+/g,w=>{const k=nk(w),f=k&&F[k];if(f&&f.n>=2){n++;return w.replace(k,f.to)}return w});return{t:o,n}}
 function learn(a,b){
   const A=a.split(/\s+/).filter(Boolean),B=b.split(/\s+/).filter(Boolean),n=A.length,m=B.length;
@@ -8267,13 +8279,35 @@ function learn(a,b){
   for(const o of ops){if(o[0]==='=')flush();else if(o[0]==='-')d.push(o[1]);else ins.push(o[1])}
   flush();if(ch)fxPut(F);
 }
+/* ===== قوالب الجمل: تصحيح الفقرات المتكررة بالفقرات اللي صحّحتها قبل كده ===== */
+function tplLoad(){try{return JSON.parse(localStorage.getItem('lens:tpl')||'[]')}catch(e){return[]}}
+function tplPut(a){try{localStorage.setItem('lens:tpl',JSON.stringify(a.slice(-250)))}catch(e){}try{updFx()}catch(e){}}
+const dmask=s=>s.replace(/[0-9٠-٩]+/g,'#');
+const ttok=s=>dmask(s).split(/\s+/).map(w=>nk(w)||w).filter(Boolean);
+function lcsLen(A,B){const n=A.length,m=B.length;let pr=new Uint16Array(m+1);for(let i=1;i<=n;i++){const cu=new Uint16Array(m+1);for(let j=1;j<=m;j++)cu[j]=A[i-1]===B[j-1]?pr[j-1]+1:Math.max(pr[j],cu[j-1]);pr=cu}return pr[m]}
+function tplLearn(base,edited){
+  const B=new Set(base.split(/\n+/).map(x=>x.trim())),T=tplLoad();let ch=false;
+  for(const l of edited.split(/\n+/)){const p=l.trim();if(p.length<30||p.split(/\s+/).length<5||B.has(p))continue;const m=dmask(p);if(T.includes(m))continue;T.push(m);ch=true}
+  if(ch)tplPut(T);
+}
+function tplApply(par){
+  try{
+    if(!$('tplOn').checked)return par;const T=tplLoad();if(!T.length)return par;
+    const ta=ttok(par);if(ta.length<5)return par;const nums=par.match(/[0-9٠-٩]+/g)||[];
+    let best=null,br=0;
+    for(const m of T){const tb=ttok(m);if(Math.abs(tb.length-ta.length)>Math.max(3,ta.length*.3))continue;const r=2*lcsLen(ta,tb)/(ta.length+tb.length);if(r>br){br=r;best=m}}
+    if(!best||br<.72||br>=.999)return par;
+    if((best.match(/#/g)||[]).length!==nums.length)return par;
+    let i=0;return best.replace(/#/g,()=>nums[i++]);
+  }catch(e){return par}
+}
 function bindCard(el){
   const ta=el.querySelector('textarea');
   const fx=document.createElement('div');fx.className='fx hint';fx.hidden=true;
   fx.innerHTML='<span></span><button type="button">تراجع عن التصحيح التلقائي</button>';
   ta.after(fx);const nr=document.createElement('details');nr.className='nr';nr.hidden=true;nr.innerHTML='<summary></summary><div class="nrl"></div>';fx.after(nr);const chp=document.createElement('div');chp.className='chips';chp.hidden=true;nr.after(chp);
   ta.addEventListener('input',()=>{el._dirty=true;save()});
-  ta.addEventListener('change',()=>{learn(el._base||'',ta.value);el._base=ta.value;fx.hidden=true;save()});
+  ta.addEventListener('change',()=>{learn(el._base||'',ta.value);try{tplLearn(el._base||'',ta.value)}catch(e){}el._base=ta.value;fx.hidden=true;save()});
   fx.querySelector('button').onclick=()=>{ta.value=el._plain;el._base=el._plain;fx.hidden=true};
 }
 function setCard(el,text,force){
@@ -8291,10 +8325,11 @@ function addCard(parent,label,text,onDel){
   el.querySelector('.dl').onclick=()=>{el.remove();onDel&&onDel();save()};
   parent.appendChild(el);bindCard(el);setCard(el,text,true);return el;
 }
-$('fxEx').onclick=()=>dl('lens-corrections.json','application/json',JSON.stringify({fix:fxLoad(),vocab:[...vocabLoad()]}));
+$('fxEx').onclick=()=>dl('lens-corrections.json','application/json',JSON.stringify({fix:fxLoad(),vocab:[...vocabLoad()],tpl:tplLoad()}));
 $('fxIm').onclick=()=>$('fxF').click();
 $('fxF').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;
-  try{const I0=JSON.parse(await f.text()),I=I0.fix||I0,F=fxLoad();if(Array.isArray(I0.vocab)){const V=vocabLoad();I0.vocab.forEach(q=>V.add(q));vocabPut(V);vocUI()}
+  try{const I0=JSON.parse(await f.text()),I=I0.fix||I0,F=fxLoad();if(Array.isArray(I0.tpl)){const T=tplLoad();I0.tpl.forEach(q=>{if(!T.includes(q))T.push(q)});tplPut(T)}
+  if(Array.isArray(I0.vocab)){const V=vocabLoad();I0.vocab.forEach(q=>V.add(q));vocabPut(V);vocUI()}
     for(const k in I){if(I[k]&&I[k].to)F[k]=F[k]&&F[k].to===I[k].to?{to:I[k].to,n:F[k].n+I[k].n}:I[k]}
     fxPut(F)}catch(_){alert('الملف مش ملف تصحيحات سليم')}};
 $('fxClr').onclick=()=>{if(confirm('تمسح كل التصحيحات المحفوظة؟'))fxPut({})};
@@ -8552,10 +8587,19 @@ function pvDraw(){
   c.width=Math.round(W0*k);c.height=Math.round(H0*k);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);
   x.save();x.translate(c.width/2,c.height/2);x.rotate(PV.rot*Math.PI/180);x.drawImage(bm,-bm.width*k/2,-bm.height*k/2,bm.width*k,bm.height*k);x.restore();
 }
+async function loadBm(f){
+  try{return await createImageBitmap(f)}catch(e1){}
+  try{return await createImageBitmap(f,{imageOrientation:'from-image'})}catch(e2){}
+  const u=URL.createObjectURL(f);
+  try{
+    const im=new Image();im.src=u;await im.decode();
+    const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;c.getContext('2d').drawImage(im,0,0);return c;
+  }finally{setTimeout(()=>URL.revokeObjectURL(u),3000)}
+}
 async function pvNext(){
   if(!PV.q.length){$('phPv').hidden=true;PV.bm=null;return}
   const f=PV.q.shift();
-  try{PV.bm=await createImageBitmap(f)}catch(e){$('phSS').textContent='⚠ الصورة دي ماتقرتش';return pvNext()}
+  try{PV.bm=await loadBm(f)}catch(e){$('phSS').textContent='⚠ الصورة دي ماتقرتش ('+(f.type||'نوع غير معروف')+') — جرّب «صوّر وابعت» أو صورة بصيغة JPG/PNG';return pvNext()}
   PV.rot=PV.bm.width>PV.bm.height*1.1?90:0; // صورة بالعرض = غالبًا ورقة واقفة اتصوّرت بالجنب
   $('phAll').hidden=!PV.q.length;$('phPv').hidden=false;pvDraw();$('phSS').textContent='اتأكد إن الورقة معدولة (لفّها لو لازم) وبعدين «إرسال» — باقي '+(PV.q.length)+' صورة';
 }
@@ -8588,7 +8632,7 @@ $('phAll').onclick=async()=>{
   {const c=$('phCv'),cc=document.createElement('canvas');cc.width=c.width;cc.height=c.height;cc.getContext('2d').drawImage(c,0,0);PQ.push(cc);phRun()}
   while(PV.q.length){
     const f=PV.q.shift();
-    try{PV.bm=await createImageBitmap(f);PV.rot=PV.bm.width>PV.bm.height*1.1?90:0;pvDraw();
+    try{PV.bm=await loadBm(f);PV.rot=PV.bm.width>PV.bm.height*1.1?90:0;pvDraw();
       const c=$('phCv'),cc=document.createElement('canvas');cc.width=c.width;cc.height=c.height;cc.getContext('2d').drawImage(c,0,0);PQ.push(cc);phRun()}catch(e){}
   }
   $('phPv').hidden=true;PV.bm=null;$('phSS').textContent='⏳ بيبعت كل الصور…';
