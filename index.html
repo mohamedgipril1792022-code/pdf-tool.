@@ -104,6 +104,8 @@
 
 
 
+
+
 <style>
 :root{--bg:#F4F1EA;--card:#fff;--fg:#1c2530;--line:#cfd6de;--acc:#1B3A5C;--accfg:#fff;--head:#e4dfd2}
 @media (prefers-color-scheme:dark){:root{--bg:#12171d;--card:#1b222b;--fg:#e8edf2;--line:#35414e;--acc:#C9A24B;--accfg:#12263F;--head:#2a3542}}
@@ -152,7 +154,7 @@ body.tcol #tabs:hover button{font-size:.95rem;gap:12px;justify-content:flex-star
 <button role="tab" data-k="rp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V3h10v6"/><rect x="4" y="9" width="16" height="8" rx="2"/><path d="M7 14h10v7H7z"/></svg>طباعة الرول</button>
 <button role="tab" data-k="tools" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.2-.6-.6-2.2z"/></svg>أدوات</button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١١١</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkT">🌓 المظهر: تلقائي</button><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١١٢</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkT">🌓 المظهر: تلقائي</button><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
 <div id="sub" hidden></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -2921,6 +2923,18 @@ details.flt{border-top:1px solid var(--line);margin-top:4px;padding-top:2px}
 details.flt>summary{font-size:13px;font-weight:600;color:var(--mute);padding:5px 0;cursor:pointer}
 .tyx{font-size:12px;font-weight:700;padding:1px 8px;border-radius:10px;background:#e8eef6;color:#1B3A5C;white-space:nowrap}#revBtn.on{background:#8a3b00;color:#fff;border-color:#8a3b00}
 .row .wn{font-size:12px;font-weight:700;color:#8a3b00;background:#ffe2c2;border:1px solid #f0b377;border-radius:10px;padding:1px 8px;white-space:nowrap}
+header .addpdf{width:100%;padding:11px;font-size:16px;font-weight:800;background:#C9A24B;color:#12263F}
+.winst{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.14);white-space:nowrap}.winst.ok{color:#9be8b8}.winst.no{color:#ffd58a}
+#rev{position:fixed;inset:0;z-index:30;background:var(--bg);display:none;flex-direction:column}#rev.on{display:flex}
+#rev .rh{display:flex;gap:8px;align-items:center;padding:8px 10px;background:var(--ink);color:#fff}#rev .rh b{flex:1;font-size:14px}
+#rev .rb{flex:1;overflow:auto;padding:10px;display:flex;flex-direction:column;gap:10px;align-items:center}
+#rev .why{font-weight:800;color:#8a3b00;background:#ffe2c2;border:1px solid #f0b377;border-radius:10px;padding:3px 10px}
+#rev img{max-width:100%;background:#fff;border:1px solid var(--line);border-radius:6px}
+#rev .fr{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center}
+#rev input{font:inherit;font-size:22px;font-weight:800;text-align:center;padding:8px;border:2px solid var(--accent);border-radius:8px;width:150px}#rev input.yr{width:80px}
+#rev .sg{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+#rev .rf{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);background:var(--card)}#rev .rf .btn{flex:1;padding:11px;font-size:15px}
+#modal .mbar{position:sticky;top:-12px;z-index:2;display:flex;justify-content:flex-start;margin:-12px -12px 10px;padding:10px 12px;background:rgba(0,0,0,.92)}#modal .mbar button{position:static!important}
 header h1{font-size:15px;margin:0;font-weight:800;flex:1;min-width:0;white-space:nowrap;overflow:hidden}
 .btn{font:inherit;font-size:14px;font-weight:600;border:0;border-radius:8px;padding:7px 12px;background:var(--accent);color:#fff;cursor:pointer}
 .btn.alt{background:#fff;color:var(--ink);border:1px solid var(--line)}
@@ -2996,10 +3010,11 @@ var pr=document.getElementById('prt'),ex=document.getElementById('exp');
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();<@@/script>
 
 <header>
+  <input type="file" id="file" accept="application/pdf" multiple hidden>
+  <button class="btn addpdf" onclick="file.click()">📄 إضافة PDF</button>
   <div class="hrow">
     <h1>تقسيم الأحكام</h1>
-    <input type="file" id="file" accept="application/pdf" multiple hidden>
-    <button class="btn" onclick="file.click()">إضافة PDF</button>
+    <span id="winSt" class="winst" title="قارئ ويندوز (للتصنيف بالموضوع وقراءة الأرقام الصعبة)">…</span>
     <button class="btn alt" id="clear" disabled onclick="resetMarks()">مسح</button>
   </div>
   <div class="steps">
@@ -3029,7 +3044,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     <select id="dlorg" aria-label="طريقة الحفظ" hidden><option value="mem">فولدر لكل عضو</option><option value="ty">فولدر لكل نوع قرار</option><option value="flat">فولدر واحد</option><option value="dl">تنزيل عادي</option></select>
     <button class="btn alt" id="repBtn" type="button" onclick="reportGo(this)">📊 تقرير Excel</button>
     <span class="sp" style="flex:1"></span>
-    <button class="btn alt" id="revBtn" type="button" onclick="REV=!REV;applyFilter()">⚠ محتاج مراجعة</button>
+    <button class="btn alt" id="revBtn" type="button" onclick="revOpen()">⚠ محتاج مراجعة</button>
     <button class="btn alt" onclick="$('list').classList.toggle('tall')">توسيع القائمة</button>
     <button class="btn alt" id="gridBtn" type="button">فتح الشبكة</button>
   </div>
@@ -3060,7 +3075,10 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </div>
 
 <div id="printArea"></div>
-<div id="modal"><button class="btn" onclick="closeModal()">إغلاق</button></div>
+<div id="rev"><div class="rh"><b id="revT">مراجعة</b><button class="btn alt" type="button" onclick="revClose()">✕ خروج</button></div>
+<div class="rb" id="revB"></div>
+<div class="rf"><button class="btn alt" type="button" onclick="revGo(-1)">→ السابق</button><button class="btn alt" type="button" onclick="revGo(1)">تخطي ←</button><button class="btn" type="button" onclick="revSave()">حفظ والتالي ⏎</button></div></div>
+<div id="modal"><div class="mbar"><button class="btn" onclick="closeModal()">✕ إغلاق</button></div></div>
 
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
@@ -3834,7 +3852,7 @@ function persist(){
   try{
     if(!srcFile)return;
     const c={};
-    for(const k in cropCache){const v=cropCache[k];if(/^[ti]\d+$/.test(k)&&v&&(k[0]==='t'||v.no))c[k]=k[0]==='t'?{cat:v.cat,sc:v.sc,manual:!!v.manual,txt:v.txt,src:v.src}:{no:v.no,yr:v.yr||null,q:!!v.q,rl:!!v.rl,pl:v.pl,mem:v.mem}}
+    for(const k in cropCache){const v=cropCache[k];if(/^[ti]\d+$/.test(k)&&v&&(k[0]==='t'||v.no))c[k]=k[0]==='t'?{cat:v.cat,sc:v.sc,manual:!!v.manual,txt:v.txt,src:v.src}:{no:v.no,yr:v.yr||null,q:!!v.q,rl:!!v.rl,pl:v.pl,mem:v.mem,manual:!!v.manual}}
     localStorage.setItem(saveKey(srcFile,N),JSON.stringify({v:1,t:Date.now(),c,s:[...starts],k:[...skip],nm:names}));
   }catch(e){}
 }
@@ -4243,8 +4261,60 @@ function drawChips(){
   $('chips').innerHTML=SUF.map((s,i)=>'<span class="chip">'+s+'<button type="button" data-i="'+i+'" aria-label="حذف '+s+'">×</button></span>').join('');
 }
 let REV=false;
+/* ===== مراجعة حكم حكم: تعدّل وتدوس Enter يجيلك اللي بعده ===== */
+let RV={L:[],i:0};
+function revOpen(){
+  saveCur();
+  RV.L=groups.map((g,i)=>({g,i})).filter(x=>revWhy(cropCache['i'+x.g.start]));
+  if(!RV.L.length){$('status').textContent='· مفيش أحكام محتاجة مراجعة في الملف ده ✓';return}
+  RV.i=0;$('rev').classList.add('on');revShow();
+}
+function revClose(){$('rev').classList.remove('on');applyFilter();try{numSummary()}catch(e){}}
+function revGo(d){RV.i+=d;if(RV.i<0)RV.i=0;if(RV.i>=RV.L.length){revClose();$('status').textContent='· خلصت المراجعة ✓';return}revShow()}
+function revShow(){
+  const it=RV.L[RV.i],g=it.g,inf=cropCache['i'+g.start]||{},why=revWhy(inf)||'اتراجع ✓';
+  $('revT').textContent='مراجعة '+fmt(RV.i+1)+' من '+fmt(RV.L.length)+' — حكم '+fmt(it.i+1)+' (ص '+fmt(g.pages[0])+')';
+  const sg=rollNear(inf);
+  $('revB').innerHTML='<span class="why">⚠ '+why+'</span><img id="revNum" alt=""><img id="revCas" alt="">'
+    +'<div class="fr"><label>رقم الدعوى <input id="revNo" inputmode="numeric" autocomplete="off"></label><label>لسنة <input id="revYr" class="yr" inputmode="numeric" autocomplete="off"></label></div>'
+    +(sg.length?'<div class="sg">'+sg.map(x=>'<button class="btn alt" type="button" data-sg="'+x+'">من الرول: '+toAr(x)+'</button>').join('')+'</div>':'')
+    +'<button class="btn alt" type="button" id="revPages">📄 عرض صفحات الحكم</button>';
+  const no=$('revNo'),yr=$('revYr');no.value=inf.no?toAr(toEnD(inf.no)):'';yr.value=inf.yr?toAr(toEnD(inf.yr)):'';
+  [no,yr].forEach(x=>{x.addEventListener('input',arDigits);x.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(x===no&&!yr.value)yr.focus();else revSave()}})});
+  $('revB').querySelectorAll('[data-sg]').forEach(b=>b.onclick=()=>{no.value=toAr(b.dataset.sg);no.focus()});
+  $('revPages').onclick=()=>zoom(g.start,g.pages);
+  cropNum(g.start).then(u=>{if(RV.L[RV.i]!==it)return;$('revNum').src=u.num;$('revCas').src=u.cas}).catch(()=>{});
+  setTimeout(()=>{no.focus();no.select()},60);
+}
+function revSave(){
+  const it=RV.L[RV.i];if(!it)return;const g=it.g,old=cropCache['i'+g.start]||{};
+  const no=toEnD($('revNo').value).replace(/\D/g,''),yr=toEnD($('revYr').value).replace(/\D/g,'');
+  if(no){
+    const i2={no,yr:yr||old.yr||'',q:false,rl:false,pl:old.pl,mem:old.mem,manual:true};
+    const j=jOf(i2);if(j&&j.who)i2.pl=j.who;
+    cropCache['i'+g.start]=i2;names[g.start]='';
+    const row=[...document.querySelectorAll('#list .row')].find(r=>r._g===g);
+    if(row){row._inf=i2;const inp=row.querySelector('input');if(inp)inp.value=caseTitle(i2);const c=rollCat(i2);if(c){cropCache['t'+g.start]={cat:c,sc:0,src:'roll'};setTopicTag(row,cropCache['t'+g.start])}}
+    persist();
+  }
+  revGo(1);
+}
+// لو عدّلت الرقم في اسم الحكم (مثلًا «٤٠٤٦١ لسنة ٨٠ ...») البرنامج ياخده كرقم الحكم ويشيل التحذير
+function titleInf(g,row,val){
+  const m=toEnD(val||'').match(/^\s*(\d{3,6})\s*(?:لسنة|لسنه|\/)\s*(\d{2})/);if(!m)return;
+  const old=cropCache['i'+g.start]||{};if(old.no&&parseInt(toEnD(old.no),10)===+m[1]&&parseInt(toEnD(old.yr||0),10)===+m[2]&&!old.q)return;
+  const i2={no:m[1],yr:m[2],q:false,rl:false,pl:old.pl,mem:old.mem,manual:true};const j=jOf(i2);if(j&&j.who&&!i2.pl)i2.pl=j.who;
+  cropCache['i'+g.start]=i2;row._inf=i2;const c=rollCat(i2);if(c){cropCache['t'+g.start]={cat:c,sc:0,src:'roll'};setTopicTag(row,cropCache['t'+g.start])}
+  try{markDups()}catch(e){}persist();applyFilter();
+}
+function arDigits(e){const x=e.target,p=x.selectionStart,v=x.value.replace(/[0-9]/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);if(v!==x.value){x.value=v;try{x.setSelectionRange(p,p)}catch(_){}}}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('rev').classList.contains('on'))revClose();else if($('modal').style.display==='block')closeModal()}});
+/* ===== حالة قارئ ويندوز ===== */
+async function winBadge(){const e=$('winSt');if(!e)return;winS&&(winS.t=0);const ok=await winOk();e.textContent=ok?'✅ قارئ ويندوز شغّال':'⚪ قارئ ويندوز مش شغّال';e.className='winst '+(ok?'ok':'no')}
+setTimeout(winBadge,800);setInterval(winBadge,30000);
 function revWhy(inf){
   if(!inf||!inf.no)return 'الرقم ما اتقراش';
+  if(inf.manual&&!inf.dup)return '';
   if(inf.dup)return 'رقم مكرر';
   if(inf.q)return inf.rl?'اتحدد من الرول بالترتيب':'راجع الرقم';
   if(ROLL.j.size&&!ROLL.j.has(jKey(inf)))return 'مش في رول الحكم';
@@ -4262,7 +4332,7 @@ function applyFilter(){
     if(j&&j.ty){if(!tx){tx=document.createElement('span');tx.className='tyx';const tp=r.querySelector('.tp');tp.after(tx)}tx.textContent=j.ty;tx.title=(j.tyRaw!==j.ty?j.tyRaw+' — ':'')+(j.mt||'')}else if(tx)tx.remove();
     if(REV&&!why)ok=false;
     r.style.display=ok?'':'none';if(ok)m++});
-  const rb=$('revBtn');if(rb){rb.textContent=(REV?'✓ ':'')+'⚠ محتاج مراجعة ('+fmt(nr)+')';rb.classList.toggle('on',REV)}
+  const rb=$('revBtn');if(rb){rb.textContent='⚠ محتاج مراجعة ('+fmt(nr)+')'}
   $('fcnt').textContent=sf.length?('مطابق: '+fmt(m)+' من '+fmt(rows.length)):'';
   if($('scnt'))$('scnt').textContent=q?('نتيجة: '+fmt(m)+' من '+fmt(rows.length)):'';
 }
@@ -4298,7 +4368,7 @@ function markDups(){
   const seen={};
   F.forEach((st,fi)=>{
     const gs=fi===cur?groups:calc(st.N,st.skip,st.starts),cc=fi===cur?cropCache:st.cropCache;
-    gs.forEach(g=>{const i=cc['i'+g.start];if(i&&i.no){const k=i.no+'/'+(i.yr||'');(seen[k]=seen[k]||[]).push(i)}});
+    gs.forEach(g=>{const i=cc['i'+g.start];if(i&&i.dup){i.dup=false;if(i.manual)i.q=false}if(i&&i.no){const k=parseInt(toEnD(i.no),10)+'/'+(i.yr?parseInt(toEnD(i.yr),10):'');(seen[k]=seen[k]||[]).push(i)}});
   });
   let d=0;
   for(const k in seen)if(seen[k].length>1){seen[k].forEach(i=>{i.q=true;i.dup=true});d+=seen[k].length}
@@ -4368,7 +4438,8 @@ function refresh(){
     const cinf=cropCache['i'+g.start];
     if(cinf&&cinf.no)applyInf(cinf);            // نتيجة اتقرت قبل كده: نعرضها من غير إعادة قراءة
     if(numsOn)numPend.push(caseInfoG(g).then(applyInf).catch(()=>{}));   // القراءة بس لما أضغط الزرار أو "تلقائي الكل"
-    r.querySelector('input').oninput=e=>{names[g.start]=e.target.value;clearTimeout(window._pt);window._pt=setTimeout(()=>{try{persist()}catch(e){}},900)};
+    r.querySelector('input').onchange=e=>titleInf(g,r,e.target.value);
+    r.querySelector('input').oninput=e=>{arDigits(e);names[g.start]=e.target.value;clearTimeout(window._pt);window._pt=setTimeout(()=>{try{persist()}catch(e){}},900)};
     r.querySelector('[data-z]').onclick=()=>zoom(g.start,g.pages);
     r.querySelector('[data-d]').onclick=()=>exportOne(g,i,r.querySelector('[data-d]'));
     r.querySelector('[data-pr]').onclick=()=>printGroup(g,r.querySelector('[data-pr]'));
