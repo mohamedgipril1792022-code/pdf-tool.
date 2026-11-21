@@ -194,7 +194,7 @@ body.tcol #tabs:hover button{font-size:.95rem;gap:12px;justify-content:flex-star
 <button role="tab" data-k="rp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V3h10v6"/><rect x="4" y="9" width="16" height="8" rx="2"/><path d="M7 14h10v7H7z"/></svg>طباعة الرول</button>
 <button role="tab" data-k="tools" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.2-.6-.6-2.2z"/></svg>أدوات</button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٧ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٣٣</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkT">🌓 المظهر: تلقائي</button><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٢١ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٣٤</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkT">🌓 المظهر: تلقائي</button><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
 <div id="sub" hidden></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -7653,7 +7653,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  </section>
  <button id="tgr" type="button" class="sec" style="width:100%;margin:0 0 10px;padding:10px;font:inherit;font-weight:800;border-radius:10px;border:1.5px solid var(--acc);background:var(--card);color:var(--acc);cursor:pointer" aria-expanded="false">📁 الرولات المضافة ▾</button>
  <section class="panel" id="rollsP" aria-label="الرولات" hidden>
-  <div class="tabs" role="tablist"><button type="button" role="tab" data-t="pdf" aria-selected="true">PDF</button><button type="button" role="tab" data-t="xl" aria-selected="false">إكسيل</button><button type="button" role="tab" data-t="mh" aria-selected="false">المحال</button></div>
+  <div class="tabs" role="tablist"><button type="button" role="tab" data-t="pdf" aria-selected="true">PDF</button><button type="button" role="tab" data-t="xl" aria-selected="false">إكسيل</button><button type="button" role="tab" data-t="mh" aria-selected="false">المحال</button><button type="button" role="tab" data-t="tg" aria-selected="false">تليجرام</button></div>
   <div id="sp-pdf" class="sp">
    <div class="actions"><div style="flex:1 1 150px"><label for="kpdf">نوع الرول</label><select id="kpdf"><option value="mf">تحضير (المفوضين)</option><option value="mr">مرافعة</option><option value="ah">أحكام</option></select></div></div>
    <div><label for="fpdf">إضافة / استبدال رولات PDF</label><input id="fpdf" type="file" accept="application/pdf,.pdf" multiple></div>
@@ -7672,6 +7672,12 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    <p id="mmh" class="hint"></p>
    <div class="actions"><button type="button" id="cmh" class="sec" hidden>مسح ملف المحال</button></div>
    <p class="hint">بيتحفظ في البرنامج. ارفع أحدث سجل وارد كل شهر — الدعاوى الجديدة بتتضاف والموجودة بتتحدّث. بيتدوّر فيه برقم الدعوى الجديد، وتبويب طباعة الرول بيستخدمه عشان يكتب «محالة من…» تحت الدعاوى الجديدة.</p>
+  </div>
+  <div id="sp-tg" class="sp" hidden>
+   <div><label for="ftg">فهرس أرشيف تليجرام (فهرس تليجرام.json)</label><input id="ftg" type="file" accept=".json,application/json"></div>
+   <p id="mtg" class="hint"></p>
+   <div class="actions"><button type="button" id="ctg" class="sec" hidden>مسح الفهرس</button></div>
+   <p class="hint">الفهرس بيطلع من برنامج «أرشيف تليجرام» (زرار «تحديث الفهرس»)، وبيتبعت كمان على القناة بهاشتاج #فهرس. حمّله هنا بعد كل رفع جديد، ولما تدوّر برقم الدعوى هيظهرلك زرار يفتح الحكم على القناة.</p>
   </div>
   <p class="hint">لو رفعت رول بنفس الاسم بيتبدّل القديم، والإجراءات اللي اتاخدت على الدعاوى بتفضل زي ما هي. الرولات بتتحفظ في المتصفح لحد ما تمسحها.</p>
  </section>
@@ -7762,6 +7768,30 @@ function mhBlock(h,n,y,force){
 MH.load();
 window.addEventListener('message',e=>{if(e.data==='open-mh'){const p=$('rollsP');if(p&&p.hidden)$('tgr').click();const b=document.querySelector('.tabs button[data-t="mh"]');if(b)b.click();$('mmh').scrollIntoView({block:'center'})}});
 
+// ===== فهرس تليجرام =====
+const TG={map:null,meta:null,
+ db(){return new Promise((res,rej)=>{const q=indexedDB.open('pdftool_tg',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)})},
+ async load(){try{const db=await TG.db();const v=await new Promise(r=>{const x=db.transaction('k').objectStore('k').get('idx');x.onsuccess=()=>r(x.result);x.onerror=()=>r(null)});db.close();TG.set(v)}catch(e){}TG.info()},
+ async put(v){try{const db=await TG.db();await new Promise((r,j)=>{const t=db.transaction('k','readwrite');v===null?t.objectStore('k').delete('idx'):t.objectStore('k').put(v,'idx');t.oncomplete=r;t.onerror=()=>j(t.error)});db.close();return true}catch(e){return false}},
+ set(v){TG.meta=v||null;TG.map=null;if(!v||!v.items)return;const m=new Map();for(const it of v.items){const k=String(toEn(it.no)).replace(/^0+/,'');if(!m.has(k))m.set(k,[]);m.get(k).push(it)}TG.map=m},
+ find(n,y){if(!TG.map||!n)return[];return(TG.map.get(String(n))||[]).filter(it=>!y||!it.yr||it.yr===y||String(it.yr).endsWith(y)||y.endsWith(String(it.yr)))},
+ info(){const m=$('mtg');if(!m)return;const v=TG.meta;$('ctg').hidden=!v;m.textContent=v?('الفهرس المحفوظ: '+toAr(v.items.length)+' حكم'+(v.folder?' من «'+v.folder+'»':'')+' · اتعمل '+new Date(v.savedAt).toLocaleDateString('ar-EG')):'مفيش فهرس محفوظ لسه.'}
+};
+function tgBlock(h){
+ if(!h.length)return '';
+ const seen=new Set();
+ return '<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px">'+h.filter(x=>{if(seen.has(x.link))return false;seen.add(x.link);return true}).slice(0,10).map(x=>'<a href="'+esc(x.link)+'" target="_blank" rel="noopener" style="display:block;border:1.5px solid var(--acc);border-radius:10px;padding:8px 10px;text-decoration:none;color:inherit;font-weight:700">📄 افتح الحكم على تليجرام — '+esc(toAr(x.no))+(x.yr?' لسنة '+esc(toAr(x.yr)):'')+(x.m&&x.m!=='بدون'?' · عضو '+esc(toAr(x.m)):'')+'<br><span class="hint" style="font-weight:400">'+esc(x.f||'')+'</span></a>').join('')+'</div>';
+}
+$('ftg').addEventListener('change',async e=>{
+ const f=e.target.files[0];if(!f)return;const m=$('mtg');
+ try{const v=JSON.parse(await f.text());if(!v||v.type!=='tg-judgments-index'||!Array.isArray(v.items))throw new Error('الملف ده مش فهرس أرشيف تليجرام.');
+  const ok=await TG.put(v);TG.set(v);TG.info();m.textContent+=ok?' · اتحفظ':' · (ماتحفظش — المتصفح مانع التخزين)';if($('q').value.trim())search();
+ }catch(err){m.textContent='حصل خطأ: '+(err.message||err)}
+ e.target.value='';
+});
+$('ctg').addEventListener('click',async()=>{if(!confirm('تمسح فهرس تليجرام المحفوظ؟'))return;await TG.put(null);TG.set(null);TG.info();if($('q').value.trim())search()});
+TG.load();
+
 // ===== البحث =====
 const isPdf=k=>k==='mf'||k==='mr'||k==='ah';
 const nz=s=>String(toEn(s==null?'':s)).replace(/[ً-ْـ‎‏]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/ؤ/g,'و').replace(/ئ/g,'ي').replace(/\s+/g,' ').replace(/(^| )عبد /g,'$1عبد').trim();
@@ -7775,6 +7805,7 @@ function search(){
   if(!n){o.innerHTML='<span class="err">اكتب رقم الدعوى.</span>';return}
  }else{words=nz(q0).split(' ').filter(Boolean);if(!words.length){o.innerHTML='<span class="err">اكتب اسم.</span>';return}}
  const mhH=mode==='no'?MH.find(n,y):[];
+ const tgB=mode==='no'?tgBlock(TG.find(n,y)):'';
  if(scope==='mh'){o.innerHTML=mode!=='no'?'<span class="hint">المحال بيتدوّر فيه برقم الدعوى بس.</span>':mhBlock(mhH,n,y,true);return}
  const hits=[],seenH=new Set();let fuzzy=0;
  for(const rec of G.all()){
@@ -7794,8 +7825,8 @@ function search(){
    hits.push({d:r[0]||'',k:rec.kind,sec:r[1],m:r[2],no:String(r[3]),yr:String(r[4]),pl:r[5],df:r[6],prev:r[7],dec:r[8],next:r[9],note:r[10],file:rec.name,approx});
   }
  }
- if(!hits.length&&scope==='all'&&mhH.length){o.innerHTML=mhBlock(mhH,n,y,false);return}
- if(!hits.length){o.innerHTML='<span class="hint">مفيش نتيجة في '+(scope==='xl'?'رولات الإكسيل':scope==='pdf'?'رولات الـ PDF':'الرولات المحفوظة')+'.'+(G.all().length?'':' (مفيش رولات محفوظة لسه)')+'</span>';return}
+ if(!hits.length&&scope==='all'&&mhH.length){o.innerHTML=tgB+mhBlock(mhH,n,y,false);return}
+ if(!hits.length){o.innerHTML=tgB+'<span class="hint">مفيش نتيجة في '+(scope==='xl'?'رولات الإكسيل':scope==='pdf'?'رولات الـ PDF':'الرولات المحفوظة')+'.'+(G.all().length?'':' (مفيش رولات محفوظة لسه)')+'</span>';return}
  const ord={mf:0,mr:1,xm:1,ah:2,xa:2,sp:3};
  hits.sort((a,b)=>dateKey(a.d)-dateKey(b.d)||(ord[a.k]-ord[b.k]));
  const A=jget('act_xm',{});
@@ -7832,7 +7863,7 @@ function search(){
   return `<details class="gd"><summary><b>${esc(toAr(last.no))} / ${esc(toAr(last.yr))}</b> — ${esc(ref.pl||'')}${ref.df?' ضد '+esc(ref.df):''} <span class="hint">(${toAr(g.length)} ظهور — آخرها ${dTxt(last.d)})</span></summary><div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">${inner}</div></details>`;
  }).join('');
  const pdfNote=hits.some(h=>isPdf(h.k))?'<p class="hint">نتائج الـ PDF قراءتها تقريبية وممكن يكون فيها أخطاء'+(fuzzy?'، وفيه '+toAr(fuzzy)+' نتيجة برقم قريب (علامة ≈)':'')+'.</p>':'';
- o.innerHTML=(scope==='all'?mhBlock(mhH,n,y,false):'')+(groups.length>1?`<p class="hint ok">${toAr(total)} دعوى</p>`:'')+pdfNote+gHtml;
+ o.innerHTML=tgB+(scope==='all'?mhBlock(mhH,n,y,false):'')+(groups.length>1?`<p class="hint ok">${toAr(total)} دعوى</p>`:'')+pdfNote+gHtml;
  o._hits=hits;
 }
 function setAct(h,v){
@@ -7856,7 +7887,7 @@ $('q').addEventListener('keydown',e=>{if(e.key==='Enter')search()});
 // ===== إدارة الرولات =====
 document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{
  document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-selected',String(x===b)));
- $('sp-pdf').hidden=b.dataset.t!=='pdf';$('sp-xl').hidden=b.dataset.t!=='xl';$('sp-mh').hidden=b.dataset.t!=='mh';
+ $('sp-pdf').hidden=b.dataset.t!=='pdf';$('sp-xl').hidden=b.dataset.t!=='xl';$('sp-mh').hidden=b.dataset.t!=='mh';$('sp-tg').hidden=b.dataset.t!=='tg';
 }));
 function drawList(){
  for(const [id,ks] of [['lpdf',['mf','mr','ah']],['lxl',['xm','xa','sp']]]){
