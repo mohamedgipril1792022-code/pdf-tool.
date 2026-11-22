@@ -194,7 +194,7 @@ body.tcol #tabs:hover button{font-size:.95rem;gap:12px;justify-content:flex-star
 <button role="tab" data-k="rp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V3h10v6"/><rect x="4" y="9" width="16" height="8" rx="2"/><path d="M7 14h10v7H7z"/></svg>طباعة الرول</button>
 <button role="tab" data-k="tools" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.2-.6-.6-2.2z"/></svg>أدوات</button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٢٢ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٣٧</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkT">🌓 المظهر: تلقائي</button><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٢٢ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٣٨</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkT">🌓 المظهر: تلقائي</button><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
 <div id="sub" hidden></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -8078,6 +8078,7 @@ label.chk{display:flex;gap:6px;align-items:center;font-size:.9rem}
     <label class="chk">مراجعة السطور الضعيفة <select id="so"><option value="off">بدون (الأسرع — الافتراضي)</option><option value="auto">خفيفة (٤ سطور)</option><option value="full">كاملة (أدق وأبطأ)</option></select></label>
     <label class="chk"><input type="checkbox" id="crp" checked> قصّ الصفحة على النص وضبط الحجم تلقائياً (أسرع)</label>
     <label class="chk"><input type="checkbox" id="tplOn" checked> تصحيح الفقرات المتكررة بتصحيحاتي السابقة</label>
+    <label class="chk"><input type="checkbox" id="atrm" checked> عرض تلقائي حسب نوع الورقة: الحكم كله · تقرير المفوض: الطلبات وما انتهى إليه · العريضة وغيرها: من «قبول الدعوى شكلًا» لـ«وكيل المدعي»</label>
     <label class="chk"><input type="checkbox" id="trm"> القراءة من «قبول الطعن شكلًا» إلى «وكيل المدعي» فقط</label>
     <div class="row" style="gap:8px"><input id="trmS" placeholder="البداية (فارغ = تلقائي: قبول … شكلًا)" style="flex:1;min-width:150px"><input id="trmE" placeholder="النهاية (فارغ = تلقائي: وكيل المدعي)" style="flex:1;min-width:150px"></div>
     <label class="chk"><input type="checkbox" id="rep" checked> حذف الترويسة والتذييل المتكررين</label>
@@ -8507,6 +8508,8 @@ function trimBody(txt){
 function trimSafe(x){try{return trimBody(x)}catch(e){return x}}
 function packRes(r){const ft=vocabFix(r.data.text||'',r.data.words),t=(r._pg&&$('trm').checked)?trimSafe(ft):ft;return{text:t,ft:r._pg?ft:null,conf:Math.round(r.data.confidence||0),lw:lowWords(r.data.words,t),nums:r._nums||[]}}
 $('tplOn').onchange=()=>{render(true)};
+try{if(localStorage.getItem('lens:atrm')==='0')$('atrm').checked=false}catch(e){}
+$('atrm').onchange=()=>{try{localStorage.setItem('lens:atrm',$('atrm').checked?'1':'0')}catch(e){}render(true);try{save()}catch(e){}};
 $('trm').onchange=()=>{let ch=false;for(const p in S.raw){const o=S.raw[p];if(o.ft){o.text=$('trm').checked?trimSafe(o.ft):o.ft;ch=true}}if(ch){render(true);save()}};
 ['trmS','trmE'].forEach(k=>{try{const v=localStorage.getItem('lens:'+k);if(v)$(k).value=v}catch(e){}});
 $('trmS').onchange=$('trmE').onchange=()=>{try{localStorage.setItem('lens:trmS',$('trmS').value);localStorage.setItem('lens:trmE',$('trmE').value)}catch(e){}$('trm').onchange()};
@@ -8617,6 +8620,40 @@ function gPick(L){
   N.forEach((t,i)=>{for(const R of GRULES)if(R.s.test(t))for(let k=i;k<Math.min(L.length,i+R.n);k++){P.add(k);if(R.e&&k>i&&R.e.test(N[k]))break;if(R.e&&k===i&&R.e.test(t.replace(R.s,'')))break}});
   return P}
 /* إرسال صفحة كاملة إلى جوجل (زر «🔎 جوجل للصفحة» على كل صفحة) */
+/* ===== العرض التلقائي حسب نوع الورقة =====
+   الحكم: كاملًا — تقرير المفوض: طلبات المدعي وما انتهى إليه فقط — غيرهما (عريضة الدعوى…): من «قبول الدعوى شكلًا» إلى «وكيل المدعي»
+   لو لم يوجد الجزء المطلوب في الورقة كلها تُعرض كاملة */
+const ATN='(لا يوجد في هذه الصفحة الجزء المطلوب)';
+function segPages(pages,rules){
+  const out={};let cur=null,left=0,any=false;
+  for(const pg of pages){const keep=[];
+    pg.L.forEach(l=>{const n=GNZ(l);
+      if(cur){if(cur.e.test(n)){if(cur.inc)keep.push(l);cur=null;return}keep.push(l);if(--left<=0)cur=null;return}
+      for(const R of rules){if(R.s.test(n)){any=true;keep.push(l);if(R.inc&&R.e.test(n.replace(R.s,'')))return;cur=R;left=R.max;return}}
+    });out[pg.p]=keep}
+  return any?out:null}
+function autoAll(){
+  const ps=Object.keys(S.raw).map(Number).sort((a,b)=>a-b);if(!ps.length)return;
+  const on=!!($('atrm')&&$('atrm').checked);
+  const grp=p=>{if(!S.files||!S.files.length)return 0;let a=0;for(let i=0;i<S.files.length;i++){a+=S.files[i].n;if(p<=a)return i}return S.files.length-1};
+  const G={};ps.forEach(p=>{const o=S.raw[p];if(o&&o.ft)(G[grp(p)]=G[grp(p)]||[]).push(p)});
+  for(const k in G){const pl=G[k];
+    if(!on){pl.forEach(p=>{const o=S.raw[p];o.dt=null;o.text=($('trm').checked&&!o.gg)?trimSafe(o.ft):o.ft});continue}
+    const all=GNZ(pl.map(p=>S.raw[p].ft).join('\n'));
+    const ty=/اصدرت\s*الحكم|باسم\s*الشعب|فلهذه\s*الاسباب|حكمت\s*المحكمه/.test(all)?'j':/تقرير\s*(هيئه\s*)?مفوض|هيئه\s*مفوضي\s*الدوله|نري\s*الحكم/.test(all)?'r':'p';
+    pl.forEach(p=>S.raw[p].dt=ty);
+    if(ty==='j'){pl.forEach(p=>S.raw[p].text=S.raw[p].ft);continue}
+    let rules;
+    if(ty==='r'){const E=/المصروفات|اتعاب\s*المحاماه/;
+      rules=[{s:/طلبات\s*(ال)?مدعي|ختام\s*صحيف|(وطلب|يطلب|بطلب|ويطلب|طالبا)\s*(ال)?مدعي\s*(في\s*ختام|الحكم)|طالبا\s*(في\s*ختام|الحكم)/,e:E,inc:true,max:14},
+             {s:/(لذلك|لما\s*تقدم|ولما\s*تقدم|وعلي\s*ذلك|وبناء\s*علي\s*ما\s*تقدم)[^\n]{0,25}(نري|يري|نوصي)|نري\s*الحكم/,e:E,inc:true,max:16}]}
+    else{const cs=GNZ(($('trmS')||{}).value||'').trim(),ce=GNZ(($('trmE')||{}).value||'').trim(),esc=x=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+      rules=[{s:cs?new RegExp(esc(cs)):/قبول.{0,14}شك|اولا.{0,6}قبول/,e:ce?new RegExp(esc(ce)):/وكيل\s*ال|^\s*المحامي\s*$/,inc:false,max:40}]}
+    const res=segPages(pl.filter(p=>!S.raw[p].gg).map(p=>({p,L:S.raw[p].ft.split('\n')})),rules);
+    pl.forEach(p=>{const o=S.raw[p];o.text=(o.gg||!res)?o.ft:(res[p]&&res[p].length?res[p].join('\n'):ATN)});
+  }
+}
+
 async function gPage(p,btn){
   if(!gKey()||!navigator.onLine){gSt(GT.need);return}
   GV.bad=false;const o=btn.textContent;btn.disabled=true;btn.textContent=GT.wait;
@@ -8720,6 +8757,7 @@ function tidy(raw){
   return paras;
 }
 function render(force){
+  try{autoAll()}catch(e){}
   const nums=Object.keys(S.raw).map(Number).sort((a,b)=>a-b);
   const P={};nums.forEach(p=>P[p]=tidy(S.raw[p].text).map(tplApply));
   if($('rep').checked&&nums.length>=3){ // سطور مكررة في أغلب الصفحات
@@ -8739,7 +8777,7 @@ function render(force){
       box.appendChild(el);bindCard(el);
     }
     el.classList.toggle('warn',low);try{el.querySelector('.gpg').hidden=!gOn()}catch(e){}
-    el.querySelector('span').textContent='صفحة '+p+(S.raw[p].gg?' · قراءة جوجل ✓':'')+(low&&!S.raw[p].gg?' ⚠ جودة القراءة ضعيفة — جرّب الدقة العالية':'');
+    el.querySelector('span').textContent='صفحة '+p+({j:' · حكم',r:' · تقرير مفوض',p:' · عريضة/أخرى'}[S.raw[p].dt]||'')+(S.raw[p].gg?' · قراءة جوجل ✓':'')+(low&&!S.raw[p].gg?' ⚠ جودة القراءة ضعيفة — جرّب الدقة العالية':'');
     setCard(el,txt0||'(لا يوجد نص مقروء في هذه الصفحة)',force);setChips(el,S.raw[p].lw);if(!el._nums||force)setNums(el,S.raw[p].nums)
   });
 }
