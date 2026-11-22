@@ -194,7 +194,7 @@ body.tcol #tabs:hover button{font-size:.95rem;gap:12px;justify-content:flex-star
 <button role="tab" data-k="rp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V3h10v6"/><rect x="4" y="9" width="16" height="8" rx="2"/><path d="M7 14h10v7H7z"/></svg>طباعة الرول</button>
 <button role="tab" data-k="tools" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.2-.6-.6-2.2z"/></svg>أدوات</button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٢١ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٣٤</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkT">🌓 المظهر: تلقائي</button><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٢٢ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٣٥</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkT">🌓 المظهر: تلقائي</button><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
 <div id="sub" hidden></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -8086,7 +8086,7 @@ label.chk{display:flex;gap:6px;align-items:center;font-size:.9rem}
     <label class="chk"><input type="checkbox" id="cf" checked> إزالة الأختام الملوّنة</label>
     <label class="chk"><input type="checkbox" id="ds" checked> تقويم الميل</label>
     <label class="chk"><input type="checkbox" id="auto" checked> إعادة تلقائية للصفحات الضعيفة</label>
-    <label class="chk"><input type="checkbox" id="win" checked> قارئ ويندوز المحلي <span id="winst" class="hint"></span></label><label class="chk"><input type="checkbox" id="wcmp" checked> مع قارئ ويندوز: اقرأ بالقارئ التاني كمان واختار الأدق لكل سطر (أدق للورق المشكّل — أبطأ شوية)</label>
+    <label class="chk"><input type="checkbox" id="win" checked> قارئ ويندوز المحلي <span id="winst" class="hint"></span></label><label class="chk"><input type="checkbox" id="gon"> قارئ جوجل لسطور الأرقام <span id="gst" class="hint"></span></label><div class="row" id="gbox" style="gap:8px;width:100%" hidden><input id="gkey" type="password" autocomplete="off" dir="ltr" placeholder="مفتاح Google Cloud Vision (API key)" style="flex:1;min-width:180px"><button type="button" id="gtest">اختبار المفتاح</button><span class="hint" style="width:100%">بيتبعت لجوجل سطور الأرقام بس (مش الصفحة كلها) — صورة واحدة لكل صفحة.</span></div><label class="chk"><input type="checkbox" id="wcmp" checked> مع قارئ ويندوز: اقرأ بالقارئ التاني كمان واختار الأدق لكل سطر (أدق للورق المشكّل — أبطأ شوية)</label>
     <label class="chk">النموذج <select id="mdl"><option value="ara">عربي (الافتراضي)</option><option value="ara+eng">عربي + إنجليزي</option><option value="fast">عربي سريع</option></select></label>
   </div>
   </details>
@@ -8580,6 +8580,84 @@ try{if(localStorage.getItem('lens:wcmp')==='0')$('wcmp').checked=false}catch(e){
 $('wcmp').onchange=()=>{try{localStorage.setItem('lens:wcmp',$('wcmp').checked?'1':'0')}catch(e){}};
 $('win').onchange=()=>{try{localStorage.setItem('lens:win',$('win').checked?'1':'0')}catch(e){}if($('win').checked)winPing(true);else{$('winst').textContent='';winCls()}};
 setTimeout(()=>winPing(true),400);
+const GT={need:'— حط المفتاح',testing:'— بيختبر…',good:'— المفتاح شغال ✓',bad:'— المفتاح مرفوض: ',err:'— جوجل مش متاح دلوقتي (اتقرا بقارئ ويندوز): ',ok:(p,n)=>'— ✓ '+p.toLocaleString('ar-EG')+' صفحة · اتصلح '+n.toLocaleString('ar-EG')+' سطر'};
+/* ===== قارئ جوجل (Cloud Vision): يصحح سطور الأرقام فقط — تُقص السطور وتُرسل في صورة واحدة لكل صفحة ===== */
+const GV={bad:false,n:0,pg:0};
+function gKey(){try{return(localStorage.getItem('lens:gkey')||'').trim()}catch(e){return''}}
+function gOn(){const c=$('gon');return !!(c&&c.checked&&!GV.bad&&gKey()&&navigator.onLine!==false)}
+function gSt(t){const e=$('gst');if(e)e.textContent=t}
+async function gCall(b64){
+  const res=await fetch('https://vision.googleapis.com/v1/images:annotate?key='+encodeURIComponent(gKey()),{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({requests:[{image:{content:b64},features:[{type:'DOCUMENT_TEXT_DETECTION'}],imageContext:{languageHints:['ar']}}]})});
+  let j=null;try{j=await res.json()}catch(e){}
+  const er=(j&&j.error)||(j&&j.responses&&j.responses[0]&&j.responses[0].error);
+  if(!res.ok||er){const e=new Error((er&&er.message)||('HTTP '+res.status));e.code=res.status;throw e}
+  return(j.responses&&j.responses[0])||{};
+}
+function gErr(e){
+  const m=String(e&&e.message||e);
+  if(e&&(e.code===400||e.code===403)||/API key|PERMISSION|billing|disabled|referer/i.test(m)){GV.bad=true;gSt(GT.bad+m.slice(0,120))}
+  else gSt(GT.err+m.slice(0,80));
+}
+async function gFix(c,r){
+  if(!gOn()||!c||!c.width||!r||!r.data||!Array.isArray(r.data.lines))return r;
+  const L=r.data.lines,idx=[];
+  L.forEach((l,i)=>{if(!l||!l.bbox)return;const t=(l.text||'').trim();if(/[0-9٠-٩۰-۹]/.test(t)||((l.confidence||100)<60&&t.length>=3))idx.push(i)});
+  if(!idx.length)return r;
+  const sel=idx.slice(0,30),GAP=36,slots=[];let H=GAP,Wm=0;
+  for(const i of sel){const b=L[i].bbox,h=Math.max(8,b.y1-b.y0),py=Math.round(h*.3),px=Math.round(h*.6);
+    const x0=Math.max(0,b.x0-px),y0=Math.max(0,b.y0-py),x1=Math.min(c.width,b.x1+px),y1=Math.min(c.height,b.y1+py);
+    if(x1-x0<4||y1-y0<4)continue;slots.push({i,x0,y0,w:x1-x0,h:y1-y0,my:H});H+=y1-y0+GAP;Wm=Math.max(Wm,x1-x0)}
+  if(!slots.length)return r;
+  const m=document.createElement('canvas');m.width=Wm+2*GAP;m.height=H;const g=m.getContext('2d');
+  g.fillStyle='#fff';g.fillRect(0,0,m.width,m.height);
+  for(const s of slots)g.drawImage(c,s.x0,s.y0,s.w,s.h,GAP,s.my,s.w,s.h);
+  const b64=m.toDataURL('image/jpeg',.92).split(',')[1];m.width=m.height=0;
+  let resp;try{resp=await gCall(b64)}catch(e){gErr(e);return r}
+  const fa=resp.fullTextAnnotation,got=slots.map(()=>[]);
+  for(const pg of(fa&&fa.pages)||[])for(const bl of pg.blocks||[])for(const pa of bl.paragraphs||[])for(const w of pa.words||[]){
+    const v=((w.boundingBox&&w.boundingBox.vertices)||[]).map(p=>({x:p.x||0,y:p.y||0}));if(!v.length)continue;
+    const cy=v.reduce((a,p)=>a+p.y,0)/v.length,cx=v.reduce((a,p)=>a+p.x,0)/v.length;
+    const k=slots.findIndex(s=>cy>=s.my-GAP/2&&cy<=s.my+s.h+GAP/2);if(k<0)continue;
+    const s=slots[k],xs=v.map(p=>p.x),ys=v.map(p=>p.y);
+    got[k].push({cx,text:(w.symbols||[]).map(y=>y.text||'').join(''),confidence:Math.round((w.confidence||.95)*100),
+      bbox:{x0:Math.round(s.x0+Math.min(...xs)-GAP),y0:Math.round(s.y0+Math.min(...ys)-s.my),x1:Math.round(s.x0+Math.max(...xs)-GAP),y1:Math.round(s.y0+Math.max(...ys)-s.my)}})}
+  const DG=/[0-9٠-٩۰-۹]/,ch=[];
+  slots.forEach((s,k)=>{
+    const ws=got[k].filter(w=>w.text).sort((a,b)=>b.cx-a.cx);if(!ws.length)return;
+    const old=L[s.i],ot=(old.text||'').replace(/\s+/g,' ').trim();
+    let nt=ws.map(w=>w.text).join(' ').replace(/\s+([.,:؛،)\]»])/g,'$1').replace(/([(\[«])\s+/g,'$1').trim();
+    const ol=ot.replace(/\s/g,'').length,nl=nt.replace(/\s/g,'').length;
+    if(!nl||nl<ol*.5||nl>ol*1.8||(DG.test(ot)&&!DG.test(nt)))return;
+    if(nt===ot)return;
+    ch.push({old,ot,line:{text:nt,confidence:95,bbox:old.bbox,words:ws.map(w=>({text:w.text,confidence:w.confidence,bbox:w.bbox}))}});
+  });
+  GV.pg++;
+  if(ch.length){
+    let txt=r.data.text||'';
+    for(const x of ch){const j=L.indexOf(x.old);if(j>=0)L[j]=x.line;
+      const raw=(x.old.text||'').replace(/\n+$/,'').trim();if(raw&&txt.includes(raw))txt=txt.replace(raw,x.line.text);}
+    const inC=w=>{const b=w.bbox;if(!b)return false;const cx=(b.x0+b.x1)/2,cy=(b.y0+b.y1)/2;return ch.some(x=>{const o=x.old.bbox;return cx>=o.x0&&cx<=o.x1&&cy>=o.y0&&cy<=o.y1})};
+    r.data.words=(r.data.words||[]).filter(w=>!inC(w)).concat(...ch.map(x=>x.line.words));
+    r.data.text=txt;GV.n+=ch.length;r._g=ch.length;
+  }
+  gSt(GT.ok(GV.pg,GV.n));
+  return r;
+}
+(function(){
+  const on=$('gon'),ky=$('gkey'),bt=$('gtest');if(!on||!ky)return;
+  try{on.checked=localStorage.getItem('lens:gon')==='1';ky.value=gKey()}catch(e){}
+  const box=$('gbox'),sh=()=>{if(box)box.hidden=!on.checked;if(on.checked&&!gKey())gSt(GT.need);else if(!on.checked)gSt('')};sh();
+  on.onchange=()=>{try{localStorage.setItem('lens:gon',on.checked?'1':'0')}catch(e){}GV.bad=false;sh()};
+  ky.onchange=ky.oninput=()=>{try{localStorage.setItem('lens:gkey',ky.value.trim())}catch(e){}GV.bad=false;if(on.checked)gSt(gKey()?'':GT.need)};
+  if(bt)bt.onclick=async()=>{
+    if(!gKey()){gSt(GT.need);return}
+    gSt(GT.testing);GV.bad=false;
+    const t=document.createElement('canvas');t.width=220;t.height=70;const x=t.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,220,70);x.fillStyle='#000';x.font='bold 40px Arial';x.fillText('١٢٣٤',30,50);
+    try{const r=await gCall(t.toDataURL('image/png').split(',')[1]);const tx=((r.fullTextAnnotation&&r.fullTextAnnotation.text)||'').trim();gSt(GT.good+(tx?' ('+tx+')':''))}catch(e){gErr(e)}
+  };
+})();
+
 $('autoRd').onchange=()=>{try{localStorage.setItem('lens:autoRd',$('autoRd').checked?'1':'0')}catch(e){}if($('autoRd').checked)autoSched()};
 function autoRead(){
   if(!$('autoRd').checked||!S.doc)return;
@@ -8687,7 +8765,8 @@ function mergeOcr(rw,rt){
     out.push(L)}
   const r={data:{text:out.map(l=>l.text).join('\n'),words:out.flatMap(l=>l.words||[]),lines:out,confidence:out.length?Math.round(out.reduce((a,l)=>a+(l.confidence||0),0)/out.length):0}};
   r._mix=nT;return r}
-async function ocr(c,psm){
+async function ocr(c,psm){const r=await ocr0(c,psm);return(psm==='3'||psm==='4')?gFix(c,r):r}
+async function ocr0(c,psm){
   if(await useWin()){try{
     if(psm==='3'&&$('wcmp')&&$('wcmp').checked){
       const [rw,rt]=await Promise.all([winOcr(c),withW(async w=>{await w.setParameters({tessedit_pageseg_mode:psm});return w.recognize(c)}).catch(()=>null)]);
