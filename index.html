@@ -194,7 +194,7 @@ body.tcol #tabs:hover button{font-size:.95rem;gap:12px;justify-content:flex-star
 <button role="tab" data-k="rp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V3h10v6"/><rect x="4" y="9" width="16" height="8" rx="2"/><path d="M7 14h10v7H7z"/></svg>طباعة الرول</button>
 <button role="tab" data-k="tools" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.2-.6-.6-2.2z"/></svg>أدوات</button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٢٢ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٣٥</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkT">🌓 المظهر: تلقائي</button><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٢٢ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٣٧</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkT">🌓 المظهر: تلقائي</button><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
 <div id="sub" hidden></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -8086,7 +8086,7 @@ label.chk{display:flex;gap:6px;align-items:center;font-size:.9rem}
     <label class="chk"><input type="checkbox" id="cf" checked> إزالة الأختام الملوّنة</label>
     <label class="chk"><input type="checkbox" id="ds" checked> تقويم الميل</label>
     <label class="chk"><input type="checkbox" id="auto" checked> إعادة تلقائية للصفحات الضعيفة</label>
-    <label class="chk"><input type="checkbox" id="win" checked> قارئ ويندوز المحلي <span id="winst" class="hint"></span></label><label class="chk"><input type="checkbox" id="gon"> قارئ جوجل لسطور الأرقام <span id="gst" class="hint"></span></label><div class="row" id="gbox" style="gap:8px;width:100%" hidden><input id="gkey" type="password" autocomplete="off" dir="ltr" placeholder="مفتاح Google Cloud Vision (API key)" style="flex:1;min-width:180px"><button type="button" id="gtest">اختبار المفتاح</button><span class="hint" style="width:100%">بيتبعت لجوجل سطور الأرقام بس (مش الصفحة كلها) — صورة واحدة لكل صفحة.</span></div><label class="chk"><input type="checkbox" id="wcmp" checked> مع قارئ ويندوز: اقرأ بالقارئ التاني كمان واختار الأدق لكل سطر (أدق للورق المشكّل — أبطأ شوية)</label>
+    <label class="chk"><input type="checkbox" id="win" checked> قارئ ويندوز المحلي <span id="winst" class="hint"></span></label><label class="chk"><input type="checkbox" id="gon"> قارئ جوجل للأرقام والسطور المهمة <span id="gst" class="hint"></span></label><div class="row" id="gbox" style="gap:8px;width:100%" hidden><input id="gkey" type="password" autocomplete="off" dir="ltr" placeholder="مفتاح Google Cloud Vision (API key)" style="flex:1;min-width:180px"><button type="button" id="gtest">اختبار المفتاح</button><span class="hint" style="width:100%">بيتبعت لجوجل بس: سطور الأرقام، ومن «قبول الدعوى شكلًا» لـ«وكيل»، والقضايا والتصرف النهائي، وفي تقرير المفوض طلبات المدعي وما انتهى إليه — صورة واحدة لكل صفحة.</span></div><label class="chk"><input type="checkbox" id="wcmp" checked> مع قارئ ويندوز: اقرأ بالقارئ التاني كمان واختار الأدق لكل سطر (أدق للورق المشكّل — أبطأ شوية)</label>
     <label class="chk">النموذج <select id="mdl"><option value="ara">عربي (الافتراضي)</option><option value="ara+eng">عربي + إنجليزي</option><option value="fast">عربي سريع</option></select></label>
   </div>
   </details>
@@ -8580,7 +8580,7 @@ try{if(localStorage.getItem('lens:wcmp')==='0')$('wcmp').checked=false}catch(e){
 $('wcmp').onchange=()=>{try{localStorage.setItem('lens:wcmp',$('wcmp').checked?'1':'0')}catch(e){}};
 $('win').onchange=()=>{try{localStorage.setItem('lens:win',$('win').checked?'1':'0')}catch(e){}if($('win').checked)winPing(true);else{$('winst').textContent='';winCls()}};
 setTimeout(()=>winPing(true),400);
-const GT={need:'— حط المفتاح',testing:'— بيختبر…',good:'— المفتاح شغال ✓',bad:'— المفتاح مرفوض: ',err:'— جوجل مش متاح دلوقتي (اتقرا بقارئ ويندوز): ',ok:(p,n)=>'— ✓ '+p.toLocaleString('ar-EG')+' صفحة · اتصلح '+n.toLocaleString('ar-EG')+' سطر'};
+const GT={wait:'…جوجل بيقرا',empty:'جوجل ما لقاش نص في الصفحة',need:'— حط المفتاح',testing:'— بيختبر…',good:'— المفتاح شغال ✓',bad:'— المفتاح مرفوض: ',err:'— جوجل مش متاح دلوقتي (اتقرا بقارئ ويندوز): ',ok:(p,n)=>'— ✓ '+p.toLocaleString('ar-EG')+' صفحة · اتصلح '+n.toLocaleString('ar-EG')+' سطر'};
 /* ===== قارئ جوجل (Cloud Vision): يصحح سطور الأرقام فقط — تُقص السطور وتُرسل في صورة واحدة لكل صفحة ===== */
 const GV={bad:false,n:0,pg:0};
 function gKey(){try{return(localStorage.getItem('lens:gkey')||'').trim()}catch(e){return''}}
@@ -8599,12 +8599,48 @@ function gErr(e){
   if(e&&(e.code===400||e.code===403)||/API key|PERMISSION|billing|disabled|referer/i.test(m)){GV.bad=true;gSt(GT.bad+m.slice(0,120))}
   else gSt(GT.err+m.slice(0,80));
 }
+/* الأجزاء المهمة التي يقرؤها جوجل مع سطور الأرقام:
+   الأحكام: من «قبول الدعوى/الطعن شكلًا» إلى «وكيل»، والقضايا، والتصرف النهائي (فلهذه الأسباب / حكمت المحكمة)
+   تقارير المفوضين: طلبات المدعي، وما انتهى إليه التقرير */
+const GNZ=t=>(t||'').replace(/[\u064B-\u065F\u0640\u0670]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه');
+const GRULES=[
+  {s:/قبول\s*(ال)?(دعوي|طعن)\s*شكل/,e:/وكيل/,n:8},
+  {s:/طلبات\s*(ال)?مدعي|(بطلب|يطلب|وطلب|طالبا|طالبين|ويطلب)\s*(ال)?(مدعي|الحكم|في\s*ختام)|ختام\s*صحيف/,n:7},
+  {s:/(لذلك|لما\s*تقدم|ولما\s*تقدم|وعلي\s*ذلك|وبناء\s*علي\s*ما\s*تقدم)[^\n]{0,25}(نري|يري|فان|نوصي)|نري\s*الحكم|انتهي\s*(التقرير|المفوض|الراي|راي)|الراي\s*القانوني/,n:9},
+  {s:/فلهذه\s*الاسباب|حكمت\s*المحكمه/,n:9},
+  {s:/القضايا\s*(ارقام|المطلوب|التاليه|الاتيه|الاتي)|محو\s*(ال)?(قضي|سابق)|رد\s*(ال)?اعتبار/,n:10},
+];
+function gPick(L){
+  const P=new Set(),N=L.map(l=>GNZ(l&&l.text));
+  try{const a=GNZ(($('trmS')||{}).value||'').trim(),b=GNZ(($('trmE')||{}).value||'').trim();
+    if(a){const i=N.findIndex(t=>t.includes(a));if(i>=0)for(let k=i;k<Math.min(L.length,i+12);k++){P.add(k);if(b&&N[k].includes(b))break}}}catch(e){}
+  N.forEach((t,i)=>{for(const R of GRULES)if(R.s.test(t))for(let k=i;k<Math.min(L.length,i+R.n);k++){P.add(k);if(R.e&&k>i&&R.e.test(N[k]))break;if(R.e&&k===i&&R.e.test(t.replace(R.s,'')))break}});
+  return P}
+/* إرسال صفحة كاملة إلى جوجل (زر «🔎 جوجل للصفحة» على كل صفحة) */
+async function gPage(p,btn){
+  if(!gKey()||!navigator.onLine){gSt(GT.need);return}
+  GV.bad=false;const o=btn.textContent;btn.disabled=true;btn.textContent=GT.wait;
+  try{
+    const pg=await S.doc.getPage(p);let c=await pageCanvas(pg,Math.min(3200,Math.max(2400,+$('qual').value||2400)));
+    try{const fo=await fixOrient(c);c=fo.c;if(fo.deg)deskewC(c)}catch(e){}
+    const resp=await gCall(c.toDataURL('image/jpeg',.9).split(',')[1]);
+    const fa=resp.fullTextAnnotation,txt=((fa&&fa.text)||'').trim();if(!txt)throw new Error(GT.empty);
+    const words=[];
+    for(const q of(fa.pages||[]))for(const bl of q.blocks||[])for(const pa of bl.paragraphs||[])for(const w of pa.words||[]){
+      const v=((w.boundingBox&&w.boundingBox.vertices)||[]).map(z=>({x:z.x||0,y:z.y||0}));if(!v.length)continue;const xs=v.map(z=>z.x),ys=v.map(z=>z.y);
+      words.push({text:(w.symbols||[]).map(y=>y.text||'').join(''),confidence:Math.round((w.confidence||.95)*100),bbox:{x0:Math.min(...xs),y0:Math.min(...ys),x1:Math.max(...xs),y1:Math.max(...ys)}})}
+    const r={data:{text:txt,words,lines:[],confidence:95},_pg:true};try{r._nums=numScan(c,r)}catch(e){r._nums=[]}
+    c.width=c.height=0;S.raw[p]=packRes(r);S.raw[p].gg=1;GV.pg++;render(true);try{save()}catch(e){}
+    gSt(GT.ok(GV.pg,GV.n));btn.textContent='✓';
+  }catch(e){if(String(e&&e.message)===GT.empty)gSt('— '+GT.empty);else gErr(e);btn.textContent=o}
+  btn.disabled=false;setTimeout(()=>{btn.textContent=o},1500);
+}
 async function gFix(c,r){
   if(!gOn()||!c||!c.width||!r||!r.data||!Array.isArray(r.data.lines))return r;
-  const L=r.data.lines,idx=[];
-  L.forEach((l,i)=>{if(!l||!l.bbox)return;const t=(l.text||'').trim();if(/[0-9٠-٩۰-۹]/.test(t)||((l.confidence||100)<60&&t.length>=3))idx.push(i)});
+  const L=r.data.lines,pk=gPick(L),idx=[];
+  L.forEach((l,i)=>{if(!l||!l.bbox)return;const t=(l.text||'').trim();if(t&&(pk.has(i)||/[0-9٠-٩۰-۹]/.test(t)||((l.confidence||100)<60&&t.length>=3)))idx.push(i)});
   if(!idx.length)return r;
-  const sel=idx.slice(0,30),GAP=36,slots=[];let H=GAP,Wm=0;
+  const sel=idx.slice(0,60),GAP=36,slots=[];let H=GAP,Wm=0;
   for(const i of sel){const b=L[i].bbox,h=Math.max(8,b.y1-b.y0),py=Math.round(h*.3),px=Math.round(h*.6);
     const x0=Math.max(0,b.x0-px),y0=Math.max(0,b.y0-py),x1=Math.min(c.width,b.x1+px),y1=Math.min(c.height,b.y1+py);
     if(x1-x0<4||y1-y0<4)continue;slots.push({i,x0,y0,w:x1-x0,h:y1-y0,my:H});H+=y1-y0+GAP;Wm=Math.max(Wm,x1-x0)}
@@ -8697,12 +8733,13 @@ function render(force){
     const txt0=P[p].join('\n\n'),low=S.raw[p].conf<60;
     if(!el){
       el=document.createElement('div');el.className='panel res';el.dataset.p=p;
-      el.innerHTML='<h3><span></span><button type="button">نسخ</button></h3><textarea dir="rtl"></textarea>';
+      el.innerHTML='<h3><span></span><button type="button">نسخ</button><button type="button" class="gpg" hidden>🔎 جوجل للصفحة</button></h3><textarea dir="rtl"></textarea>';
+      el.querySelector('.gpg').onclick=e=>gPage(+el.dataset.p,e.currentTarget);
       el.querySelector('button').onclick=async()=>{await copy(el.querySelector('textarea').value);flash(el.querySelector('button'))};
       box.appendChild(el);bindCard(el);
     }
-    el.classList.toggle('warn',low);
-    el.querySelector('span').textContent='صفحة '+p+(low?' ⚠ جودة القراءة ضعيفة — جرّب الدقة العالية':'');
+    el.classList.toggle('warn',low);try{el.querySelector('.gpg').hidden=!gOn()}catch(e){}
+    el.querySelector('span').textContent='صفحة '+p+(S.raw[p].gg?' · قراءة جوجل ✓':'')+(low&&!S.raw[p].gg?' ⚠ جودة القراءة ضعيفة — جرّب الدقة العالية':'');
     setCard(el,txt0||'(لا يوجد نص مقروء في هذه الصفحة)',force);setChips(el,S.raw[p].lw);if(!el._nums||force)setNums(el,S.raw[p].nums)
   });
 }
