@@ -194,7 +194,7 @@ body.tcol #tabs:hover button{font-size:.95rem;gap:12px;justify-content:flex-star
 <button role="tab" data-k="rp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V3h10v6"/><rect x="4" y="9" width="16" height="8" rx="2"/><path d="M7 14h10v7H7z"/></svg>طباعة الرول</button>
 <button role="tab" data-k="tools" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.2-.6-.6-2.2z"/></svg>أدوات</button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٢٢ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٣٨</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkT">🌓 المظهر: تلقائي</button><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٢٢ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٣٩</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkT">🌓 المظهر: تلقائي</button><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
 <div id="sub" hidden></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -8506,7 +8506,34 @@ function trimBody(txt){
   return L.slice(s,e<0?L.length:e).join('\n');
 }
 function trimSafe(x){try{return trimBody(x)}catch(e){return x}}
-function packRes(r){const ft=vocabFix(r.data.text||'',r.data.words),t=(r._pg&&$('trm').checked)?trimSafe(ft):ft;return{text:t,ft:r._pg?ft:null,conf:Math.round(r.data.confidence||0),lw:lowWords(r.data.words,t),nums:r._nums||[]}}
+
+/* ===== تصحيح الأخطاء الشائعة (يعمل مع كل القرّاء: ويندوز وجوجل والعادي) =====
+   يصحح الكلمة لو اختلفت عن كلمة من القائمة بحرف متشابه (د/ذ، ق/ف، ح/ج…) أو بالهمزة/التاء المربوطة/الياء، ويضيف التنوين لـ أولًا/ثانيًا/ثالثًا/شكلًا/شرحًا
+   القائمة + كلمات «قاموس المصطلحات» */
+const CFW='الماثلة أولًا ثانيًا ثالثًا بشأن الجنسية المصرية جنايات جنح المستأنفة المقيدة برقم بالتصالح بإنقضاء الدعوى الجنائية بالبراءة بوقف تنفيذ العقوبة عدم وجود جداول بمضى المدة لسنة مصرى بالبند بالبندين بالبنود بالتقادم المعاد قيدها وأصلها بقبول شكلًا إلغاء القرار السلبى بالإمتناع إلزام جهة الإدارة المصروفات أتعاب المحاماة المصاريف آثار شرحًا لدعواه'.split(' ');
+const CFN=t=>t.replace(/[ً-ٟـٰ]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/ؤ/g,'و').replace(/ئ/g,'ي');
+const CFG={};['ا','يىبتثن','ه','حخج','دذ','رز','سش','صض','طظ','عغ','فق','كل','و'].forEach((g,i)=>[...g].forEach(ch=>(CFG[ch]=CFG[ch]||[]).push(i)));
+const CFT=new Set(['اولا','ثانيا','ثالثا','شكلا','شرحا']);
+function cfx(text){
+  const V=new Map(),CORE=new Set();CFW.forEach(w=>{V.set(CFN(w),w);CORE.add(CFN(w))});
+  try{vocabLoad().forEach(w=>{const k=CFN(w);if(k.length>=4&&!V.has(k))V.set(k,w)})}catch(e){}
+  const K=[...V.keys()],memo={};
+  const match=k=>{
+    if(k in memo)return memo[k];let m=null;
+    if(V.has(k))m={x:V.get(k),c:CORE.has(k)};
+    else if(k.length>=3){const lc=k.length>=7?2:1,lo=k.length>=8?1:0;let best=null,n=0;
+      for(const c of K){if(c.length!==k.length||(k.length<4&&!CORE.has(c)))continue;let dc=0,dn=0;
+        for(let i=0;i<k.length&&dc<=lc&&dn<=lo;i++)if(k[i]!==c[i]){if(CFG[k[i]]&&CFG[c[i]]&&CFG[k[i]].some(z=>CFG[c[i]].includes(z)))dc++;else dn++}
+        if(dc<=lc&&dn<=lo&&dc+dn>0){n++;best=c}}
+      if(n===1)m={f:V.get(best)}}
+    return memo[k]=m};
+  const one=w=>{const k=CFN(w),m=match(k);if(!m)return null;if(m.f)return m.f;if(m.c&&!(CFT.has(k)&&/[ً-ٍ]/.test(w)))return m.x;return w};
+  return text.replace(/[ء-يـً-ٰٟ]+/g,tok=>{
+    const r=one(tok);if(r!=null)return r;
+    if(tok.length>3&&tok[0]==='و'){const r2=one(tok.slice(1));if(r2!=null)return 'و'+r2}
+    return tok});
+}
+function packRes(r){const ft=(()=>{const v=vocabFix(r.data.text||'',r.data.words);try{return cfx(v)}catch(e){return v}})(),t=(r._pg&&$('trm').checked)?trimSafe(ft):ft;return{text:t,ft:r._pg?ft:null,conf:Math.round(r.data.confidence||0),lw:lowWords(r.data.words,t),nums:r._nums||[]}}
 $('tplOn').onchange=()=>{render(true)};
 try{if(localStorage.getItem('lens:atrm')==='0')$('atrm').checked=false}catch(e){}
 $('atrm').onchange=()=>{try{localStorage.setItem('lens:atrm',$('atrm').checked?'1':'0')}catch(e){}render(true);try{save()}catch(e){}};
