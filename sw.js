@@ -1,4 +1,4 @@
-const V='v2',LIBC='libs-v1',SHELL=['./','index.html','manifest.json','icon-192.png','icon-512.png'];
+const V='v3',LIBC='libs-v1',SHELL=['./','index.html','lens.html','manifest.json','icon-192.png','icon-512.png'];
 // مكتبات خارجية بيحتاجها تقسيم الأحكام: بتتخزّن أول ما التطبيق يتثبّت وبتشتغل بعدها من غير نت
 const LIBS=['https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js','https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js','https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js','https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.1.1/tesseract.min.js','https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'];
 self.addEventListener('install',e=>{e.waitUntil(Promise.all([caches.open(V).then(c=>c.addAll(SHELL)),caches.open(LIBC).then(c=>Promise.allSettled(LIBS.map(u=>c.match(u).then(m=>m||c.add(new Request(u,{mode:'cors'}))))))]).then(()=>self.skipWaiting()))});
