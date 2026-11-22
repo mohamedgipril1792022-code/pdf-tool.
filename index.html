@@ -194,7 +194,7 @@ body.tcol #tabs:hover button{font-size:.95rem;gap:12px;justify-content:flex-star
 <button role="tab" data-k="rp" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V3h10v6"/><rect x="4" y="9" width="16" height="8" rx="2"/><path d="M7 14h10v7H7z"/></svg>طباعة الرول</button>
 <button role="tab" data-k="tools" aria-selected="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.2-.6-.6-2.2z"/></svg>أدوات</button>
 </div>
-<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٢٢ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٤٠</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkT">🌓 المظهر: تلقائي</button><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
+<div id="verBar" dir="rtl" aria-label="رقم الإصدار"><span class="ttl" id="vbT"><svg viewBox="0 0 40 40" width="26" height="26" style="vertical-align:middle;margin-inline-end:8px;border-radius:8px"><rect width="40" height="40" fill="#12263F" stroke="#C9A24B" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="14" fill="#C9A24B">PDF</text></svg><span id="vbTx">pdf tools</span></span><span class="vb"><b id="vbN" role="button" tabindex="0" title="تاريخ الإصدار" data-rel="٢٢ نوفمبر ٢٠٢٦" style="cursor:pointer;text-decoration:underline dotted">النسخة ١٤١</b><i>·</i><span id="vbD"></span></span><span class="bk"><button type="button" id="bkT">🌓 المظهر: تلقائي</button><button type="button" id="bkS">💾 نسخة احتياطية</button><button type="button" id="bkD">🩺 تقرير مشكلة</button><button type="button" id="bkC">🧹 تنظيف القديم</button><button type="button" id="bkR">♻️ استرجاع</button><input type="file" id="bkF" accept=".json,.tsbk,application/json" hidden></span><button type="button" class="mb" id="vbM" aria-label="القائمة">⋮</button></div>
 <div id="sub" hidden></div>
 <div id="views">
 <iframe data-k="mf" title="المفوضين"></iframe>
@@ -12585,7 +12585,7 @@ try{wideQ.addEventListener('change',()=>{let c=k0;try{c=localStorage.getItem('co
 (function(){
  const d=new Date(),f=d.getDate()+'_'+(d.getMonth()+1)+'_'+d.getFullYear();
  document.getElementById('bkS').addEventListener('click',()=>{try{localStorage.setItem('bk:last',String(Date.now()))}catch(e){document.title=document.title}
-  const data={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);data[k]=localStorage.getItem(k)}}catch(e){alert('تعذر قراءة البيانات');return}
+  const data={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^(crim_|tlens:|tgbk:|tg_)/.test(k)||/gkey$/.test(k))continue;data[k]=localStorage.getItem(k)}}catch(e){alert('تعذر قراءة البيانات');return}
   const gsd=window.GS?GS.dump():[];
   const b=new Blob([JSON.stringify({app:'pdf-tool',ver:27,at:d.toISOString(),data,gs:gsd})],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='نسخة_احتياطية_استخراج_pdf_'+f+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)});
@@ -12603,15 +12603,87 @@ try{wideQ.addEventListener('change',()=>{let c=k0;try{c=localStorage.getItem('co
   const x=document.createElement('button');x.textContent='إغلاق ✕';x.style.cssText='position:sticky;top:0;display:block;margin:0 0 10px auto;padding:8px 16px;font:14px sans-serif';x.onclick=()=>o.remove();o.appendChild(x);const tn=document.createTextNode(s);const cp=document.createElement('button');cp.textContent='📋 نسخ التقرير';cp.style.cssText='position:sticky;top:0;display:block;margin:0 auto 10px 0;padding:8px 16px;font:14px sans-serif;float:left';cp.onclick=()=>{const tx=tn.nodeValue;(navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(tx):Promise.reject()).then(()=>{cp.textContent='✔ اتنسخ'},()=>{const ta=document.createElement('textarea');ta.value=tx;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');cp.textContent='✔ اتنسخ'}catch(e){cp.textContent='انسخ يدويًا'}ta.remove()})};o.insertBefore(cp,x.nextSibling);o.appendChild(tn);document.body.appendChild(o);if(window.__reportHead)window.__reportHead().then(h=>{tn.nodeValue=h+'\n'+tn.nodeValue}).catch(()=>{});
  });
  document.getElementById('bkR').addEventListener('click',()=>F.click());
- F.addEventListener('change',()=>{const fl=F.files[0];if(!fl)return;const r=new FileReader();r.onload=()=>{
-  try{const j=JSON.parse(r.result);if(j.app!=='pdf-tool'||!j.data)throw 0;
+ F.addEventListener('change',async()=>{const fl=F.files[0];if(!fl)return;F.value='';
+  try{const buf=await fl.arrayBuffer(),h=new TextDecoder().decode(new Uint8Array(buf).slice(0,5));
+   const j=(window.__bkMagic&&h===window.__bkMagic)?await window.__bkDecrypt(buf):JSON.parse(new TextDecoder().decode(buf));if(j.app!=='pdf-tool'||!j.data)throw 0;
    const n=Object.keys(j.data).length;
    if(!confirm('هيتم استبدال بيانات البرنامج الحالية ('+n+' عنصر) بالنسخة الاحتياطية. متأكد؟'))return;
-   for(const k in j.data)localStorage.setItem(k,j.data[k]);
-   Promise.resolve(window.GS&&j.gs?GS.load(j.gs):0).then(()=>setTimeout(()=>{alert('تم الاسترجاع.');location.reload()},400))}catch(e){alert('الملف ده مش نسخة احتياطية صالحة.')}};
-  r.readAsText(fl);F.value=''});
+   for(const k in j.data){if(/^(crim_|tlens:)/.test(k))continue;localStorage.setItem(k,j.data[k])}
+   Promise.resolve(window.GS&&j.gs?GS.load(j.gs):0).then(()=>setTimeout(()=>{alert('تم الاسترجاع.');location.reload()},400))}catch(e){alert(e&&e.message?'مقدرتش أسترجع: '+e.message:'الملف ده مش نسخة احتياطية صالحة.')}});
 })();
 </script>
+<script>
+/* ===== النسخ الاحتياطي التلقائي: نسخة يومية في مجلد على اللابتوب + نسخة أسبوعية مشفرة على تليجرام (محادثة خاصة) ===== */
+(function(){
+ const D=864e5,MAGIC='TSBK1',$=id=>document.getElementById(id);
+ const lg=k=>{try{return localStorage.getItem(k)}catch(e){return null}},ls=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+ const TK={t:'tgbk:token',c:'tgbk:chat',p:'tgbk:pw',l:'tgbk:last:pdftools',f:'bk:lastfolder'};
+ const tok=()=>(lg(TK.t)||lg('tg_token')||'').trim();
+ const AR=n=>String(n).replace(/[0-9]/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+ // بيانات pdf tools فقط (من غير بيانات برنامج التسجيل ولا المفاتيح السرية)
+ const SKIP=k=>/^(crim_|tlens:|tgbk:|tg_)/.test(k)||/gkey$/.test(k);
+ function obj(){const data={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!SKIP(k))data[k]=localStorage.getItem(k)}
+  let gs=[];try{gs=window.GS?GS.dump():[]}catch(e){}return Promise.resolve(gs).then(g=>({app:'pdf-tool',ver:27,at:new Date().toISOString(),data,gs:g}))}
+ const day=()=>new Date().toISOString().slice(0,10);
+ // ---- المجلد ----
+ const idb=(m,f)=>new Promise((res,rej)=>{const q=indexedDB.open('pdftools_bk',1);q.onupgradeneeded=()=>q.result.createObjectStore('k');q.onerror=()=>rej(q.error);q.onsuccess=()=>{const t=q.result.transaction('k',m),r=f(t.objectStore('k'));t.oncomplete=()=>res(r.result);t.onerror=()=>rej(t.error)}});
+ let FH=null;const ready=idb('readonly',s=>s.get('dir')).then(h=>{FH=h||null}).catch(()=>{});
+ async function dir(ask){if(!FH)return null;try{let p=await FH.queryPermission({mode:'readwrite'});if(p!=='granted'&&ask)p=await FH.requestPermission({mode:'readwrite'});return p==='granted'?FH:null}catch(e){return null}}
+ async function toFolder(ask){
+  try{await ready;const d=await dir(ask);if(!d)return false;const o=await obj(),n='نسخة_احتياطية_pdf_tools_'+day()+'.json';
+   const fh=await d.getFileHandle(n,{create:true}),w=await fh.createWritable();await w.write(new Blob([JSON.stringify(o)],{type:'application/json'}));await w.close();
+   ls(TK.f,String(Date.now()));ls('bk:last',String(Date.now()));
+   try{const L=[];for await(const [nm] of d.entries())if(/^نسخة_احتياطية_pdf_tools_\d{4}-\d{2}-\d{2}\.json$/.test(nm))L.push(nm);L.sort();while(L.length>30)await d.removeEntry(L.shift())}catch(e){}
+   ui();return true}catch(e){return false}}
+ // ---- التشفير ----
+ async function key(pw,salt){const b=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:250000,hash:'SHA-256'},b,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
+ async function gz(u8,de){const cs=de?new DecompressionStream('gzip'):new CompressionStream('gzip');return new Uint8Array(await new Response(new Blob([u8]).stream().pipeThrough(cs)).arrayBuffer())}
+ async function enc(o,pw){const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),k=await key(pw,salt);
+  const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},k,await gz(new TextEncoder().encode(JSON.stringify(o)))));return new Blob([new TextEncoder().encode(MAGIC),salt,iv,ct])}
+ async function dec(buf,pw){const u=new Uint8Array(buf),k=await key(pw,u.slice(5,21));let pt;try{pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:u.slice(21,33)},k,u.slice(33))}catch(e){throw Error('كلمة السر غلط')}return JSON.parse(new TextDecoder().decode(await gz(new Uint8Array(pt),true)))}
+ window.__bkDecrypt=async function(buf){let pw=lg(TK.p)||'';try{if(pw)return await dec(buf,pw)}catch(e){}pw=prompt('دي نسخة مشفرة — اكتب كلمة سر التشفير:')||'';if(!pw)throw Error('مفيش كلمة سر');return dec(buf,pw)};
+ window.__bkMagic=MAGIC;
+ // ---- تليجرام ----
+ async function api(m,body){const t=tok();if(!t)throw Error('اكتب توكن البوت');const r=await fetch('https://api.telegram.org/bot'+t+'/'+m,{method:'POST',body});let j;try{j=await r.json()}catch(e){throw Error('رد غير مفهوم من تليجرام')}if(!j.ok)throw Error(j.description||('خطأ '+r.status));return j.result}
+ async function toTg(manual){const c=(lg(TK.c)||'').trim(),pw=lg(TK.p)||'';if(!tok()||!c||!pw){if(manual)say('كمّل التوكن ورقم المحادثة وكلمة السر الأول',1);return false}
+  try{if(manual)say('بيشفّر ويبعت…');const o=await obj(),b=await enc(o,pw),fd=new FormData();fd.append('chat_id',c);fd.append('document',b,'نسخة_مشفرة_pdf_tools_'+day()+'.tsbk');
+   fd.append('caption','🔒 نسخة احتياطية مشفرة — pdf tools — '+AR(day())+' — '+AR(Object.keys(o.data).length)+' عنصر');fd.append('disable_notification','true');
+   await api('sendDocument',fd);ls(TK.l,String(Date.now()));ui();if(manual)say('اتبعتت لتليجرام ✓');return true}catch(e){say('مقدرتش أبعت لتليجرام: '+e.message,1);return false}}
+ // ---- الواجهة (نافذة من زر «☁️ النسخ التلقائي») ----
+ function say(t,bad){const e=$('abS');if(e){e.textContent=t;e.style.color=bad?'#c0392b':''}}
+ function ui(){const e=$('abI');if(!e)return;const Dt=x=>x?AR(new Date(+x).toLocaleDateString('en-GB')):'ولا مرة';
+  e.textContent=(FH?'المجلد: «'+FH.name+'» (آخر ٣٠ نسخة)':'لسه ما اخترتش مجلد')+' · آخر نسخة في المجلد: '+Dt(lg(TK.f))+' · آخر نسخة على تليجرام: '+Dt(lg(TK.l))}
+ function open(){let o=$('abBox');if(o){o.remove();return}
+  o=document.createElement('div');o.id='abBox';o.dir='rtl';o.style.cssText='position:fixed;inset:0;z-index:9998;background:#0008;display:flex;align-items:center;justify-content:center;padding:12px';
+  const I='style="flex:1;min-width:150px;padding:8px;border:1px solid #8886;border-radius:8px;font:inherit"',B='style="padding:8px 12px;border:0;border-radius:8px;background:#12263F;color:#fff;font:inherit;cursor:pointer"';
+  o.innerHTML='<div style="background:var(--bg,#fff);color:var(--fg,#111);max-width:520px;width:100%;border-radius:14px;padding:16px;max-height:90vh;overflow:auto;font:15px/1.7 inherit">'+
+   '<div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:17px">☁️ النسخ الاحتياطي التلقائي</b><button id="abX" '+B+'>✕</button></div>'+
+   '<p style="margin:8px 0 4px"><b>📁 نسخة يومية في مجلد على اللابتوب</b></p><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="abF" '+B+'>اختيار المجلد</button><button id="abN" '+B+'>💾 احفظ نسخة دلوقتي</button></div>'+
+   '<p style="margin:12px 0 4px"><b>🔒 نسخة أسبوعية مشفرة على تليجرام</b></p><small style="display:block;opacity:.8">بتروح لمحادثتك الخاصة مع البوت (مش القناة)، ومشفرة بكلمة سرك — من غيرها متتفتحش. الإعدادات دي مشتركة مع برنامج التسجيل.</small>'+
+   '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><input id="abT" type="password" autocomplete="off" dir="ltr" '+I+'></div>'+
+   '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><input id="abC" dir="ltr" placeholder="رقم محادثتك" '+I+'><button id="abD" '+B+'>🔎 اكتشاف محادثتي</button></div>'+
+   '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><input id="abP" type="password" autocomplete="new-password" placeholder="كلمة سر التشفير" '+I+'><button id="abG" '+B+'>📤 ابعت نسخة دلوقتي</button></div>'+
+   '<small id="abS" style="display:block;margin-top:8px;font-weight:700"></small><small id="abI" style="display:block;margin-top:6px;opacity:.85"></small></div>';
+  document.body.appendChild(o);o.onclick=e=>{if(e.target===o)o.remove()};$('abX').onclick=()=>o.remove();
+  const T=$('abT'),C=$('abC'),P=$('abP');T.value=lg(TK.t)||'';T.placeholder=(!T.value&&tok())?'التوكن متاخد من برنامج أرشيف تليجرام ✓':'توكن البوت';C.value=lg(TK.c)||'';P.value=lg(TK.p)||'';
+  T.onchange=()=>ls(TK.t,T.value.trim());C.onchange=()=>ls(TK.c,C.value.trim());P.onchange=()=>ls(TK.p,P.value);
+  $('abF').onclick=async()=>{if(!window.showDirectoryPicker){say('المتصفح مش بيدعم اختيار مجلد — استخدم Edge',1);return}
+   try{const h=await showDirectoryPicker({mode:'readwrite',id:'pdftbk',startIn:'documents'});FH=h;await idb('readwrite',s=>s.put(h,'dir'));ui();say((await toFolder(true))?'اتحفظت أول نسخة في «'+h.name+'» ✓':'اتختار المجلد')}catch(e){if(e.name!=='AbortError')say('مقدرتش: '+e.message,1)}};
+  $('abN').onclick=async()=>{if(!FH){say('اختار المجلد الأول',1);return}say((await toFolder(true))?'اتحفظت نسخة ✓':'مقدرتش أحفظ في المجلد',0)};
+  $('abD').onclick=async()=>{say('بيدوّر… (ابعت للبوت أي رسالة قبلها)');try{const r=await api('getUpdates',new URLSearchParams({allowed_updates:'["message","channel_post","my_chat_member"]'}));
+   const ch=r.map(u=>u.message&&u.message.chat).filter(x=>x&&x.type==='private').pop();if(!ch){say('ملقيتش محادثة — افتح البوت في تليجرام وابعتله «مرحبا» ودوس تاني',1);return}
+   C.value=String(ch.id);ls(TK.c,C.value);say('لقيت محادثتك: '+(ch.first_name||'')+' ✓')}catch(e){say('مقدرتش: '+e.message,1)}};
+  $('abG').onclick=()=>toTg(true);ready.then(ui)}
+ const bk=document.querySelector('#verBar .bk');
+ if(bk){const b=document.createElement('button');b.type='button';b.id='bkA';b.textContent='☁️ النسخ التلقائي';b.onclick=open;const s=$('bkS');s&&s.nextSibling?bk.insertBefore(b,s.nextSibling):bk.appendChild(b)}
+ // ---- التشغيل التلقائي ----
+ setTimeout(()=>{ready.then(()=>{
+  if(FH&&Date.now()-(+lg(TK.f)||0)>D)toFolder(false).then(ok=>{if(!ok)document.addEventListener('pointerdown',()=>toFolder(true),{once:true})});
+  if(Date.now()-(+lg(TK.l)||0)>7*D)toTg(false)})},3000);
+ window.__bkOpen=open;
+})();
+</script>
+
 <script>
 (function(){
  var D=864e5;
