@@ -686,7 +686,7 @@ async function killPool(){if(S.pool){for(const w of S.pool){try{await w.terminat
 async function runRead(pages,fresh){
   if(!pages.length||S.busy)return;
   S.busy=true;S.stop=false;$('go').disabled=true;$('stop').hidden=false;$('bar').hidden=false;
-  if(fresh){S.raw={};$('pages').innerHTML=''}$('out').hidden=false;
+  if(fresh){S.raw={};$('pages').innerHTML=''}$('out').hidden=false;if(fresh)try{liveStart(pages)}catch(e){}
   const W=+$('qual').value;let done=0;
   try{
     const wn=await useWin();if(!wn)await getWorker();
@@ -701,7 +701,7 @@ async function runRead(pages,fresh){
           S.raw[p]=packRes(r);
           try{if(!S.stop){await stitchOne(p-1);await stitchOne(p)}}catch(e){}
         }finally{act--}
-        done++;$('bar').firstChild.style.width=Math.round(done/pages.length*100)+'%';render();
+        done++;$('bar').firstChild.style.width=Math.round(done/pages.length*100)+'%';render();try{liveTick()}catch(e){}
       }
     };
     await Promise.all(Array.from({length:N},lane));
@@ -713,55 +713,110 @@ async function runRead(pages,fresh){
   }
   S.busy=false;$('stop').hidden=true;upd();
   if(S.again&&!S.stop){S.again=false;autoRead()}
+  else if(LV.on){try{liveDone()}catch(e){}}
   else if(!S.stop&&done>0)setTimeout(()=>{try{if(S.busy||document.getElementById('rvw')||[...S.sel].some(p=>!S.raw[p]))return;const n=window.parent.parseJudg(all().map(a=>a.t).join('\n\n')).length;if(n)$('toOp').click()}catch(e){}},500);
 }
-/* مراجعة القضايا والتصرف النهائي: صورة الصفحة يمينًا ومربعات التعديل يسارًا — Enter للتأكيد والانتقال للحكم التالي ثم مذكرات الرأي */
+/* ===== شاشة المراجعة: كل الأحكام، وتفتح تلقائيًا بمجرد انتهاء قراءة أول حكم (والقراءة مستمرة للباقي) =====
+   يمين: مربعات القضايا والتصرف — يسار: صورة التطبيق من الحكم وتحتها الصفحة الأولى من مذكرة الدفاع */
+const RV={fs:null,o:null,items:[],K:0,cur:0,cache:{},full:{},end:null,readDone:true,zoom:100,live:false};
+const rvEsc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function rvItem(j,i,AP,GP,FR){return{j,i,pg:AP[i],gp:GP[i]||[],fr:FR[i]||0,st:{c0:(j.cases||[]).join('\n'),cases:(j.cases||[]).join('\n'),app:j.ty==='n'?(j.app||''):'',fv:j.fv||'',ag:j.ag||''}}}
+function rvOut(){return RV.items.map(it=>{if(!it)return null;const s=it.st;return{cases:s.cases.split('\n').map(x=>x.replace(/^\s*(?:[\d٠-٩]+\s*[-–.)]\s*)?(?:ال)?قضي[ةه]\s+(?:رقم\s+)?/,'').trim()).filter(x=>x&&(s.cases===s.c0||!/^\[قضية غير مقروءة[^\]]*\]$/.test(x))),app:s.app.trim(),fv:s.fv.trim(),ag:s.ag.trim()}})}
+function rvSave(){const o=RV.o,it=RV.items[RV.cur];if(!o||!it)return;const q=o.querySelector('[data-cs]');if(!q)return;const s=it.st;s.cases=q.value;const a=o.querySelector('[data-app]');if(a)s.app=a.value;const f=o.querySelector('[data-fv]');if(f)s.fv=f.value;const g=o.querySelector('[data-ag]');if(g)s.ag=g.value}
+function rvKd(e){if(!RV.o)return;if(e.key==='Escape'){e.preventDefault();rvClose(false)}}
+function rvOpen(K,end,live){if(RV.o)RV.o.remove();RV.items=[];RV.K=K;RV.cur=0;RV.cache={};RV.full={};RV.end=end;RV.live=!!live;RV.readDone=!live;
+  try{const fe=window.frameElement;if(fe&&RV.fs==null){RV.fs=fe.getAttribute('style')||'';fe.style.cssText+=';position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;max-width:none!important;max-height:none!important;z-index:2147483000!important;border:0!important;margin:0!important'}}catch(e){}
+  const o=document.createElement('div');o.id='rvw';RV.o=o;
+  o.style.cssText='position:fixed;inset:0;z-index:9999;background:var(--bg,#fff);color:var(--fg,#111);display:flex;flex-direction:column;direction:rtl;font-family:inherit;overflow:hidden';
+  document.body.appendChild(o);document.addEventListener('keydown',rvKd,true);rvShow()}
+function rvClose(ok){document.removeEventListener('keydown',rvKd,true);try{const fe=window.frameElement;if(fe&&RV.fs!=null){fe.setAttribute('style',RV.fs);RV.fs=null}}catch(e){}const o=RV.o;RV.o=null;if(o)o.remove();const e=RV.end;RV.end=null;if(e)e(ok?rvOut():false)}
+function rvPut(k,item){RV.items[k]=item;if(!RV.o)return;if(RV.cur===k&&RV.o.dataset.wait==='1')rvShow();else rvBar()}
+function rvBar(){const o=RV.o;if(!o)return;const b=o.querySelector('[data-prog]');if(b){const n=RV.items.filter(Boolean).length;b.textContent=RV.readDone?'':'⏳ جاري قراءة باقي الأحكام — جاهز '+n+' من '+RV.K}
+  const nx=o.querySelector('[data-next]');if(nx){const last=RV.cur>=RV.K-1;nx.textContent=last?(RV.readDone?'تأكيد ونقل لمذكرات الرأي ⏎':'انتظار انتهاء القراءة…'):'التالي ⏎';nx.disabled=last&&!RV.readDone}}
+function rvNext(){rvSave();if(RV.cur>=RV.K-1){if(RV.readDone)rvClose(true);return}RV.cur++;rvShow()}
+function rvPrev(){rvSave();if(RV.cur>0){RV.cur--;rvShow()}}
+function rvZoom(d){RV.zoom=Math.max(60,Math.min(300,d===0?100:RV.zoom+d));RV.o&&RV.o.querySelectorAll('[data-pimg]').forEach(im=>im.style.width=RV.zoom+'%');const z=RV.o&&RV.o.querySelector('[data-zv]');if(z)z.textContent=RV.zoom+'%'}
+async function rvShow(){
+  const o=RV.o;if(!o)return;const k=RV.cur,it=RV.items[k];
+  const btn='padding:8px 16px;font-size:15px;border-radius:8px;border:1px solid #999;background:var(--bg,#fff);color:inherit;cursor:pointer';
+  const foot='<div style="padding:10px 16px;border-top:1px solid #999;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button type="button" data-next style="'+btn+';font-weight:700;padding:8px 22px;background:#12263F;color:#fff"></button><button type="button" data-prev style="'+btn+'">السابق</button><small data-prog style="opacity:.75"></small><span style="flex:1"></span><button type="button" data-x style="'+btn+'">إلغاء</button></div>';
+  if(!it){o.dataset.wait='1';
+    o.innerHTML='<div style="padding:10px 16px;border-bottom:1px solid #999"><b>حكم '+(k+1)+' من '+RV.K+'</b></div><div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:18px;opacity:.8">⏳ جاري قراءة هذا الحكم… سيظهر هنا تلقائيًا بمجرد انتهائه</div>'+foot;
+    o.querySelector('[data-next]').onclick=rvNext;o.querySelector('[data-prev]').onclick=rvPrev;o.querySelector('[data-x]').onclick=()=>rvClose(false);rvBar();return}
+  o.dataset.wait='0';const j=it.j,s=it.st,r=j.ty==='r';
+  const ta='width:100%;box-sizing:border-box;direction:rtl;font:inherit;font-size:16px;line-height:1.7;padding:8px;border:1px solid #999;border-radius:8px;background:var(--bg,#fff);color:var(--fg,#111);resize:vertical';
+  const warn=(j.warns||[]).filter(w=>/القضايا|التصرف|قضية|قضايا|لصالح|ضد|البنود|رقم/.test(w));
+  const zb='padding:2px 10px;border:1px solid #999;border-radius:6px;background:var(--bg,#fff);color:inherit;cursor:pointer';
+  o.innerHTML='<div style="padding:10px 16px;border-bottom:1px solid #999;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><b>حكم '+(k+1)+' من '+RV.K+' — دعوى '+rvEsc(j.no)+' لسنة '+rvEsc(j.yr)+(j.pl?' — '+rvEsc(j.pl):'')+'</b><span style="opacity:.7;font-size:14px">Enter = سطر جديد داخل المربع · للانتقال اضغط «التالي»</span></div>'
+   +'<div style="flex:1;display:flex;gap:12px;padding:12px;min-height:0">'
+   +'<div style="flex:1.7;display:flex;flex-direction:column;min-width:0;min-height:0;border:1px solid #999;border-radius:8px">'
+   +'<div style="display:flex;gap:6px;align-items:center;padding:6px 8px;border-bottom:1px solid #ccc;font-size:14px"><b style="flex:1">صورة التطبيق من الحكم</b><button type="button" data-zo style="'+zb+'">−</button><span data-zv>'+RV.zoom+'%</span><button type="button" data-zi style="'+zb+'">+</button><button type="button" data-zr style="'+zb+'">ملء العرض</button></div>'
+   +'<div data-img style="flex:1;overflow-y:auto;overflow-x:auto;padding:6px;text-align:center;overscroll-behavior:contain;min-height:120px"><small>جاري تحميل صورة الصفحة…</small></div>'+'<div data-def style="flex:0 0 auto;max-height:42%;overflow-y:auto;border-top:2px solid #999;padding:8px 10px;font-size:14px;line-height:1.8;overscroll-behavior:contain"><b>مذكرة الدفاع — الصفحة الأولى</b><div style="opacity:.7">جاري البحث…</div></div></div>'
+   +'<div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0;overflow-y:auto;overscroll-behavior:contain">'
+   +(warn.length?'<div style="color:#b9770e;font-size:13px">⚠ '+rvEsc(warn.join(' · '))+'</div>':'')
+   +'<label><b>القضايا المطلوب محوها</b> (سطر لكل قضية)</label><textarea data-cs rows="'+Math.min(10,Math.max(3,(s.cases.split('\n').length+1)))+'" style="'+ta+'">'+rvEsc(s.cases)+'</textarea>'
+   +(r?'<label><b>تطبيق الحكم — لصالح الدولة</b></label><textarea data-fv rows="4" style="'+ta+'">'+rvEsc(s.fv)+'</textarea><label><b>تطبيق الحكم — ضد الدولة</b></label><textarea data-ag rows="4" style="'+ta+'">'+rvEsc(s.ag)+'</textarea>':'<label><b>التصرف النهائي (تطبيق الحكم)</b></label><textarea data-app rows="5" style="'+ta+'">'+rvEsc(s.app)+'</textarea>')
+   
+   +'</div></div>'+foot;
+  o.querySelector('[data-next]').onclick=rvNext;o.querySelector('[data-prev]').onclick=rvPrev;o.querySelector('[data-x]').onclick=()=>rvClose(false);
+  o.querySelector('[data-zo]').onclick=()=>rvZoom(-20);o.querySelector('[data-zi]').onclick=()=>rvZoom(20);o.querySelector('[data-zr]').onclick=()=>rvZoom(0);rvBar();
+  const first=o.querySelector('[data-app],[data-fv]')||o.querySelector('[data-cs]');if(first)setTimeout(()=>first.focus({preventScroll:true}),50);
+  // مذكرة الدفاع
+  (async()=>{const box=o.querySelector('[data-def]');let d=null;try{d=window.parent.defPreview?await window.parent.defPreview(j.no,j.yr,j.pl):null}catch(e){}
+    if(!RV.o||RV.items[RV.cur]!==it||!box)return;
+    if(!d){box.innerHTML='<b>مذكرة الدفاع — الصفحة الأولى</b><div style="color:#b9770e">⚠ لم أجد مذكرة دفاع للدعوى '+rvEsc(j.no)+' لسنة '+rvEsc(j.yr)+' — تأكد من رقم الدعوى</div>';return}
+    box.innerHTML='<b>مذكرة الدفاع — الصفحة الأولى</b>'+(d.warn?'<div style="color:#b9770e">⚠ '+rvEsc(d.warn)+'</div>':'')
+     +'<div style="margin-top:6px;padding:12px 14px;background:#fff;color:#111;border:1px solid #ccc;border-radius:4px;box-shadow:0 1px 4px #0002;font-family:\'Times New Roman\',serif;font-size:15px;line-height:1.9">'
+     +'<div style="text-align:center;font-weight:700">مذكرة بدفاع</div>'
+     +'<div><b>الدعوى رقم</b> '+rvEsc(d.no)+' <b>لسنة</b> '+rvEsc(d.yr)+' ق</div>'
+     +'<div><b>المقامة من:</b> '+rvEsc(d.pl)+'</div><div><b>ضد:</b> '+rvEsc(d.df)+'</div>'
+     +(d.cs?'<div><b>القضايا:</b> '+rvEsc(d.cs).replace(/\n/g,'<br>')+'</div>':'')
+     +((d.facts||[]).length?'<div style="margin-top:6px"><b>الوقائع</b></div>'+d.facts.map(x=>'<div style="text-align:justify">'+rvEsc(x)+'</div>').join(''):'')
+     +'</div><small style="opacity:.7">'+rvEsc(d.name||'')+'</small>'})();
+  // صورة الحكم
+  const box=o.querySelector('[data-img]');box.innerHTML='';const pg=it.pg,gp=it.gp;
+  const pages=[];if(pg&&isFinite(pg)){pages.push(pg);for(const q of [pg+1,pg+2])if(gp.includes(q))pages.push(q)}else if(gp.length){pages.push(...gp.slice(-2))}
+  if(!pages.length){box.innerHTML='<small>لم أجد صفحة التطبيق تلقائيًا — راجع النص.</small>';return}
+  const fr=Math.max(0,(it.fr||0)-.08);
+  for(const p of pages){const cr=(p===pg&&fr>.02&&!RV.full[k])?fr:0,ck=p+'|'+cr;if(!(ck in RV.cache))RV.cache[ck]=await thumb(p,2000,cr);if(!RV.o||RV.items[RV.cur]!==it)return;
+    if(RV.cache[ck]){const im=document.createElement('img');im.dataset.pimg='1';im.src=RV.cache[ck];im.style.cssText='width:'+RV.zoom+'%;max-width:none;display:block;margin:0 auto 8px;border:1px solid #ccc';box.appendChild(im)}}
+  if(fr>.02&&!RV.full[k]&&box.children.length){const bt=document.createElement('button');bt.type='button';bt.textContent='عرض أعلى الصفحة (ما قبل التطبيق)';bt.style.cssText='margin:4px';bt.onclick=()=>{rvSave();RV.full[k]=1;rvShow()};box.insertBefore(bt,box.firstChild)}
+  if(!box.children.length)box.innerHTML='<small>تعذّر عرض الصفحة.</small>';
+}
+/* مراجعة دفعة جاهزة (زر «مراجعة القضايا…»): كل الأحكام */
 async function reviewFlow(t,idx,AP,GP,FR){
-  try{localStorage.removeItem(NS+'rvauto')}catch(e){}
   const P=window.parent;let js;try{js=P.parseJudg(t)}catch(e){return null}
   if(!js||js.length!==idx.length||!js.length)return null;
-  const rv=js.map((j,k)=>((j.cases||[]).length>=2||(j.maxItem||0)>=2||(j.warns||[]).some(w=>w==='القضايا'||w==='التصرف النهائي'))?k:-1).filter(k=>k>=0);/* المراجعة للأحكام متعددة القضايا (أو التي لم تُقرأ قضاياها/تصرفها) فقط */
-  if(!rv.length)return null;
-  const full={};const st=js.map(j=>({c0:(j.cases||[]).join('\n'),cases:(j.cases||[]).join('\n'),app:j.ty==='n'?(j.app||''):'',fv:j.fv||'',ag:j.ag||''})),cache={};
-  const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  return new Promise(res=>{
-    let i=rv[0];const o=document.createElement('div');o.id='rvw';
-    o.style.cssText='position:fixed;inset:0;z-index:9999;background:var(--bg,#fff);color:var(--fg,#111);display:flex;flex-direction:column;direction:rtl;font-family:inherit';
-    document.body.appendChild(o);
-    const save=()=>{const q=o.querySelector('[data-cs]');if(!q)return;const s=st[i];s.cases=q.value;const a=o.querySelector('[data-app]');if(a)s.app=a.value;const f=o.querySelector('[data-fv]');if(f)s.fv=f.value;const g=o.querySelector('[data-ag]');if(g)s.ag=g.value};
-    const fin=ok=>{document.removeEventListener('keydown',kd,true);o.remove();if(!ok)return res(false);
-      res(st.map((s,k)=>!rv.includes(k)?null:({cases:s.cases.split('\n').map(x=>x.replace(/^\s*(?:[\d٠-٩]+\s*[-–.)]\s*)?(?:ال)?قضي[ةه]\s+(?:رقم\s+)?/,'').trim()).filter(x=>x&&(s.cases===s.c0||!/^\[قضية غير مقروءة[^\]]*\]$/.test(x))),app:s.app.trim(),fv:s.fv.trim(),ag:s.ag.trim()})))};
-    const next=()=>{save();const p=rv.indexOf(i);if(p>=rv.length-1)return fin(true);i=rv[p+1];show()};
-    const prev=()=>{save();const p=rv.indexOf(i);if(p>0){i=rv[p-1];show()}};
-    const kd=e=>{if(!document.getElementById('rvw'))return;if(e.key==='Escape'){e.preventDefault();fin(false)}};
-    document.addEventListener('keydown',kd,true);
-    async function show(){
-      const j=js[i],s=st[i],r=j.ty==='r',pg=AP[idx[i]],gp=GP[idx[i]]||[];
-      const ta='width:100%;box-sizing:border-box;direction:rtl;font:inherit;font-size:16px;line-height:1.7;padding:8px;border:1px solid #999;border-radius:8px;background:var(--bg,#fff);color:var(--fg,#111)';
-      const warn=(j.warns||[]).filter(w=>/القضايا|التصرف|قضية|قضايا|لصالح|ضد|البنود|رقم/.test(w));
-      o.innerHTML='<div style="padding:10px 16px;border-bottom:1px solid #999;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><b>حكم '+(rv.indexOf(i)+1)+' من '+rv.length+' (للمراجعة) — دعوى '+esc(j.no)+' لسنة '+esc(j.yr)+'</b><span style="opacity:.75">راجع القضايا والتصرف النهائي — <b>Enter</b> يفتح سطرًا جديدًا داخل المربع، وللانتقال اضغط زر <b>التالي</b></span></div>'
-      +'<div style="flex:1;display:flex;gap:12px;padding:12px;min-height:0">'
-      +'<div data-img style="flex:1.7;overflow:auto;border:1px solid #999;border-radius:8px;padding:6px;text-align:center"><small>جاري تحميل صورة الصفحة…</small></div>'
-      +'<div style="flex:1;overflow:auto;display:flex;flex-direction:column;gap:8px">'
-      +(warn.length?'<div style="color:#b9770e;font-size:13px">⚠ '+esc(warn.join(' · '))+'</div>':'')
-      +'<label><b>القضايا المطلوب محوها</b> (سطر لكل قضية)</label><textarea data-cs rows="'+Math.min(10,Math.max(4,(s.cases.split('\n').length+1)))+'" style="'+ta+'">'+esc(s.cases)+'</textarea>'
-      +(r?'<label><b>تطبيق الحكم — لصالح الدولة</b></label><textarea data-fv rows="4" style="'+ta+'">'+esc(s.fv)+'</textarea><label><b>تطبيق الحكم — ضد الدولة</b></label><textarea data-ag rows="4" style="'+ta+'">'+esc(s.ag)+'</textarea>':'<label><b>التصرف النهائي (تطبيق الحكم)</b></label><textarea data-app rows="6" style="'+ta+'">'+esc(s.app)+'</textarea>')
-      +'</div></div>'
-      +'<div style="padding:10px 16px;border-top:1px solid #999;display:flex;gap:12px;align-items:center;justify-content:flex-start"><button type="button" data-next style="font-weight:700;padding:8px 22px;font-size:16px">'+(rv.indexOf(i)>=rv.length-1?'تأكيد ونقل لمذكرات الرأي ⏎':'التالي ⏎')+'</button><button type="button" data-prev style="padding:8px 16px">السابق</button><span style="flex:1"></span><button type="button" data-x>إلغاء</button></div>';
-      o.querySelector('[data-next]').onclick=next;o.querySelector('[data-prev]').onclick=prev;o.querySelector('[data-x]').onclick=()=>fin(false);
-      const first=o.querySelector('[data-app],[data-fv]')||o.querySelector('[data-cs]');if(first)setTimeout(()=>first.focus(),50);
-      const box=o.querySelector('[data-img]');box.innerHTML='';
-      const pages=[];if(pg&&isFinite(pg)){pages.push(pg);for(const q of [pg+1,pg+2])if(gp.includes(q))pages.push(q)}else if(gp.length){pages.push(...gp.slice(-2))}
-      if(!pages.length){box.innerHTML='<small>لم أجد صفحة التطبيق تلقائيًا — راجع النص.</small>';return}
-      const fr=Math.max(0,((FR&&FR[idx[i]])||0)-.08);
-      for(const p of pages){const cr=(p===pg&&fr>.02&&!full[i])?fr:0,k=p+'|'+cr;if(!(k in cache))cache[k]=await thumb(p,2000,cr);if(!document.getElementById('rvw')||js[i]!==j)return;
-        if(cache[k]){const im=document.createElement('img');im.src=cache[k];im.style.cssText='width:130%;max-width:none;margin-bottom:8px;border:1px solid #ccc;cursor:zoom-out';im.onclick=()=>{const z=im.style.width==='130%';im.style.width=z?'220%':'130%';im.style.cursor=z?'zoom-in':'zoom-out'};box.appendChild(im)}}
-      if(fr>.02&&!full[i]&&box.children.length){const bt=document.createElement('button');bt.type='button';bt.textContent='عرض أعلى الصفحة (ما قبل التطبيق)';bt.style.cssText='margin:4px';bt.onclick=()=>{full[i]=1;show()};box.insertBefore(bt,box.firstChild)}
-      if(!box.children.length)box.innerHTML='<small>تعذّر عرض الصفحة.</small>';
-    }
-    show();
-  });
+  return new Promise(res=>{rvOpen(js.length,v=>res(v),false);js.forEach((j,k)=>rvPut(k,rvItem(j,idx[k],AP,GP,FR)));rvShow()});
 }
+/* بيانات الأحكام من الصفحات المقروءة (كل ملف = حكم) */
+function jdata(){const fi=p=>{p=parseInt(p,10)||0;let a=0;for(let i=0;i<S.files.length;i++){a+=S.files[i].n;if(p<=a)return i}return Math.max(0,S.files.length-1)},G=[],skip=new Set();const AL=all();
+ AL.forEach(a=>{const o=S.raw[a.p];if(o&&o.st&&o.st.use)skip.add(String(+a.p+1))});AL.forEach(a=>{if(skip.has(String(a.p)))return;const o=S.raw[a.p],tx=(o&&o.st&&o.st.use)?o.st.t:(o&&o.ft&&$('trm').checked)?o.ft:a.t,i=(S.files&&S.files.length>1&&S.saved!==PN)?fi(a.p):0;(G[i]=G[i]||[]).push(tx)});
+ const AP=[],CK=[],GP=[],FR=[],A1=[],A2=[],A3=[];AL.forEach(a=>{const o=S.raw[a.p],i=(S.files&&S.files.length>1&&S.saved!==PN)?fi(a.p):0;if(isFinite(+a.p))(GP[i]=GP[i]||[]).push(+a.p);if(isFinite(+a.p)){const tx=a.t||'',fr=m=>tx.length>200&&m?Math.max(0,m.index/tx.length):0,m1=tx.match(/ولما\s+كان\s+الثابت|سبق\s+تسجيل|ه[دذ][يىئ]ا?\s*بما\s+تقد[مه]/),m2=tx.match(/القضايا\s+[أاإ]?رقام/),m3=tx.match(/لهذه\s+الأسباب|حكمت\s+المحكمة/);if(m1)(A1[i]=A1[i]||{}).p=+a.p,A1[i].f=fr(m1);else if(m2)(A2[i]=A2[i]||{}).p=+a.p,A2[i].f=fr(m2);else if(m3&&!A3[i])A3[i]={p:+a.p,f:fr(m3)}}if(o&&o.st&&!o.stOff&&o.st.dB&&o.st.dB.length)(CK[i]=CK[i]||[]).push(o.st.dB.join('، '))});
+ GP.forEach((g,i)=>{const c=A1[i]||A2[i]||A3[i];if(c){AP[i]=c.p;FR[i]=c.f}else if(g&&g.length){AP[i]=g[g.length-1];FR[i]=0}});
+ CK.forEach((c,i)=>{if(c&&G[i])G[i].push('@@@CHK@@@ '+c.join(' ؛ '))});
+ const idx=G.map((g,i)=>g?i:-1).filter(i=>i>=0);
+ return{G,AP,GP,FR,idx,t:G.filter(Boolean).map(g=>g.join('\n\n')).join('\n@@@JUDGMENT@@@\n'),fi}}
+async function sendOp(D,ov){try{try{localStorage.setItem(NS+'jdt',$('jdt').value)}catch(e){}
+ const imgs=[];if(!ov){try{for(const i of D.idx){const p=D.AP[i],arr=[];if(p&&isFinite(p)){arr.push(await thumb(p,1000,Math.max(0,(D.FR[i]||0)-.08)));if(S.raw[p+1])arr.push(await thumb(p+1))}imgs.push(arr.filter(Boolean))}}catch(e){}}
+ const n=await window.parent.lensToOpinion(D.t,$('jdt').value,imgs,ov||undefined);if(n)flash($('toOp'));return n}catch(e){alert('تعذّر النقل: '+e.message)}}
+/* المراجعة الحية أثناء القراءة */
+const LV={on:false,files:[],kOf:{},put:new Set()};
+function liveStart(pages){LV.on=false;LV.closed=false;LV.put=new Set();
+ try{if(!(window.parent&&window.parent!==window&&window.parent.parseJudg&&window.parent.lensToOpinion))return;}catch(e){return}
+ if(S.saved===PN||!S.files||!S.files.length)return;
+ const fi=p=>{let a=0;for(let i=0;i<S.files.length;i++){a+=S.files[i].n;if(p<=a)return i}return S.files.length-1};
+ const set=new Set(pages.map(fi));LV.files=[...set].sort((a,b)=>a-b);LV.kOf={};LV.files.forEach((i,k)=>LV.kOf[i]=k);LV.pg={};pages.forEach(p=>{const i=fi(p);(LV.pg[i]=LV.pg[i]||[]).push(p)});LV.on=true}
+function liveTick(){if(!LV.on)return;let D=null;
+ for(const i of LV.files){if(LV.put.has(i))continue;if(!LV.pg[i].every(p=>S.raw[p]))continue;
+  if(!D)D=jdata();const g=D.G[i];LV.put.add(i);let js=[];try{js=window.parent.parseJudg((g||[]).join('\n\n'))}catch(e){}
+  const k=LV.kOf[i],j=js[0]||{no:'؟',yr:'؟',cases:[],app:'',ty:'n',warns:['لم يُقرأ رقم الدعوى في هذا الحكم']};
+  if(!RV.o&&!LV.closed)rvOpen(LV.files.length,v=>liveEnd(v),true);if(RV.o)rvPut(k,rvItem(j,i,D.AP,D.GP,D.FR))}}
+function liveDone(){if(!LV.on)return;liveTick();RV.readDone=true;rvBar()}
+async function liveEnd(v){LV.on=false;if(v===false){LV.closed=true;return}
+ const D=jdata();let js=[];try{js=window.parent.parseJudg(D.t)}catch(e){}
+ if(js.length!==D.idx.length){alert('تعذّر ربط المراجعة بالأحكام بالترتيب — سيُنقل النص بدون التعديلات، راجعها في مذكرات الرأي.');return sendOp(D)}
+ const ov=D.idx.map(i=>v[LV.kOf[i]]||null);return sendOp(D,ov)}
 async function thumb(p,w,f){try{const pg=await S.doc.getPage(p),v0=pg.getViewport({scale:1}),v=pg.getViewport({scale:(w||1000)/v0.width}),c=document.createElement('canvas');c.width=Math.round(v.width);c.height=Math.round(v.height);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);await pg.render({canvasContext:x,viewport:v}).promise;let src=c;if(f>0.02&&f<.95){const y0=Math.round(c.height*f),d=document.createElement('canvas');d.width=c.width;d.height=c.height-y0;d.getContext('2d').drawImage(c,0,y0,c.width,c.height-y0,0,0,c.width,c.height-y0);src=d}const u=src.toDataURL('image/jpeg',.7);c.width=c.height=0;if(src!==c)src.width=src.height=0;return u}catch(e){return null}}
 /* قراءة مدمجة: صفحتان متجاورتان في الحكم الواحد تُقرآن كصورة واحدة حتى لا تتقطع قائمة القضايا */
 async function stitchOne(p){
@@ -1026,14 +1081,7 @@ async function copy(t){try{await navigator.clipboard.writeText(t)}catch(e){const
 function flash(b){const o=b.textContent;b.textContent='تم ✓';setTimeout(()=>b.textContent=o,1200)}
 function all(){return [...document.querySelectorAll('.res')].map(e=>({p:e.dataset.p,t:e.querySelector('textarea').value}))}
 $('cpAll').onclick=async()=>{await copy(all().map(a=>'— '+lbl(a)+' —\n'+a.t).join('\n\n'));flash($('cpAll'))};
-$('toOp').onclick=async()=>{const fi=p=>{p=parseInt(p,10)||0;let a=0;for(let i=0;i<S.files.length;i++){a+=S.files[i].n;if(p<=a)return i}return Math.max(0,S.files.length-1)},G=[],skip=new Set();all().forEach(a=>{const o=S.raw[a.p];if(o&&o.st&&o.st.use)skip.add(String(+a.p+1))});all().forEach(a=>{if(skip.has(String(a.p)))return;const o=S.raw[a.p],tx=(o&&o.st&&o.st.use)?o.st.t:(o&&o.ft&&$('trm').checked)?o.ft:a.t,i=(S.files&&S.files.length>1&&S.saved!==PN)?fi(a.p):0;(G[i]=G[i]||[]).push(tx)});
- const AP=[],CK=[],GP=[],FR=[],A1=[],A2=[],A3=[];all().forEach(a=>{const o=S.raw[a.p],i=(S.files&&S.files.length>1&&S.saved!==PN)?fi(a.p):0;if(isFinite(+a.p))(GP[i]=GP[i]||[]).push(+a.p);if(isFinite(+a.p)){const tx=a.t||'',fr=m=>tx.length>200&&m?Math.max(0,m.index/tx.length):0,m1=tx.match(/ولما\s+كان\s+الثابت|سبق\s+تسجيل|ه[دذ][يىئ]ا?\s*بما\s+تقد[مه]/),m2=tx.match(/القضايا\s+[أاإ]?رقام/),m3=tx.match(/لهذه\s+الأسباب|حكمت\s+المحكمة/);if(m1)(A1[i]=A1[i]||{}).p=+a.p,A1[i].f=fr(m1);else if(m2)(A2[i]=A2[i]||{}).p=+a.p,A2[i].f=fr(m2);else if(m3&&!A3[i])A3[i]={p:+a.p,f:fr(m3)}}if(o&&o.st&&!o.stOff&&o.st.dB&&o.st.dB.length)(CK[i]=CK[i]||[]).push(o.st.dB.join('، '))});
- GP.forEach((g,i)=>{const c=A1[i]||A2[i]||A3[i];if(c){AP[i]=c.p;FR[i]=c.f}else if(g&&g.length){AP[i]=g[g.length-1];FR[i]=0}});
- CK.forEach((c,i)=>{if(c&&G[i])G[i].push('@@@CHK@@@ '+c.join(' ؛ '))});
- const t=G.filter(Boolean).map(g=>g.join('\n\n')).join('\n@@@JUDGMENT@@@\n');if(!t.trim()){alert('لا يوجد نص');return}try{try{localStorage.setItem(NS+'jdt',$('jdt').value)}catch(e){}const idx=G.map((g,i)=>g?i:-1).filter(i=>i>=0);let ov=null;try{ov=await reviewFlow(t,idx,AP,GP,FR)}catch(e){ov=null}
- if(ov===false)return;
- const imgs=[];if(!ov){try{for(const i of idx){const p=AP[i],arr=[];if(p&&isFinite(p)){arr.push(await thumb(p,1000,Math.max(0,(FR[i]||0)-.08)));if(S.raw[p+1])arr.push(await thumb(p+1))}imgs.push(arr.filter(Boolean))}}catch(e){}}
- const n=await window.parent.lensToOpinion(t,$('jdt').value,imgs,ov||undefined);if(n)flash($('toOp'))}catch(e){alert('تعذّر النقل: '+e.message)}};
+$('toOp').onclick=async()=>{if(RV.o)return;const D=jdata();if(!D.t.trim()){alert('لا يوجد نص');return}let ov=null;try{ov=await reviewFlow(D.t,D.idx,D.AP,D.GP,D.FR)}catch(e){ov=null}if(ov===false)return;await sendOp(D,ov)};
 function dl(name,mime,data){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:mime}));a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
 $('txt').onclick=()=>dl('pdf-lens.txt','text/plain;charset=utf-8','\ufeff'+all().map(a=>'— '+lbl(a)+' —\n'+a.t).join('\n\n'));
 $('doc').onclick=()=>{
