@@ -1046,17 +1046,21 @@ $('doc').onclick=()=>{
 S.rc={};S.sc=0;S.regs=[];S.saved=null;
 let OQ=Promise.resolve(),RQ=Promise.resolve();
 /* ===== قارئ ويندوز المحلي (سكربت على اللابتوب، لا يخرج شيء من الجهاز) ===== */
-const WO={url:'http://127.0.0.1:8765',ok:false,t:0};
+const WO={url:'http://127.0.0.1:8765',ok:false,t:0,busy:0,fail:0};
 async function winPing(force){
   if(!force&&Date.now()-WO.t<(WO.ok?60000:8000))return WO.ok;
-  try{const r=await fetch(WO.url+'/ping',{cache:'no-store',signal:AbortSignal.timeout(1500)});const j=await r.json();WO.ok=!!(j&&j.ok)}catch(e){WO.ok=false}
+  // القارئ يقرأ صفحة واحدة في المرة: وهو مشغول لا نعتبره منقطعًا
+  if(WO.busy>0&&WO.ok)return true;
+  try{const r=await fetch(WO.url+'/ping',{cache:'no-store',signal:AbortSignal.timeout(5000)});const j=await r.json();WO.ok=!!(j&&j.ok);if(WO.ok)WO.fail=0}
+  catch(e){WO.fail++;if(WO.fail>=2||!WO.ok)WO.ok=false;else{WO.t=Date.now()-55000;return true}}
   WO.t=Date.now();const st=$('winst');if(st)st.textContent=WO.ok?'— متصل ✓':'— غير متصل (يُستعمل القارئ العادي)';winCls();return WO.ok}
 function winCls(){try{document.body.classList.toggle('wn',!!(WO.ok&&$('win')&&$('win').checked))}catch(e){}}
 async function useWin(){const c=$('win');return !!(c&&c.checked&&await winPing())}
 async function winOcr(c){
   const blob=await new Promise(r=>c.toBlob(r,'image/png'));
-  const res=await fetch(WO.url+'/ocr',{method:'POST',body:blob,headers:{'Content-Type':'application/octet-stream'}});
-  const j=await res.json();if(!res.ok||j.error)throw new Error(j.error||('HTTP '+res.status));
+  let res,j;WO.busy++;try{res=await fetch(WO.url+'/ocr',{method:'POST',body:blob,headers:{'Content-Type':'application/octet-stream'}});j=await res.json()}finally{WO.busy--}
+  if(!res.ok||j.error)throw new Error(j.error||('HTTP '+res.status));
+  WO.ok=true;WO.fail=0;WO.t=Date.now();
   const words=[],lines=[],CF=88;
   for(const L of(j.lines||[])){
     const ws=(Array.isArray(L.words)?L.words:L.words?[L.words]:[]).map(w=>({text:w.t,confidence:CF,bbox:{x0:Math.round(w.x),y0:Math.round(w.y),x1:Math.round(w.x+w.w),y1:Math.round(w.y+w.h)}}));
@@ -3628,7 +3632,9 @@ async function wfPoll(){
       const er=w?await gotImg({buf,w,h}):'الصورة اللي وصلت بايظة';WF.n++;
       $('wfS').textContent=er?'⚠ '+er:'✅ وصلت صورة '+S.phone.length+(left?' — لسه '+left+' جاية':' — مستني صور تانية');wait=left?50:800}
     else if(r.status!==204){$('wfS').textContent='⚠ البرنامج المساعد قديم أو فيه مشكلة ('+r.status+')';wait=5000}
-  }catch(e){$('wfS').textContent='⚠ البرنامج المساعد اتقفل — شغّل start-ocr.bat تاني. هحاول لوحدي…';wait=4000}
+  WF.f=0}catch(e){WF.f=(WF.f||0)+1;
+    // وهو بيقرا صفحة مش بيرد على الاستقبال — مش معناها إنه اتقفل
+    if(WO.busy>0||WF.f<3)wait=1200;else{$('wfS').textContent='⚠ البرنامج المساعد اتقفل — شغّله تاني. هحاول لوحدي…';wait=4000}}
   WF.t=setTimeout(wfPoll,wait);
 }
 $('phWifi').onclick=()=>{if(!$('wfB').hidden&&WF.on){WF.on=false;clearTimeout(WF.t);$('wfB').hidden=true;try{localStorage.setItem(NS+'role','')}catch(e){}return}wfStart()};
