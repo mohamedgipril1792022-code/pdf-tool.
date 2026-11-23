@@ -790,7 +790,7 @@ async function rvShow(){
   const box=o.querySelector('[data-img]');box.innerHTML='';const pg=it.pg,gp=it.gp;
   const pages=[];if(pg&&isFinite(pg)){pages.push(pg);for(const q of [pg+1,pg+2])if(gp.includes(q))pages.push(q)}else if(gp.length){pages.push(...gp.slice(-2))}
   if(!pages.length){box.innerHTML='<small>لم أجد صفحة التطبيق تلقائيًا — راجع النص.</small>';return}
-  const fr=Math.max(0,(it.fr||0)-.08);
+  const fr=Math.max(0,(it.fr||0)-.16);
   for(const p of pages){const cr=(p===pg&&fr>.02&&!RV.full[k])?fr:0,ck=p+'|'+cr;if(!(ck in RV.cache))RV.cache[ck]=await thumb(p,2000,cr);if(!RV.o||RV.items[RV.cur]!==it)return;
     if(RV.cache[ck]){const im=document.createElement('img');im.dataset.pimg='1';im.src=RV.cache[ck];im.style.cssText='width:'+RV.zoom+'%;max-width:none;display:block;margin:0 auto 8px;border:1px solid #ccc';box.appendChild(im)}}
   if(fr>.02&&!RV.full[k]&&box.children.length){const bt=document.createElement('button');bt.type='button';bt.textContent='عرض أعلى الصفحة (ما قبل التطبيق)';bt.style.cssText='margin:4px';bt.onclick=()=>{rvSave();RV.full[k]=1;rvShow()};box.insertBefore(bt,box.firstChild)}
@@ -805,7 +805,7 @@ async function reviewFlow(t,idx,AP,GP,FR){
 /* بيانات الأحكام من الصفحات المقروءة (كل ملف = حكم) */
 function jdata(){const fi=p=>{p=parseInt(p,10)||0;let a=0;for(let i=0;i<S.files.length;i++){a+=S.files[i].n;if(p<=a)return i}return Math.max(0,S.files.length-1)},G=[],skip=new Set();const AL=all();
  AL.forEach(a=>{const o=S.raw[a.p];if(o&&o.st&&o.st.use)skip.add(String(+a.p+1))});AL.forEach(a=>{if(skip.has(String(a.p)))return;const o=S.raw[a.p],tx=(o&&o.st&&o.st.use)?o.st.t:(o&&o.ft&&$('trm').checked)?o.ft:a.t,i=(S.files&&S.files.length>1&&S.saved!==PN)?fi(a.p):0;(G[i]=G[i]||[]).push(tx)});
- const AP=[],CK=[],GP=[],FR=[],A1=[],A2=[],A3=[];AL.forEach(a=>{const o=S.raw[a.p],i=(S.files&&S.files.length>1&&S.saved!==PN)?fi(a.p):0;if(isFinite(+a.p))(GP[i]=GP[i]||[]).push(+a.p);if(isFinite(+a.p)){const tx=a.t||'',fr=m=>tx.length>200&&m?Math.max(0,m.index/tx.length):0,m1=tx.match(/ولما\s+كان\s+الثابت|سبق\s+تسجيل|ه[دذ][يىئ]ا?\s*بما\s+تقد[مه]/),m2=tx.match(/القضايا\s+[أاإ]?رقام/),m3=tx.match(/لهذه\s+الأسباب|حكمت\s+المحكمة/);if(m1)(A1[i]=A1[i]||{}).p=+a.p,A1[i].f=fr(m1);else if(m2)(A2[i]=A2[i]||{}).p=+a.p,A2[i].f=fr(m2);else if(m3&&!A3[i])A3[i]={p:+a.p,f:fr(m3)}}if(o&&o.st&&!o.stOff&&o.st.dB&&o.st.dB.length)(CK[i]=CK[i]||[]).push(o.st.dB.join('، '))});
+ const AP=[],CK=[],GP=[],FR=[],A1=[],A2=[],A3=[];AL.forEach(a=>{const o=S.raw[a.p],i=(S.files&&S.files.length>1&&S.saved!==PN)?fi(a.p):0;if(isFinite(+a.p))(GP[i]=GP[i]||[]).push(+a.p);if(isFinite(+a.p)){const tx=a.t||'',fr=m=>tx.length>200&&m?Math.max(0,m.index/tx.length):0,m1=tx.match(/ولما\s+كان\s+الثابت|سبق\s+تسجيل|ه[دذ][يىئ]ا?\s*بما\s+تقد[مه]/),m2=tx.match(/القضايا\s+[أاإ]?رقام/),m3=tx.match(/لهذه\s+الأسباب|حكمت\s+المحكمة/);if(m1){const mm=[m1,m2,tx.match(/(?:^|\n)\s*[1١]\s*[-–.)]/)].filter(Boolean).map(fr);(A1[i]=A1[i]||{}).p=+a.p,A1[i].f=Math.min(...mm)}else if(m2)(A2[i]=A2[i]||{}).p=+a.p,A2[i].f=fr(m2);else if(m3&&!A3[i])A3[i]={p:+a.p,f:fr(m3)}}if(o&&o.st&&!o.stOff&&o.st.dB&&o.st.dB.length)(CK[i]=CK[i]||[]).push(o.st.dB.join('، '))});
  GP.forEach((g,i)=>{const c=A1[i]||A2[i]||A3[i];if(c){AP[i]=c.p;FR[i]=c.f}else if(g&&g.length){AP[i]=g[g.length-1];FR[i]=0}});
  CK.forEach((c,i)=>{if(c&&G[i])G[i].push('@@@CHK@@@ '+c.join(' ؛ '))});
  const idx=G.map((g,i)=>g?i:-1).filter(i=>i>=0);
