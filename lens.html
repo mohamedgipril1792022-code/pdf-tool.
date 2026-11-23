@@ -823,7 +823,9 @@ function liveStart(pages){LV.on=false;LV.closed=false;LV.put=new Set();
 function liveTick(){if(!LV.on)return;let D=null;
  for(const i of LV.files){if(LV.put.has(i))continue;if(!LV.pg[i].every(p=>S.raw[p]))continue;
   if(!D)D=jdata();const g=D.G[i];LV.put.add(i);let js=[];try{js=window.parent.parseJudg((g||[]).join('\n\n'))}catch(e){}
-  const k=LV.kOf[i],j=js[0]||{no:'؟',yr:'؟',cases:[],app:'',ty:'n',warns:['لم يُقرأ رقم الدعوى في هذا الحكم']};
+  const k=LV.kOf[i];let j=js[0];
+  if(!j){const tx=(g||[]).join('\n').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)),m=tx.match(/الدعو[يى]\s+رقم\s*(\d{2,6})\s*لسن[ةه]\s*(\d{2,4})/);
+   j={no:m?m[1]:'؟',yr:m?m[2]:'؟',cases:[],app:'',ty:'n',warns:[m?'لم يكتمل تحليل الحكم آليًا — اكتب القضايا والتصرف من الصورة':'لم يُقرأ رقم الدعوى في هذا الحكم — اكتب القضايا والتصرف من الصورة']}}
   if(!RV.o&&!LV.closed)rvOpen(LV.files.length,v=>liveEnd(v),true);if(RV.o)rvPut(k,rvItem(j,i,D.AP,D.GP,D.FR))}}
 function liveDone(){if(!LV.on)return;liveTick();RV.readDone=true;rvBar()}
 async function liveEnd(v){LV.on=false;if(v===false){LV.closed=true;return}
