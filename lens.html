@@ -720,16 +720,19 @@ async function runRead(pages,fresh){
    يمين: مربعات القضايا والتصرف — يسار: صورة التطبيق من الحكم وتحتها الصفحة الأولى من مذكرة الدفاع */
 const RV={fs:null,o:null,items:[],K:0,cur:0,cache:{},full:{},end:null,readDone:true,zoom:100,live:false};
 const rvEsc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-function rvItem(j,i,AP,GP,FR){return{j,i,pg:AP[i],gp:GP[i]||[],fr:FR[i]||0,st:{c0:(j.cases||[]).join('\n'),cases:(j.cases||[]).join('\n'),app:j.ty==='n'?(j.app||''):'',fv:j.fv||'',ag:j.ag||''}}}
+function rvItem(j,i,AP,GP,FR){let fp=[];try{if(S.files&&S.files.length&&S.saved!==PN){let a=0;for(let x=0;x<i;x++)a+=S.files[x].n;for(let q=a+1;q<=a+S.files[i].n;q++)fp.push(q)}else if(S.doc)for(let q=1;q<=S.doc.numPages;q++)fp.push(q)}catch(e){}if(!fp.length)fp=(GP[i]||[]).slice();return{j,i,fp,pg:AP[i],gp:GP[i]||[],fr:FR[i]||0,st:{c0:(j.cases||[]).join('\n'),cases:(j.cases||[]).join('\n'),app:j.ty==='n'?(j.app||''):'',fv:j.fv||'',ag:j.ag||''}}}
 function rvOut(){return RV.items.map(it=>{if(!it)return null;const s=it.st;return{cases:s.cases.split('\n').map(x=>x.replace(/^\s*(?:[\d٠-٩]+\s*[-–.)]\s*)?(?:ال)?قضي[ةه]\s+(?:رقم\s+)?/,'').trim()).filter(x=>x&&(s.cases===s.c0||!/^\[قضية غير مقروءة[^\]]*\]$/.test(x))),app:s.app.trim(),fv:s.fv.trim(),ag:s.ag.trim()}})}
 function rvSave(){const o=RV.o,it=RV.items[RV.cur];if(!o||!it)return;const q=o.querySelector('[data-cs]');if(!q)return;const s=it.st;s.cases=q.value;const a=o.querySelector('[data-app]');if(a)s.app=a.value;const f=o.querySelector('[data-fv]');if(f)s.fv=f.value;const g=o.querySelector('[data-ag]');if(g)s.ag=g.value}
 function rvKd(e){if(!RV.o)return;if(e.key==='Escape'){e.preventDefault();rvClose(false)}}
 function rvOpen(K,end,live){if(RV.o)RV.o.remove();RV.items=[];RV.K=K;RV.cur=0;RV.cache={};RV.full={};RV.end=end;RV.live=!!live;RV.readDone=!live;
-  try{const fe=window.frameElement;if(fe&&RV.fs==null){RV.fs=fe.getAttribute('style')||'';fe.style.cssText+=';position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;max-width:none!important;max-height:none!important;z-index:2147483000!important;border:0!important;margin:0!important'}}catch(e){}
+  try{const fe=window.frameElement;if(fe&&RV.fs==null){RV.fs=fe.getAttribute('style')||'';rvFit();window.parent.addEventListener('resize',rvFit)}}catch(e){}
   const o=document.createElement('div');o.id='rvw';RV.o=o;
   o.style.cssText='position:fixed;inset:0;z-index:9999;background:var(--bg,#fff);color:var(--fg,#111);display:flex;flex-direction:column;direction:rtl;font-family:inherit;overflow:hidden';
   document.body.appendChild(o);document.addEventListener('keydown',rvKd,true);rvShow()}
-function rvClose(ok){document.removeEventListener('keydown',rvKd,true);try{const fe=window.frameElement;if(fe&&RV.fs!=null){fe.setAttribute('style',RV.fs);RV.fs=null}}catch(e){}const o=RV.o;RV.o=null;if(o)o.remove();const e=RV.end;RV.end=null;if(e)e(ok?rvOut():false)}
+// الإطار يملأ نافذة البرنامج بالضبط (مع مراعاة تكبير الخط A+ في البرنامج الأب)
+function rvFit(){try{const fe=window.frameElement,P=window.parent;if(!fe)return;let z=1,e=fe;while(e&&e.nodeType===1){const v=parseFloat(P.getComputedStyle(e).zoom);if(v&&isFinite(v))z*=v;e=e.parentElement}
+ fe.style.cssText=(RV.fs||'')+';position:fixed!important;left:0!important;top:0!important;right:auto!important;bottom:auto!important;width:'+(P.innerWidth/z)+'px!important;height:'+(P.innerHeight/z)+'px!important;max-width:none!important;max-height:none!important;z-index:2147483000!important;border:0!important;margin:0!important;transform:none!important'}catch(e){}}
+function rvClose(ok){document.removeEventListener('keydown',rvKd,true);try{window.parent.removeEventListener('resize',rvFit);const fe=window.frameElement;if(fe&&RV.fs!=null){fe.setAttribute('style',RV.fs);RV.fs=null}}catch(e){}const o=RV.o;RV.o=null;if(o)o.remove();const e=RV.end;RV.end=null;if(e)e(ok?rvOut():false)}
 function rvPut(k,item){RV.items[k]=item;if(!RV.o)return;if(RV.cur===k&&RV.o.dataset.wait==='1')rvShow();else rvBar()}
 function rvBar(){const o=RV.o;if(!o)return;const b=o.querySelector('[data-prog]');if(b){const n=RV.items.filter(Boolean).length;b.textContent=RV.readDone?'':'⏳ جاري قراءة باقي الأحكام — جاهز '+n+' من '+RV.K}
   const nx=o.querySelector('[data-next]');if(nx){const last=RV.cur>=RV.K-1;nx.textContent=last?(RV.readDone?'تأكيد ونقل لمذكرات الرأي ⏎':'انتظار انتهاء القراءة…'):'التالي ⏎';nx.disabled=last&&!RV.readDone}}
@@ -746,12 +749,12 @@ async function rvShow(){
   o.dataset.wait='0';const j=it.j,s=it.st,r=j.ty==='r';
   const ta='width:100%;box-sizing:border-box;direction:rtl;font:inherit;font-size:16px;line-height:1.7;padding:8px;border:1px solid #999;border-radius:8px;background:var(--bg,#fff);color:var(--fg,#111);resize:vertical';
   const warn=(j.warns||[]).filter(w=>/القضايا|التصرف|قضية|قضايا|لصالح|ضد|البنود|رقم/.test(w));
-  const zb='padding:2px 10px;border:1px solid #999;border-radius:6px;background:var(--bg,#fff);color:inherit;cursor:pointer';
+  const zb='padding:1px 9px;font-size:14px;border:1px solid #999;border-radius:6px;background:var(--bg,#fff);color:inherit;cursor:pointer';
   o.innerHTML='<div style="padding:10px 16px;border-bottom:1px solid #999;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><b>حكم '+(k+1)+' من '+RV.K+' — دعوى '+rvEsc(j.no)+' لسنة '+rvEsc(j.yr)+(j.pl?' — '+rvEsc(j.pl):'')+'</b><span style="opacity:.7;font-size:14px">Enter = سطر جديد داخل المربع · للانتقال اضغط «التالي»</span></div>'
    +'<div style="flex:1;display:flex;gap:12px;padding:12px;min-height:0">'
    +'<div style="flex:1.7;display:flex;flex-direction:column;min-width:0;min-height:0;border:1px solid #999;border-radius:8px">'
-   +'<div style="display:flex;gap:6px;align-items:center;padding:6px 8px;border-bottom:1px solid #ccc;font-size:14px"><b style="flex:1">صورة التطبيق من الحكم</b><button type="button" data-zo style="'+zb+'">−</button><span data-zv>'+RV.zoom+'%</span><button type="button" data-zi style="'+zb+'">+</button><button type="button" data-zr style="'+zb+'">ملء العرض</button></div>'
-   +'<div data-img style="flex:1;overflow-y:auto;overflow-x:auto;padding:6px;text-align:center;overscroll-behavior:contain;min-height:120px"><small>جاري تحميل صورة الصفحة…</small></div>'+'<div data-def style="flex:0 0 auto;max-height:42%;overflow-y:auto;border-top:2px solid #999;padding:8px 10px;font-size:14px;line-height:1.8;overscroll-behavior:contain"><b>مذكرة الدفاع — الصفحة الأولى</b><div style="opacity:.7">جاري البحث…</div></div></div>'
+   +'<div style="display:flex;gap:6px;align-items:center;padding:6px 8px;border-bottom:1px solid #ccc;font-size:14px;flex-wrap:wrap"><b data-ptl style="flex:1;min-width:120px"></b><button type="button" data-pp title="الصفحة السابقة" style="'+zb+'">›</button><button type="button" data-pa style="'+zb+'">التطبيق</button><button type="button" data-pn title="الصفحة التالية" style="'+zb+'">‹</button><span style="width:8px"></span><button type="button" data-zo style="'+zb+'">−</button><span data-zv>'+RV.zoom+'%</span><button type="button" data-zi style="'+zb+'">+</button><button type="button" data-zr title="ملء العرض" style="'+zb+'">↔</button></div>'
+   +'<div data-img style="flex:1;overflow-y:auto;overflow-x:auto;padding:6px;text-align:center;overscroll-behavior:contain;min-height:120px"><small>جاري تحميل صورة الصفحة…</small></div>'+'<div data-def style="flex:0 0 auto;max-height:38%;overflow-y:auto;border-top:2px solid #999;padding:8px 10px;font-size:14px;line-height:1.8;overscroll-behavior:contain"><b>مذكرة الدفاع — الصفحة الأولى</b><div style="opacity:.7">جاري البحث…</div></div></div>'
    +'<div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0;overflow-y:auto;overscroll-behavior:contain">'
    +(warn.length?'<div style="color:#b9770e;font-size:13px">⚠ '+rvEsc(warn.join(' · '))+'</div>':'')
    +'<label><b>القضايا المطلوب محوها</b> (سطر لكل قضية)</label><textarea data-cs rows="'+Math.min(10,Math.max(3,(s.cases.split('\n').length+1)))+'" style="'+ta+'">'+rvEsc(s.cases)+'</textarea>'
@@ -765,15 +768,25 @@ async function rvShow(){
   (async()=>{const box=o.querySelector('[data-def]');let d=null;try{d=window.parent.defPreview?await window.parent.defPreview(j.no,j.yr,j.pl):null}catch(e){}
     if(!RV.o||RV.items[RV.cur]!==it||!box)return;
     if(!d){box.innerHTML='<b>مذكرة الدفاع — الصفحة الأولى</b><div style="color:#b9770e">⚠ لم أجد مذكرة دفاع للدعوى '+rvEsc(j.no)+' لسنة '+rvEsc(j.yr)+' — تأكد من رقم الدعوى</div>';return}
+    const pageStyle='margin-top:6px;padding:14px 18px;background:#fff;color:#111;border:1px solid #ccc;border-radius:4px;box-shadow:0 1px 4px #0002;font-family:\'Times New Roman\',serif;font-size:15px;line-height:1.9';
+    if(d.paras&&d.paras.length){box.innerHTML='<b>مذكرة الدفاع — الصفحة الأولى</b>'+(d.warn?'<div style="color:#b9770e">⚠ '+rvEsc(d.warn)+'</div>':'')+'<div style="'+pageStyle+'">'+d.paras.map(x=>'<div style="text-align:'+(x.c?'center':'justify')+(x.b?';font-weight:700':'')+'">'+rvEsc(x.t)+'</div>').join('')+'</div><small style="opacity:.7">'+rvEsc(d.name||'')+'</small>';return}
     box.innerHTML='<b>مذكرة الدفاع — الصفحة الأولى</b>'+(d.warn?'<div style="color:#b9770e">⚠ '+rvEsc(d.warn)+'</div>':'')
-     +'<div style="margin-top:6px;padding:12px 14px;background:#fff;color:#111;border:1px solid #ccc;border-radius:4px;box-shadow:0 1px 4px #0002;font-family:\'Times New Roman\',serif;font-size:15px;line-height:1.9">'
+     +'<div style="'+pageStyle+'">'
      +'<div style="text-align:center;font-weight:700">مذكرة بدفاع</div>'
      +'<div><b>الدعوى رقم</b> '+rvEsc(d.no)+' <b>لسنة</b> '+rvEsc(d.yr)+' ق</div>'
      +'<div><b>المقامة من:</b> '+rvEsc(d.pl)+'</div><div><b>ضد:</b> '+rvEsc(d.df)+'</div>'
      +(d.cs?'<div><b>القضايا:</b> '+rvEsc(d.cs).replace(/\n/g,'<br>')+'</div>':'')
      +((d.facts||[]).length?'<div style="margin-top:6px"><b>الوقائع</b></div>'+d.facts.map(x=>'<div style="text-align:justify">'+rvEsc(x)+'</div>').join(''):'')
      +'</div><small style="opacity:.7">'+rvEsc(d.name||'')+'</small>'})();
-  // صورة الحكم
+  // صورة الحكم: عرض التطبيق (افتراضي) أو أي صفحة من الحكم
+  RV.pv=RV.pv||{};const fp=it.fp||[],pv=RV.pv[k],ttl=o.querySelector('[data-ptl]');
+  const goP=q=>{rvSave();RV.pv[k]=q;rvShow()};
+  const cur=pv!=null?pv:(it.pg&&isFinite(it.pg)?it.pg:fp[0]),ci=fp.indexOf(cur);
+  ttl.textContent=(pv!=null?'صفحة ':'التطبيق · صفحة ')+(ci+1)+' من '+fp.length;
+  o.querySelector('[data-pp]').disabled=ci<=0;o.querySelector('[data-pn]').disabled=ci<0||ci>=fp.length-1;o.querySelector('[data-pa]').disabled=pv==null;
+  o.querySelector('[data-pp]').onclick=()=>{if(ci>0)goP(fp[ci-1])};o.querySelector('[data-pn]').onclick=()=>{if(ci>=0&&ci<fp.length-1)goP(fp[ci+1])};o.querySelector('[data-pa]').onclick=()=>{rvSave();delete RV.pv[k];rvShow()};
+  if(pv!=null){const box=o.querySelector('[data-img]');box.innerHTML='';const ck=pv+'|0';if(!(ck in RV.cache))RV.cache[ck]=await thumb(pv,2000,0);if(!RV.o||RV.items[RV.cur]!==it||RV.pv[k]!==pv)return;
+   if(RV.cache[ck]){const im=document.createElement('img');im.dataset.pimg='1';im.src=RV.cache[ck];im.style.cssText='width:'+RV.zoom+'%;max-width:none;display:block;margin:0 auto;border:1px solid #ccc';box.appendChild(im)}else box.innerHTML='<small>تعذّر عرض الصفحة.</small>';return}
   const box=o.querySelector('[data-img]');box.innerHTML='';const pg=it.pg,gp=it.gp;
   const pages=[];if(pg&&isFinite(pg)){pages.push(pg);for(const q of [pg+1,pg+2])if(gp.includes(q))pages.push(q)}else if(gp.length){pages.push(...gp.slice(-2))}
   if(!pages.length){box.innerHTML='<small>لم أجد صفحة التطبيق تلقائيًا — راجع النص.</small>';return}
