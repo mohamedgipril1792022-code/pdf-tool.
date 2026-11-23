@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <script>/* ملف لينس واحد لبرنامجي pdf tools والتسجيل الجنائي — lens.html?app=tasgeel للتسجيل */
-const MODE=new URLSearchParams(location.search).get('app')==='tasgeel'?'t':'p',NS=MODE==='t'?'tlens:':'lens:',DBN=MODE==='t'?'tasgeel_lens':'pdf_lens';</script>
+const MODE=new URLSearchParams(location.search).get('app')==='tasgeel'?'t':'p',KIND=MODE==='t'?(new URLSearchParams(location.search).get('kind')==='d'?'d':'j'):'p',NS=MODE==='t'?'tlens:':'lens:',DBN=MODE==='t'?(KIND==='d'?'tasgeel_lens_docs':'tasgeel_lens'):'pdf_lens';/* KIND: j=أحكام (مراجعة ونقل لمذكرات الرأي) · d=عرائض وتقارير (عدسة فقط) — الإعدادات مشتركة والملفات منفصلة */</script>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -817,7 +817,7 @@ async function sendOp(D,ov){try{try{localStorage.setItem(NS+'jdt',$('jdt').value
  const n=await window.parent.lensToOpinion(D.t,$('jdt').value,imgs,ov||undefined);if(n)flash($('toOp'));return n}catch(e){alert('تعذّر النقل: '+e.message)}}
 /* المراجعة الحية أثناء القراءة */
 const LV={on:false,files:[],kOf:{},put:new Set()};
-function liveStart(pages){LV.on=false;LV.closed=false;LV.put=new Set();
+function liveStart(pages){LV.on=false;LV.closed=false;LV.put=new Set();if(KIND==='d')return;
  try{if(!(window.parent&&window.parent!==window&&window.parent.parseJudg&&window.parent.lensToOpinion))return;}catch(e){return}
  if(S.saved===PN||!S.files||!S.files.length)return;
  const fi=p=>{let a=0;for(let i=0;i<S.files.length;i++){a+=S.files[i].n;if(p<=a)return i}return S.files.length-1};
@@ -828,6 +828,7 @@ function liveTick(){if(!LV.on)return;let D=null;
   const k=LV.kOf[i];let j=js[0];
   if(!j){const tx=(g||[]).join('\n').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)),m=tx.match(/الدعو[يى]\s+رقم\s*(\d{2,6})\s*لسن[ةه]\s*(\d{2,4})/);
    j={no:m?m[1]:'؟',yr:m?m[2]:'؟',cases:[],app:'',ty:'n',warns:[m?'لم يكتمل تحليل الحكم آليًا — اكتب القضايا والتصرف من الصورة':'لم يُقرأ رقم الدعوى في هذا الحكم — اكتب القضايا والتصرف من الصورة']}}
+  try{if(!/حكمت\s*المحكم|باسم\s*الشعب|اصدرت\s*الحكم|فلهذه\s*الاسباب/.test(GNZ((g||[]).join(' '))))(j.warns=j.warns||[]).push('تبدو هذه الورقة ليست حكمًا — العرائض والتقارير تُقرأ من «عرائض وتقارير» أعلى لينس')}catch(e){}
   if(!RV.o&&!LV.closed)rvOpen(LV.files.length,v=>liveEnd(v),true);if(RV.o)rvPut(k,rvItem(j,i,D.AP,D.GP,D.FR))}}
 function liveDone(){if(!LV.on)return;liveTick();RV.readDone=true;rvBar()}
 async function liveEnd(v){LV.on=false;if(v===false){LV.closed=true;return}
@@ -949,7 +950,8 @@ function autoAll(){
   for(const k in G){const pl=G[k];
     if(!on){pl.forEach(p=>{const o=S.raw[p];o.dt=null;o.text=($('trm').checked&&!o.gg)?trimSafe(o.ft):o.ft});continue}
     const all=GNZ(pl.map(p=>S.raw[p].ft).join('\n'));
-    const ty=/اصدرت\s*الحكم|باسم\s*الشعب|فلهذه\s*الاسباب|حكمت\s*المحكمه/.test(all)?'j':/تقرير\s*(هيئه\s*)?مفوض|هيئه\s*مفوضي\s*الدوله|نري\s*الحكم/.test(all)?'r':'p';
+    const isR=/تقرير\s*(هيئه\s*)?مفوض|هيئه\s*مفوضي\s*الدوله|نري\s*الحكم/.test(all);
+    const ty=KIND==='j'?'j':KIND==='d'?(isR?'r':'p'):/اصدرت\s*الحكم|باسم\s*الشعب|فلهذه\s*الاسباب|حكمت\s*المحكمه/.test(all)?'j':isR?'r':'p';
     pl.forEach(p=>S.raw[p].dt=ty);
     if(ty==='j'){pl.forEach(p=>S.raw[p].text=S.raw[p].ft);continue}
     let rules;
@@ -1098,7 +1100,7 @@ async function copy(t){try{await navigator.clipboard.writeText(t)}catch(e){const
 function flash(b){const o=b.textContent;b.textContent='تم ✓';setTimeout(()=>b.textContent=o,1200)}
 function all(){return [...document.querySelectorAll('.res')].map(e=>({p:e.dataset.p,t:e.querySelector('textarea').value}))}
 $('cpAll').onclick=async()=>{await copy(all().map(a=>'— '+lbl(a)+' —\n'+a.t).join('\n\n'));flash($('cpAll'))};
-$('toOp').onclick=async()=>{if(RV.o)return;const D=jdata();if(!D.t.trim()){alert('لا يوجد نص');return}let ov=null;try{ov=await reviewFlow(D.t,D.idx,D.AP,D.GP,D.FR)}catch(e){ov=null}if(ov===false)return;await sendOp(D,ov)};
+$('toOp').onclick=async()=>{if(RV.o||KIND==='d')return;const D=jdata();if(!D.t.trim()){alert('لا يوجد نص');return}let ov=null;try{ov=await reviewFlow(D.t,D.idx,D.AP,D.GP,D.FR)}catch(e){ov=null}if(ov===false)return;await sendOp(D,ov)};
 function dl(name,mime,data){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:mime}));a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
 $('txt').onclick=()=>dl('pdf-lens.txt','text/plain;charset=utf-8','\ufeff'+all().map(a=>'— '+lbl(a)+' —\n'+a.t).join('\n\n'));
 $('doc').onclick=()=>{
@@ -3589,7 +3591,7 @@ var qrcode = function() {
 }));
 
 let phPeer=null;
-const PBC=(()=>{try{return new BroadcastChannel((MODE==='t'?'tasgeel':'pdftools')+'-lens-recv')}catch(e){return {postMessage(){},onmessage:null}}})();
+const PBC=(()=>{try{return new BroadcastChannel((MODE==='t'?'tasgeel-'+KIND:'pdftools')+'-lens-recv')}catch(e){return {postMessage(){},onmessage:null}}})();
 PBC.onmessage=e=>{if(e.data&&e.data.t==='release'&&phPeer){try{phPeer.destroy()}catch(x){}phPeer=null;const el=$('phRS');if(el)el.textContent='الاستقبال اتنقل لنافذة تانية من البرنامج — دوس «استقبال» هنا لو عايزه يرجع'}};
 addEventListener('pagehide',()=>{try{phPeer&&phPeer.destroy()}catch(e){}});
 function myCode(){let c='';try{c=localStorage.getItem(NS+'pcode')||''}catch(e){}if(!/^\d{4}$/.test(c)){c=String(Math.floor(1000+Math.random()*9000));try{localStorage.setItem(NS+'pcode',c)}catch(e){}}return c}
@@ -3879,6 +3881,6 @@ $('phG').onchange=e=>{const fs=[...e.target.files];e.target.value='';if(fs.lengt
   S.saved=f.name;if(f.name===PN){$('phWipe').hidden=false;try{S.phone=(await DB.get('phone'))||[]}catch(e){}}upd();
 })();
 </script>
-<script>(function(){try{if(!(window.parent&&window.parent!==window&&window.parent.lensToOpinion)){var h=function(){["toOp","jdt"].forEach(function(i){var e=document.getElementById(i);if(e)e.style.display="none"})};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",h);else h()}}catch(e){}})()</script>
+<script>(function(){try{if(KIND==='d'||!(window.parent&&window.parent!==window&&window.parent.lensToOpinion)){var h=function(){["toOp","jdt"].forEach(function(i){var e=document.getElementById(i);if(e)e.style.display="none"})};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",h);else h()}}catch(e){}})()</script>
 </body>
 </html>
