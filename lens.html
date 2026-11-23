@@ -1155,7 +1155,8 @@ async function ocr0(c,psm){
     if(psm==='3'&&$('wcmp')&&$('wcmp').checked){
       const [rw,rt]=await Promise.all([winOcr(c),withW(async w=>{await w.setParameters({tessedit_pageseg_mode:psm});return w.recognize(c)}).catch(()=>null)]);
       return rt?mergeOcr(rw,rt):rw}
-    return await winOcr(c)}catch(e){WO.ok=false;WO.t=Date.now();winCls();const st=$('winst');if(st)st.textContent='— انقطع الاتصال، عاد القارئ العادي'}}
+    try{return await winOcr(c)}catch(e1){await new Promise(r=>setTimeout(r,1500));return await winOcr(c)}/* محاولة ثانية قبل الرجوع للقارئ العادي */
+  }catch(e){WO.ok=false;WO.fail=2;WO.t=Date.now()-60000+15000;winCls();const st=$('winst');if(st)st.textContent='— انقطع الاتصال ('+String(e&&e.message||e).slice(0,60)+')، هذه الصفحة بالقارئ العادي وسيعود لقارئ ويندوز تلقائيًا'}}
   return withW(async w=>{await w.setParameters({tessedit_pageseg_mode:psm});return w.recognize(c)})}
 const lbl=a=>/^\d/.test(a.p)?'صفحة '+a.p:a.p;
 const nk=w=>w.replace(/^[^\u0621-\u064A0-9A-Za-z]+|[^\u0621-\u064A0-9A-Za-z]+$/g,'');
