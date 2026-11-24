@@ -3710,7 +3710,25 @@ async function wfPoll(){
 $('phWifi').onclick=()=>{if(!$('wfB').hidden&&WF.on){WF.on=false;clearTimeout(WF.t);$('wfB').hidden=true;try{localStorage.setItem(NS+'role','')}catch(e){}return}wfStart()};
 if(matchMedia('(pointer:coarse)').matches&&!matchMedia('(min-width:900px)').matches)$('phWifi').hidden=true;
 setTimeout(()=>{let r='';try{r=localStorage.getItem(NS+'role')||''}catch(e){}if(r==='w')wfStart();else if(r==='r')$('phRecv').click();else if(r==='s'&&phTo)$('phSend').click()},700);
-$('phShot').onclick=()=>$('phF').click();$('phPick').onclick=()=>$('phG').click();
+/* كاميرا داخل البرنامج: الخلفية دايمًا (المتصفح ساعات بيفتح الأمامية مع زر الملف) */
+const CAM={st:null,face:'environment'};
+function camStop(){try{CAM.st&&CAM.st.getTracks().forEach(t=>t.stop())}catch(e){}CAM.st=null;const o=document.getElementById('camO');if(o)o.remove();document.body.style.overflow=''}
+async function camGet(){const tries=[{facingMode:{exact:CAM.face},width:{ideal:4096},height:{ideal:3072}},{facingMode:{ideal:CAM.face},width:{ideal:4096},height:{ideal:3072}},{facingMode:CAM.face}];
+ for(const v of tries){try{return await navigator.mediaDevices.getUserMedia({video:v,audio:false})}catch(e){}}return null}
+async function camOpen(){CAM.face='environment';
+ if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){$('phF').click();return}
+ const o=document.createElement('div');o.id='camO';o.style.cssText='position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column';
+ o.innerHTML='<video id="camV" playsinline autoplay muted style="flex:1;width:100%;min-height:0;object-fit:contain;background:#000"></video><div style="display:flex;justify-content:space-around;align-items:center;padding:14px 10px calc(14px + env(safe-area-inset-bottom))"><button type="button" id="camX" style="font-size:16px;padding:10px 16px">✕ إلغاء</button><button type="button" id="camS" aria-label="التقاط" style="width:74px;height:74px;border-radius:50%;border:5px solid #fff;background:rgba(255,255,255,.25)"></button><button type="button" id="camF" style="font-size:16px;padding:10px 16px">🔄 قلب</button></div>';
+ document.body.appendChild(o);document.body.style.overflow='hidden';
+ const V=document.getElementById('camV');
+ const start=async()=>{try{CAM.st&&CAM.st.getTracks().forEach(t=>t.stop())}catch(e){}CAM.st=await camGet();if(!CAM.st){camStop();$('phF').click();return}V.srcObject=CAM.st;try{await V.play()}catch(e){}};
+ document.getElementById('camX').onclick=camStop;
+ document.getElementById('camF').onclick=()=>{CAM.face=CAM.face==='environment'?'user':'environment';start()};
+ document.getElementById('camS').onclick=async()=>{if(!V.videoWidth)return;const c=document.createElement('canvas');c.width=V.videoWidth;c.height=V.videoHeight;c.getContext('2d').drawImage(V,0,0);
+  const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.93));camStop();if(b)sendFiles([new File([b],'cam-'+Date.now()+'.jpg',{type:'image/jpeg'})])};
+ await start();
+}
+$('phShot').onclick=()=>{camOpen()};$('phPick').onclick=()=>$('phG').click();
 const toArN=v=>String(v).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
 const PV={q:[],bm:null,rot:0};var PHQ=0;try{PHQ=+localStorage.getItem(NS+'phq')||0}catch(e){}
 function pvDraw(){
