@@ -103,7 +103,7 @@ label.chk{display:flex;gap:6px;align-items:center;font-size:.9rem}
     <input id="phG" type="file" accept="image/*" multiple hidden>
     <div id="phPv" hidden style="margin-top:8px;text-align:center">
       <div class="row" style="justify-content:center;margin:0 0 8px"><button id="phOk" class="pri">إرسال ✓</button><button id="phAll" hidden>إرسال الكل</button><button id="phNo">إلغاء</button><button id="phL">↺ لفّ يسار</button><button id="phR">↻ لفّ يمين</button><button id="phCrop">✂ قص</button><label class="chk" title="يشيل الضل ويبيّض الورقة ويغمّق الكلام زي كام سكانر"><input type="checkbox" id="phScan" checked> 📄 سكانر</label></div>
-      <div id="phCropBar" class="row" hidden style="justify-content:center;margin:0 0 8px"><span class="hint" style="width:100%">اسحب الأركان أو الحواف لتكبير وتصغير الإطار، ومن جوه الإطار لتحريكه. كبّر الصورة بصباعين أو دبل تاب أو زرار +، واسحب برّه الإطار لتحريك الصورة. وبعدين «تم»</span><button id="phCropOk" class="pri">✓ تم القص</button><label class="chk" style="font-size:12px"><input type="checkbox" id="phAutoCrop" checked> افتح القص تلقائي بعد التصوير</label><button id="phCropAll">الصورة كلها</button><button id="phCropNo">رجوع</button></div>
+      <div id="phCropBar" class="row" hidden style="justify-content:center;margin:0 0 8px"><span class="hint" style="width:100%">اسحب الأركان أو الحواف لتكبير وتصغير الإطار، ومن جوه الإطار لتحريكه. كبّر الصورة بصباعين أو دبل تاب أو زرار +، واسحب برّه الإطار لتحريك الصورة. وبعدين «تم»</span><button id="phCropOk" class="pri">✓ تم القص</button><label class="chk"><input type="checkbox" id="phScan2" checked> 📄 سكانر</label><label class="chk" style="font-size:12px"><input type="checkbox" id="phAutoCrop" checked> افتح القص تلقائي بعد التصوير</label><button id="phCropAll">الصورة كلها</button><button id="phCropNo">رجوع</button></div>
       <div id="phCvW" style="position:relative;display:inline-block;max-width:100%;line-height:0;overflow:hidden;border-radius:8px"><canvas id="phCv" style="max-width:100%;max-height:62vh;display:block;border:1px solid var(--line);border-radius:8px;background:#fff"></canvas><div id="phSel" hidden style="position:absolute;border:1.5px solid rgba(255,255,255,.9);border-radius:16px;background:transparent;box-shadow:0 0 0 9999px rgba(0,0,0,.55);pointer-events:none"><i class="lc tl"></i><i class="lc tr"></i><i class="lc bl"></i><i class="lc br"></i></div><style>#phSel .lc{position:absolute;width:28px;height:28px;border:0 solid #fff;filter:drop-shadow(0 0 2px rgba(0,0,0,.6))}#phSel .tl{top:-5px;left:-5px;border-top-width:5px;border-left-width:5px;border-top-left-radius:18px}#phSel .tr{top:-5px;right:-5px;border-top-width:5px;border-right-width:5px;border-top-right-radius:18px}#phSel .bl{bottom:-5px;left:-5px;border-bottom-width:5px;border-left-width:5px;border-bottom-left-radius:18px}#phSel .br{bottom:-5px;right:-5px;border-bottom-width:5px;border-right-width:5px;border-bottom-right-radius:18px}</style></div>
     </div>
     <div class="hint" id="phSS"></div>
@@ -3745,7 +3745,7 @@ function pvDraw(){
   const cw=W0*(cr.x1-cr.x0),ch=H0*(cr.y1-cr.y0),cap=PV.cropping?2600:(PHQ>=3000?4200:2600),k=Math.min(1,cap/Math.max(cw,ch)),c=$('phCv');
   c.width=Math.max(1,Math.round(cw*k));c.height=Math.max(1,Math.round(ch*k));const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);
   x.save();x.scale(k,k);x.translate(-cr.x0*W0,-cr.y0*H0);x.translate(W0/2,H0/2);x.rotate(PV.rot*Math.PI/180);x.drawImage(bm,-bm.width/2,-bm.height/2);x.restore();
-  if(!PV.cropping&&$('phScan').checked)scanFx(c);
+  if($('phScan').checked)scanFx(c);
   try{phFit();pzReset()}catch(e){}
 }
 /* ===== وضع سكانر (زي كام سكانر): إزالة الضل وتبييض الورقة وتغميق الكلام ===== */
@@ -3910,7 +3910,9 @@ async function pvNext(){
   // القص بيظهر تلقائي بعد التصوير، ومعاه اقتراح لمكان الكلام
   if($('phAutoCrop').checked){cropUI(true);const ab=autoBox();if(ab){PV.sel=ab;selShow()}}$('phSS').textContent='تأكد من استقامة الورقة (أدِرها عند اللزوم) ثم «إرسال» — المتبقي '+(PV.q.length)+' صورة';
 }
-$('phScan').checked=localStorage.getItem(NS+'phScan')!=='0';$('phScan').onchange=()=>{try{localStorage.setItem(NS+'phScan',$('phScan').checked?'1':'0')}catch(e){}if(PV.bm&&!PV.cropping)pvDraw()};
+{const on=localStorage.getItem(NS+'phScan')!=='0';$('phScan').checked=$('phScan2').checked=on;
+ const ch=v=>{$('phScan').checked=$('phScan2').checked=v;try{localStorage.setItem(NS+'phScan',v?'1':'0')}catch(e){}if(PV.bm){const s=PV.sel;pvDraw();if(PV.cropping&&s){PV.sel=s;selShow()}}};
+ $('phScan').onchange=e=>ch(e.target.checked);$('phScan2').onchange=e=>ch(e.target.checked)}
 $('phL').onclick=()=>{PV.rot=(PV.rot+270)%360;PV.crop=null;pvDraw()};
 $('phR').onclick=()=>{PV.rot=(PV.rot+90)%360;PV.crop=null;pvDraw()};
 $('phNo').onclick=()=>pvNext();
