@@ -103,8 +103,8 @@ label.chk{display:flex;gap:6px;align-items:center;font-size:.9rem}
     <input id="phG" type="file" accept="image/*" multiple hidden>
     <div id="phPv" hidden style="margin-top:8px;text-align:center">
       <div class="row" style="justify-content:center;margin:0 0 8px"><button id="phOk" class="pri">إرسال ✓</button><button id="phAll" hidden>إرسال الكل</button><button id="phNo">إلغاء</button><button id="phL">↺ لفّ يسار</button><button id="phR">↻ لفّ يمين</button><button id="phCrop">✂ قص</button></div>
-      <div id="phCropBar" class="row" hidden style="justify-content:center;margin:0 0 8px"><span class="hint" style="width:100%">اسحب بصباعك على الكلام اللي عايزه بس، وبعدين «تم»</span><button id="phCropOk" class="pri">✓ تم القص</button><label class="chk" style="font-size:12px"><input type="checkbox" id="phAutoCrop" checked> افتح القص تلقائي بعد التصوير</label><button id="phCropAll">الصورة كلها</button><button id="phCropNo">رجوع</button></div>
-      <div id="phCvW" style="position:relative;display:inline-block;max-width:100%;line-height:0;overflow:hidden;border-radius:8px"><canvas id="phCv" style="max-width:100%;max-height:55vh;border:1px solid var(--line);border-radius:8px;background:#fff"></canvas><div id="phSel" hidden style="position:absolute;border:2px solid var(--gold);background:rgba(201,162,75,.18);box-shadow:0 0 0 9999px rgba(0,0,0,.35);pointer-events:none"></div></div>
+      <div id="phCropBar" class="row" hidden style="justify-content:center;margin:0 0 8px"><span class="hint" style="width:100%">حدّد الكلام زي عدسة جوجل: اسحب الأركان البيضا للتكبير والتصغير، واسحب من جوه التحديد لتحريكه، وبعدين «تم»</span><button id="phCropOk" class="pri">✓ تم القص</button><label class="chk" style="font-size:12px"><input type="checkbox" id="phAutoCrop" checked> افتح القص تلقائي بعد التصوير</label><button id="phCropAll">الصورة كلها</button><button id="phCropNo">رجوع</button></div>
+      <div id="phCvW" style="position:relative;display:inline-block;max-width:100%;line-height:0;overflow:hidden;border-radius:8px"><canvas id="phCv" style="max-width:100%;max-height:55vh;border:1px solid var(--line);border-radius:8px;background:#fff"></canvas><div id="phSel" hidden style="position:absolute;border:1.5px solid rgba(255,255,255,.9);border-radius:16px;background:transparent;box-shadow:0 0 0 9999px rgba(0,0,0,.55);pointer-events:none"><i class="lc tl"></i><i class="lc tr"></i><i class="lc bl"></i><i class="lc br"></i></div><style>#phSel .lc{position:absolute;width:28px;height:28px;border:0 solid #fff;filter:drop-shadow(0 0 2px rgba(0,0,0,.6))}#phSel .tl{top:-5px;left:-5px;border-top-width:5px;border-left-width:5px;border-top-left-radius:18px}#phSel .tr{top:-5px;right:-5px;border-top-width:5px;border-right-width:5px;border-top-right-radius:18px}#phSel .bl{bottom:-5px;left:-5px;border-bottom-width:5px;border-left-width:5px;border-bottom-left-radius:18px}#phSel .br{bottom:-5px;right:-5px;border-bottom-width:5px;border-right-width:5px;border-bottom-right-radius:18px}</style></div>
     </div>
     <div class="hint" id="phSS"></div>
   </div>
@@ -3756,10 +3756,24 @@ function cropUI(on){PV.cropping=on;$('phCropBar').hidden=!on;$('phCrop').parentN
   if(on&&PV.crop){PV.sel={...PV.crop};selShow()}}
 function selShow(){const s=PV.sel,e=$('phSel'),c=$('phCv');if(!s){e.hidden=true;return}const W=c.clientWidth,H=c.clientHeight;
   e.style.left=(c.offsetLeft+s.x0*W)+'px';e.style.top=(c.offsetTop+s.y0*H)+'px';e.style.width=((s.x1-s.x0)*W)+'px';e.style.height=((s.y1-s.y0)*H)+'px';e.hidden=false}
-(()=>{const c=$('phCv');let st=null;const P=ev=>{const r=c.getBoundingClientRect();return{x:Math.max(0,Math.min(1,(ev.clientX-r.left)/r.width)),y:Math.max(0,Math.min(1,(ev.clientY-r.top)/r.height))}};
-  c.addEventListener('pointerdown',ev=>{if(!PV.cropping)return;ev.preventDefault();try{c.setPointerCapture(ev.pointerId)}catch(e){}st=P(ev);PV.sel={x0:st.x,y0:st.y,x1:st.x,y1:st.y};selShow()});
-  c.addEventListener('pointermove',ev=>{if(!PV.cropping||!st)return;ev.preventDefault();const q=P(ev);PV.sel={x0:Math.min(st.x,q.x),y0:Math.min(st.y,q.y),x1:Math.max(st.x,q.x),y1:Math.max(st.y,q.y)};selShow()});
-  const up=()=>{st=null};c.addEventListener('pointerup',up);c.addEventListener('pointercancel',up)})();
+(()=>{const c=$('phCv');let st=null;const P=ev=>{const r=c.getBoundingClientRect();return{x:Math.max(0,Math.min(1,(ev.clientX-r.left)/r.width)),y:Math.max(0,Math.min(1,(ev.clientY-r.top)/r.height)),W:r.width,H:r.height}};
+  /* تحديد بشكل عدسة جوجل: اسحب الأركان لتكبير/تصغير، اسحب من جوه لتحريك، اسحب من برّه لتحديد جديد */
+  const MIN=.03,cl=v=>Math.max(0,Math.min(1,v));
+  c.addEventListener('pointerdown',ev=>{if(!PV.cropping)return;ev.preventDefault();try{c.setPointerCapture(ev.pointerId)}catch(e){}const q=P(ev),s=PV.sel;
+   if(s){const tx=34/q.W,ty=34/q.H,nx0=Math.abs(q.x-s.x0)<tx,nx1=Math.abs(q.x-s.x1)<tx,ny0=Math.abs(q.y-s.y0)<ty,ny1=Math.abs(q.y-s.y1)<ty,inX=q.x>s.x0-tx&&q.x<s.x1+tx,inY=q.y>s.y0-ty&&q.y<s.y1+ty;
+    if((nx0||nx1)&&(ny0||ny1)){st={m:'c',ax:nx0?s.x1:s.x0,ay:ny0?s.y1:s.y0};return}
+    if((nx0||nx1)&&inY){st={m:'x',ax:nx0?s.x1:s.x0};return}
+    if((ny0||ny1)&&inX){st={m:'y',ay:ny0?s.y1:s.y0};return}
+    if(q.x>s.x0&&q.x<s.x1&&q.y>s.y0&&q.y<s.y1){st={m:'mv',q,s:{...s}};return}}
+   st={m:'n',x:q.x,y:q.y};PV.sel={x0:q.x,y0:q.y,x1:q.x,y1:q.y};selShow()});
+  c.addEventListener('pointermove',ev=>{if(!PV.cropping||!st)return;ev.preventDefault();const q=P(ev),s=PV.sel;
+   if(st.m==='n')PV.sel={x0:Math.min(st.x,q.x),y0:Math.min(st.y,q.y),x1:Math.max(st.x,q.x),y1:Math.max(st.y,q.y)};
+   else if(st.m==='c')PV.sel={x0:Math.min(st.ax,q.x),y0:Math.min(st.ay,q.y),x1:Math.max(st.ax,q.x),y1:Math.max(st.ay,q.y)};
+   else if(st.m==='x')PV.sel={...s,x0:Math.min(st.ax,q.x),x1:Math.max(st.ax,q.x)};
+   else if(st.m==='y')PV.sel={...s,y0:Math.min(st.ay,q.y),y1:Math.max(st.ay,q.y)};
+   else if(st.m==='mv'){const w=st.s.x1-st.s.x0,h=st.s.y1-st.s.y0;let x0=st.s.x0+q.x-st.q.x,y0=st.s.y0+q.y-st.q.y;x0=Math.max(0,Math.min(1-w,x0));y0=Math.max(0,Math.min(1-h,y0));PV.sel={x0,y0,x1:x0+w,y1:y0+h}}
+   selShow()});
+  const up=()=>{const s=PV.sel;if(st&&st.m!=='n'&&s&&(s.x1-s.x0<MIN||s.y1-s.y0<MIN)){const cx=(s.x0+s.x1)/2,cy=(s.y0+s.y1)/2;PV.sel={x0:cl(cx-MIN),y0:cl(cy-MIN),x1:cl(cx+MIN),y1:cl(cy+MIN)};selShow()}st=null};c.addEventListener('pointerup',up);c.addEventListener('pointercancel',up)})();
 
 /* ===== جمل ثابتة للنسخ ===== */
 const FJ0={a:['وتدوول نظر الدعوى أمام هيئة مفوضي الدولة على النحو الثابت بمحاضر جلساتها، وبجلسة {التاريخ} تقرر حجز الدعوى لإعداد تقرير بالرأي القانوني فيها، والذي ارتأى الحكم','وقد جرى نظر الشق العاجل من الدعوى على النحو المبين بجلسة {التاريخ}، وبالجلسة ذاتها قررت المحكمة إحالة الدعوى إلى هيئة مفوضي الدولة لإعداد تقرير بالرأي القانوني في موضوعها، والذي ارتأى الحكم'],
