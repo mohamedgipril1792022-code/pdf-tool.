@@ -66,7 +66,7 @@ label.chk{display:flex;gap:6px;align-items:center;font-size:.9rem}
 <div id="net" class="hint" style="text-align:center;color:var(--bad);font-weight:700"></div>
 <main>
 <section class="panel">
-  <div id="drop" tabindex="0" role="button" aria-label="اختيار ملف PDF">📄 اضغط لاختيار PDF أو أكثر (أو اسحبها هنا) — كل ملف حكم</div><script>if(KIND==='j')document.getElementById('drop').textContent='⚖️ ارفع الحكم أو اسحبه هنا';else if(KIND==='d')document.getElementById('drop').textContent='📄 ارفع العريضة / التقرير أو اسحبه هنا';</script>
+  <div id="drop" tabindex="0" role="button" aria-label="اختيار ملف PDF">📄 اضغط لاختيار PDF أو أكثر (أو اسحبها هنا) — كل ملف حكم</div><script>if(KIND==='j')document.getElementById('drop').textContent='⚖️ ارفع الحكم أو اسحبه هنا';else if(KIND==='d')document.getElementById('drop').textContent='📄 ارفع العريضة / التقرير أو اسحبه هنا';else document.getElementById('drop').textContent='📄 ارفع الحكم أو العريضة أو التقرير (أو اسحبهم هنا) — تقدر ترفع أكتر من ملف';</script>
   <input id="file" type="file" accept="application/pdf" multiple hidden>
   <p class="hint" id="fname"></p><div id="flist"></div><button id="delF" hidden>حذف الملف والنتايج المحفوظة</button>
 </section>
