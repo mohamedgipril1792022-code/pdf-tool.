@@ -871,7 +871,7 @@ async function stitchApps(){
 $('go').onclick=()=>runRead([...S.sel].sort((a,b)=>a-b),true);
 $('stop').onclick=()=>{S.stop=true;S.again=false};
 /* قراءة تلقائية بمجرد تحديد الصفحات (الافتراضي شغال) */
-try{if(localStorage.getItem(NS+'autoRd')==='0')$('autoRd').checked=false}catch(e){}
+/* القراءة التلقائية شغالة دايمًا عند الفتح (الإيقاف بيبقى للمرة دي بس) */try{localStorage.removeItem(NS+'autoRd')}catch(e){}
 try{if(localStorage.getItem(NS+'win')==='0')$('win').checked=false}catch(e){}
 try{$('wcmp').checked=localStorage.getItem(NS+'wcmp')==='1'}catch(e){}
 $('wcmp').onchange=()=>{try{localStorage.setItem(NS+'wcmp',$('wcmp').checked?'1':'0')}catch(e){}};
@@ -1469,7 +1469,7 @@ async function gotImg(m){
   if(!await openDoc(pdf.slice(0),PN))return 'فشل فتح الصورة';
   S.saved=PN;$('phWipe').hidden=false;await DB.set('file',{name:PN,buf:pdf});await DB.set('phone',S.phone);if(!app)await DB.set('state',{});
   if(m.res){S.raw[np]=m.res;$('out').hidden=false;render(true)}
-  S.sel.add(np);upd();autoSched();save();
+  S.sel.add(np);upd();$('autoRd').checked=true;autoSched();save();
   return null;
 }
 
