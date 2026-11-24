@@ -3745,7 +3745,7 @@ function pvDraw(){
   const cw=W0*(cr.x1-cr.x0),ch=H0*(cr.y1-cr.y0),cap=PV.cropping?2600:(PHQ>=3000?4200:2600),k=Math.min(1,cap/Math.max(cw,ch)),c=$('phCv');
   c.width=Math.max(1,Math.round(cw*k));c.height=Math.max(1,Math.round(ch*k));const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);
   x.save();x.scale(k,k);x.translate(-cr.x0*W0,-cr.y0*H0);x.translate(W0/2,H0/2);x.rotate(PV.rot*Math.PI/180);x.drawImage(bm,-bm.width/2,-bm.height/2);x.restore();
-  try{pzReset()}catch(e){}
+  try{phFit();pzReset()}catch(e){}
 }
 // ===== قص الصورة على الموبايل قبل الإرسال =====
 // تحديد مكان الكلام تلقائياً (اقتراح — تقدر تسحب تاني)
@@ -3787,6 +3787,10 @@ function selShow(){const s=PV.sel,e=$('phSel'),c=$('phCv'),w=$('phCvW');if(!s){e
    صباعين: تكبير/تصغير وتحريك الصورة · دبل تاب: تكبير سريع · عجلة الماوس: تكبير
    صباع واحد: الأركان والحواف = تكبير/تصغير الإطار · جوه الإطار = تحريكه · برّه الإطار = تحريك الصورة لو متكبّرة، وإلا تحديد جديد */
 const PZ={z:1,tx:0,ty:0};
+/* الصورة في شاشة القص = تلتين شاشة الموبايل (محسوبة من الشاشة الحقيقية مش من إطار لينس) */
+function phFit(){try{const c=$('phCv');let H=innerHeight;try{if(window.top&&window.top.innerHeight)H=window.top.innerHeight}catch(e){}
+ let z=1;try{let n=window.frameElement;while(n&&n.nodeType===1){z*=parseFloat(getComputedStyle(n).zoom)||1;n=n.parentElement}}catch(e){}
+ c.style.maxHeight=Math.round(H*0.66/z)+'px'}catch(e){}}
 function pzApply(){const c=$('phCv'),W=c.offsetWidth,H=c.offsetHeight;PZ.z=Math.max(1,Math.min(8,PZ.z));PZ.tx=Math.min(0,Math.max(W*(1-PZ.z),PZ.tx));PZ.ty=Math.min(0,Math.max(H*(1-PZ.z),PZ.ty));
  c.style.transformOrigin='0 0';c.style.transform=PZ.z===1?'':'translate('+PZ.tx+'px,'+PZ.ty+'px) scale('+PZ.z+')';const zl=$('phZl');if(zl)zl.textContent=Math.round(PZ.z*100)+'%';selShow()}
 function pzReset(){PZ.z=1;PZ.tx=0;PZ.ty=0;pzApply()}
@@ -3833,7 +3837,7 @@ function pzAt(nz,cx,cy){/* cx,cy: نقطة ثابتة بإحداثيات الإ�
   const up=ev=>{pts.delete(ev.pointerId);if(pts.size<2)pin=null;if(pts.size)return;
    const s=PV.sel;if(st&&st.m!=='pan'&&s&&(s.x1-s.x0<MIN||s.y1-s.y0<MIN)){if(st.m==='n'&&s.x1-s.x0<.004&&s.y1-s.y0<.004){/* لمسة بس */}else{const cx=(s.x0+s.x1)/2,cy=(s.y0+s.y1)/2,hx=Math.max(MIN,s.x1-s.x0)/2,hy=Math.max(MIN,s.y1-s.y0)/2;PV.sel={x0:cl(cx-hx),y0:cl(cy-hy),x1:cl(cx+hx),y1:cl(cy+hy)};selShow()}}st=null};
   w.addEventListener('pointerup',up);w.addEventListener('pointercancel',up);
-  addEventListener('resize',()=>selShow());
+  addEventListener('resize',()=>{phFit();selShow()});
 })();
 
 /* ===== جمل ثابتة للنسخ ===== */
