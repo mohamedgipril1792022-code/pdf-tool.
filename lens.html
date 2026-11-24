@@ -3730,8 +3730,10 @@ async function camOpen(){CAM.face='environment';const W=camW(),d=W.document;
  const start=async()=>{try{CAM.st&&CAM.st.getTracks().forEach(t=>t.stop())}catch(e){}CAM.st=await camGet();if(!CAM.st){camStop();$('phF').click();return}V.srcObject=CAM.st;try{await V.play()}catch(e){}};
  d.getElementById('camX').onclick=camStop;
  d.getElementById('camF').onclick=()=>{CAM.face=CAM.face==='environment'?'user':'environment';start()};
- d.getElementById('camS').onclick=async()=>{if(!V.videoWidth)return;const c=document.createElement('canvas');c.width=V.videoWidth;c.height=V.videoHeight;c.getContext('2d').drawImage(V,0,0);
-  const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.93));camStop();if(b)sendFiles([new File([b],'cam-'+Date.now()+'.jpg',{type:'image/jpeg'})])};
+ d.getElementById('camS').onclick=async()=>{if(!V.videoWidth||CAM.shot)return;CAM.shot=1;o.style.opacity='.35';
+  /* التقاط فوري: الإطار بيتاخد كصورة جاهزة من غير ضغط JPEG، والكاميرا تتقفل على طول */
+  let bm=null;try{bm=await createImageBitmap(V)}catch(e){const c=document.createElement('canvas');c.width=V.videoWidth;c.height=V.videoHeight;c.getContext('2d').drawImage(V,0,0);bm=c}
+  CAM.shot=0;camStop();if(bm)sendFiles([bm])};
  await start();
 }
 $('phShot').onclick=()=>{camOpen()};$('phPick').onclick=()=>$('phG').click();
@@ -3831,6 +3833,7 @@ $('phCropOk').onclick=()=>{const s=PV.sel;
   const m=.012;PV.crop={x0:Math.max(0,s.x0-m),y0:Math.max(0,s.y0-m),x1:Math.min(1,s.x1+m),y1:Math.min(1,s.y1+m)};
   cropUI(false);$('phSS').textContent='✂ اتقصت — اضغط «إرسال ✓»'};
 async function loadBm(f){
+  if(f&&!(f instanceof Blob)&&f.width)return f; // صورة جاية من الكاميرا الداخلية جاهزة
   try{return await createImageBitmap(f)}catch(e1){}
   try{return await createImageBitmap(f,{imageOrientation:'from-image'})}catch(e2){}
   const u=URL.createObjectURL(f);
@@ -3843,7 +3846,7 @@ async function pvNext(){
   if(!PV.q.length){$('phPv').hidden=true;PV.bm=null;return}
   const f=PV.q.shift();
   PV.crop=null;if(PV.cropping)cropUI(false);
-  try{PV.bm=await loadBm(f)}catch(e){$('phSS').textContent='⚠ تعذّرت قراءة الصورة ('+(f.type||'نوع غير معروف')+') — جرّب «صوّر وأرسل» أو صورة بصيغة JPG/PNG';return pvNext()}
+  try{PV.bm=await loadBm(f)}catch(e){$('phSS').textContent='⚠ تعذّرت قراءة الصورة ('+((f&&f.type)||'نوع غير معروف')+') — جرّب «صوّر وأرسل» أو صورة بصيغة JPG/PNG';return pvNext()}
   PV.rot=PV.bm.width>PV.bm.height*1.1?90:0; // صورة بالعرض = غالبًا ورقة واقفة اتصوّرت بالجنب
   $('phAll').hidden=!PV.q.length;$('phPv').hidden=false;pvDraw();
   // القص بيظهر تلقائي بعد التصوير، ومعاه اقتراح لمكان الكلام
