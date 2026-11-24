@@ -103,8 +103,8 @@ label.chk{display:flex;gap:6px;align-items:center;font-size:.9rem}
     <input id="phG" type="file" accept="image/*" multiple hidden>
     <div id="phPv" hidden style="margin-top:8px;text-align:center">
       <div class="row" style="justify-content:center;margin:0 0 8px"><button id="phOk" class="pri">إرسال ✓</button><button id="phAll" hidden>إرسال الكل</button><button id="phNo">إلغاء</button><button id="phL">↺ لفّ يسار</button><button id="phR">↻ لفّ يمين</button><button id="phCrop">✂ قص</button></div>
-      <div id="phCropBar" class="row" hidden style="justify-content:center;margin:0 0 8px"><span class="hint" style="width:100%">حدّد الكلام زي عدسة جوجل: اسحب الأركان البيضا للتكبير والتصغير، واسحب من جوه التحديد لتحريكه، وبعدين «تم»</span><button id="phCropOk" class="pri">✓ تم القص</button><label class="chk" style="font-size:12px"><input type="checkbox" id="phAutoCrop" checked> افتح القص تلقائي بعد التصوير</label><button id="phCropAll">الصورة كلها</button><button id="phCropNo">رجوع</button></div>
-      <div id="phCvW" style="position:relative;display:inline-block;max-width:100%;line-height:0;overflow:hidden;border-radius:8px"><canvas id="phCv" style="max-width:100%;max-height:55vh;border:1px solid var(--line);border-radius:8px;background:#fff"></canvas><div id="phSel" hidden style="position:absolute;border:1.5px solid rgba(255,255,255,.9);border-radius:16px;background:transparent;box-shadow:0 0 0 9999px rgba(0,0,0,.55);pointer-events:none"><i class="lc tl"></i><i class="lc tr"></i><i class="lc bl"></i><i class="lc br"></i></div><style>#phSel .lc{position:absolute;width:28px;height:28px;border:0 solid #fff;filter:drop-shadow(0 0 2px rgba(0,0,0,.6))}#phSel .tl{top:-5px;left:-5px;border-top-width:5px;border-left-width:5px;border-top-left-radius:18px}#phSel .tr{top:-5px;right:-5px;border-top-width:5px;border-right-width:5px;border-top-right-radius:18px}#phSel .bl{bottom:-5px;left:-5px;border-bottom-width:5px;border-left-width:5px;border-bottom-left-radius:18px}#phSel .br{bottom:-5px;right:-5px;border-bottom-width:5px;border-right-width:5px;border-bottom-right-radius:18px}</style></div>
+      <div id="phCropBar" class="row" hidden style="justify-content:center;margin:0 0 8px"><span class="hint" style="width:100%">اسحب الأركان أو الحواف لتكبير وتصغير الإطار، ومن جوه الإطار لتحريكه. كبّر الصورة بصباعين أو دبل تاب أو زرار +، واسحب برّه الإطار لتحريك الصورة. وبعدين «تم»</span><button id="phCropOk" class="pri">✓ تم القص</button><label class="chk" style="font-size:12px"><input type="checkbox" id="phAutoCrop" checked> افتح القص تلقائي بعد التصوير</label><button id="phCropAll">الصورة كلها</button><button id="phCropNo">رجوع</button></div>
+      <div id="phCvW" style="position:relative;display:inline-block;max-width:100%;line-height:0;overflow:hidden;border-radius:8px"><canvas id="phCv" style="max-width:100%;max-height:62vh;display:block;border:1px solid var(--line);border-radius:8px;background:#fff"></canvas><div id="phSel" hidden style="position:absolute;border:1.5px solid rgba(255,255,255,.9);border-radius:16px;background:transparent;box-shadow:0 0 0 9999px rgba(0,0,0,.55);pointer-events:none"><i class="lc tl"></i><i class="lc tr"></i><i class="lc bl"></i><i class="lc br"></i></div><style>#phSel .lc{position:absolute;width:28px;height:28px;border:0 solid #fff;filter:drop-shadow(0 0 2px rgba(0,0,0,.6))}#phSel .tl{top:-5px;left:-5px;border-top-width:5px;border-left-width:5px;border-top-left-radius:18px}#phSel .tr{top:-5px;right:-5px;border-top-width:5px;border-right-width:5px;border-top-right-radius:18px}#phSel .bl{bottom:-5px;left:-5px;border-bottom-width:5px;border-left-width:5px;border-bottom-left-radius:18px}#phSel .br{bottom:-5px;right:-5px;border-bottom-width:5px;border-right-width:5px;border-bottom-right-radius:18px}</style></div>
     </div>
     <div class="hint" id="phSS"></div>
   </div>
@@ -3742,9 +3742,10 @@ const PV={q:[],bm:null,rot:0};var PHQ=0;try{PHQ=+localStorage.getItem(NS+'phq')|
 function pvDraw(){
   // القص بيتعمل من الصورة الأصلية بدقتها الكاملة، فالكلام المقصوص بيتبعت بحروف أكبر
   const bm=PV.bm,sw=PV.rot%180!==0,W0=sw?bm.height:bm.width,H0=sw?bm.width:bm.height,cr=(!PV.cropping&&PV.crop)||{x0:0,y0:0,x1:1,y1:1};
-  const cw=W0*(cr.x1-cr.x0),ch=H0*(cr.y1-cr.y0),cap=PV.cropping?1600:(PHQ>=3000?4200:2600),k=Math.min(1,cap/Math.max(cw,ch)),c=$('phCv');
+  const cw=W0*(cr.x1-cr.x0),ch=H0*(cr.y1-cr.y0),cap=PV.cropping?2600:(PHQ>=3000?4200:2600),k=Math.min(1,cap/Math.max(cw,ch)),c=$('phCv');
   c.width=Math.max(1,Math.round(cw*k));c.height=Math.max(1,Math.round(ch*k));const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);
   x.save();x.scale(k,k);x.translate(-cr.x0*W0,-cr.y0*H0);x.translate(W0/2,H0/2);x.rotate(PV.rot*Math.PI/180);x.drawImage(bm,-bm.width/2,-bm.height/2);x.restore();
+  try{pzReset()}catch(e){}
 }
 // ===== قص الصورة على الموبايل قبل الإرسال =====
 // تحديد مكان الكلام تلقائياً (اقتراح — تقدر تسحب تاني)
@@ -3778,28 +3779,62 @@ function autoBox(){try{
   if((b.x1-b.x0)*(b.y1-b.y0)>.85)return null; // الكلام مالي الصورة أصلاً
   return b}catch(e){return null}}
 
-function cropUI(on){PV.cropping=on;$('phCropBar').hidden=!on;$('phCrop').parentNode.hidden=on;$('phSel').hidden=true;$('phCv').style.touchAction=on?'none':'';$('phCv').style.cursor=on?'crosshair':'';PV.sel=null;pvDraw();
+function cropUI(on){PV.cropping=on;$('phCropBar').hidden=!on;$('phCrop').parentNode.hidden=on;$('phSel').hidden=true;$('phCv').style.cursor=on?'crosshair':'';PV.sel=null;pvDraw();
   if(on&&PV.crop){PV.sel={...PV.crop};selShow()}}
-function selShow(){const s=PV.sel,e=$('phSel'),c=$('phCv');if(!s){e.hidden=true;return}const W=c.clientWidth,H=c.clientHeight;
-  e.style.left=(c.offsetLeft+s.x0*W)+'px';e.style.top=(c.offsetTop+s.y0*H)+'px';e.style.width=((s.x1-s.x0)*W)+'px';e.style.height=((s.y1-s.y0)*H)+'px';e.hidden=false}
-(()=>{const c=$('phCv');let st=null;const P=ev=>{const r=c.getBoundingClientRect();return{x:Math.max(0,Math.min(1,(ev.clientX-r.left)/r.width)),y:Math.max(0,Math.min(1,(ev.clientY-r.top)/r.height)),W:r.width,H:r.height}};
-  /* تحديد بشكل عدسة جوجل: اسحب الأركان لتكبير/تصغير، اسحب من جوه لتحريك، اسحب من برّه لتحديد جديد */
-  const MIN=.03,cl=v=>Math.max(0,Math.min(1,v));
-  c.addEventListener('pointerdown',ev=>{if(!PV.cropping)return;ev.preventDefault();try{c.setPointerCapture(ev.pointerId)}catch(e){}const q=P(ev),s=PV.sel;
-   if(s){const tx=34/q.W,ty=34/q.H,nx0=Math.abs(q.x-s.x0)<tx,nx1=Math.abs(q.x-s.x1)<tx,ny0=Math.abs(q.y-s.y0)<ty,ny1=Math.abs(q.y-s.y1)<ty,inX=q.x>s.x0-tx&&q.x<s.x1+tx,inY=q.y>s.y0-ty&&q.y<s.y1+ty;
+function selShow(){const s=PV.sel,e=$('phSel'),c=$('phCv'),w=$('phCvW');if(!s){e.hidden=true;return}const R=c.getBoundingClientRect(),Q=w.getBoundingClientRect();
+ e.style.left=(R.left-Q.left+s.x0*R.width)+'px';e.style.top=(R.top-Q.top+s.y0*R.height)+'px';e.style.width=((s.x1-s.x0)*R.width)+'px';e.style.height=((s.y1-s.y0)*R.height)+'px';const k=Math.max(10,Math.min(28,(s.x1-s.x0)*R.width/3,(s.y1-s.y0)*R.height/3));e.querySelectorAll('.lc').forEach(t=>{t.style.width=t.style.height=k+'px'});e.style.borderRadius=Math.min(16,k*.6)+'px';e.hidden=false}
+/* ===== تكبير الصورة وتحريكها + تحديد بشكل عدسة جوجل =====
+   صباعين: تكبير/تصغير وتحريك الصورة · دبل تاب: تكبير سريع · عجلة الماوس: تكبير
+   صباع واحد: الأركان والحواف = تكبير/تصغير الإطار · جوه الإطار = تحريكه · برّه الإطار = تحريك الصورة لو متكبّرة، وإلا تحديد جديد */
+const PZ={z:1,tx:0,ty:0};
+function pzApply(){const c=$('phCv'),W=c.offsetWidth,H=c.offsetHeight;PZ.z=Math.max(1,Math.min(8,PZ.z));PZ.tx=Math.min(0,Math.max(W*(1-PZ.z),PZ.tx));PZ.ty=Math.min(0,Math.max(H*(1-PZ.z),PZ.ty));
+ c.style.transformOrigin='0 0';c.style.transform=PZ.z===1?'':'translate('+PZ.tx+'px,'+PZ.ty+'px) scale('+PZ.z+')';const zl=$('phZl');if(zl)zl.textContent=Math.round(PZ.z*100)+'%';selShow()}
+function pzReset(){PZ.z=1;PZ.tx=0;PZ.ty=0;pzApply()}
+function pzAt(nz,cx,cy){/* cx,cy: نقطة ثابتة بإحداثيات الإطار الخارجي */const z0=PZ.z;nz=Math.max(1,Math.min(8,nz));PZ.tx=cx-(cx-PZ.tx)*nz/z0;PZ.ty=cy-(cy-PZ.ty)*nz/z0;PZ.z=nz;pzApply()}
+(()=>{const w=$('phCvW'),c=$('phCv');w.style.touchAction='none';
+  const zb=document.createElement('div');zb.style.cssText='position:absolute;bottom:8px;left:8px;display:flex;gap:6px;z-index:3;line-height:1';
+  const bt='width:40px;height:40px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;font:700 20px system-ui;padding:0';
+  zb.innerHTML='<button type="button" id="phZi" style="'+bt+'">+</button><button type="button" id="phZo" style="'+bt+'">−</button><span id="phZl" style="align-self:center;background:rgba(0,0,0,.55);color:#fff;font:600 12px system-ui;padding:4px 7px;border-radius:10px">100%</span>';
+  w.appendChild(zb);
+  const ctr=()=>{const Q=w.getBoundingClientRect();return[Q.width/2,Q.height/2]};
+  $('phZi').onclick=e=>{e.stopPropagation();const[a,b]=ctr();pzAt(PZ.z*1.5,a,b)};$('phZo').onclick=e=>{e.stopPropagation();const[a,b]=ctr();pzAt(PZ.z/1.5,a,b)};
+  zb.addEventListener('pointerdown',e=>e.stopPropagation());
+  const P=ev=>{const r=c.getBoundingClientRect();return{x:Math.max(0,Math.min(1,(ev.clientX-r.left)/r.width)),y:Math.max(0,Math.min(1,(ev.clientY-r.top)/r.height)),W:r.width,H:r.height}};
+  const L=ev=>{const Q=w.getBoundingClientRect();return[ev.clientX-Q.left,ev.clientY-Q.top]};
+  const MIN=.012,cl=v=>Math.max(0,Math.min(1,v)),pts=new Map();let st=null,pin=null,lastTap=0,tapX=0,tapY=0;
+  w.addEventListener('wheel',ev=>{ev.preventDefault();const[a,b]=L(ev);pzAt(PZ.z*(ev.deltaY<0?1.2:1/1.2),a,b)},{passive:false});
+  w.addEventListener('pointerdown',ev=>{ev.preventDefault();try{w.setPointerCapture(ev.pointerId)}catch(e){}pts.set(ev.pointerId,L(ev));
+   if(pts.size===2){st=null;const[p1,p2]=[...pts.values()];pin={d:Math.hypot(p1[0]-p2[0],p1[1]-p2[1])||1,z:PZ.z,mx:(p1[0]+p2[0])/2,my:(p1[1]+p2[1])/2,tx:PZ.tx,ty:PZ.ty};return}
+   if(pts.size>2)return;
+   const now=Date.now(),q=P(ev),[lx,ly]=L(ev),s=PV.sel;
+   const inSel=s&&q.x>s.x0&&q.x<s.x1&&q.y>s.y0&&q.y<s.y1;
+   if(now-lastTap<300&&!inSel&&Math.hypot(lx-tapX,ly-tapY)<30){lastTap=0;pzAt(PZ.z>1.4?1:2.5,lx,ly);st=null;return}lastTap=now;tapX=lx;tapY=ly;
+   if(PV.cropping&&s){const sw=(s.x1-s.x0)*q.W,sh=(s.y1-s.y0)*q.H,tp=Math.max(12,Math.min(30,sw/3,sh/3)),tx=tp/q.W,ty=tp/q.H,
+     nx0=Math.abs(q.x-s.x0)<tx,nx1=Math.abs(q.x-s.x1)<tx,ny0=Math.abs(q.y-s.y0)<ty,ny1=Math.abs(q.y-s.y1)<ty,inX=q.x>s.x0-tx&&q.x<s.x1+tx,inY=q.y>s.y0-ty&&q.y<s.y1+ty;
     if((nx0||nx1)&&(ny0||ny1)){st={m:'c',ax:nx0?s.x1:s.x0,ay:ny0?s.y1:s.y0};return}
     if((nx0||nx1)&&inY){st={m:'x',ax:nx0?s.x1:s.x0};return}
     if((ny0||ny1)&&inX){st={m:'y',ay:ny0?s.y1:s.y0};return}
-    if(q.x>s.x0&&q.x<s.x1&&q.y>s.y0&&q.y<s.y1){st={m:'mv',q,s:{...s}};return}}
+    if(inSel){st={m:'mv',q,s:{...s}};return}}
+   if(PZ.z>1.01||!PV.cropping){st={m:'pan',lx,ly,tx:PZ.tx,ty:PZ.ty,q,moved:false};return}
    st={m:'n',x:q.x,y:q.y};PV.sel={x0:q.x,y0:q.y,x1:q.x,y1:q.y};selShow()});
-  c.addEventListener('pointermove',ev=>{if(!PV.cropping||!st)return;ev.preventDefault();const q=P(ev),s=PV.sel;
+  w.addEventListener('pointermove',ev=>{if(!pts.has(ev.pointerId))return;ev.preventDefault();pts.set(ev.pointerId,L(ev));
+   if(pin&&pts.size>=2){const[p1,p2]=[...pts.values()],d=Math.hypot(p1[0]-p2[0],p1[1]-p2[1]),mx=(p1[0]+p2[0])/2,my=(p1[1]+p2[1])/2,nz=Math.max(1,Math.min(8,pin.z*d/pin.d));
+    PZ.tx=mx-(pin.mx-pin.tx)*nz/pin.z;PZ.ty=my-(pin.my-pin.ty)*nz/pin.z;PZ.z=nz;pzApply();return}
+   if(!st)return;const q=P(ev),s=PV.sel;
+   if(st.m==='pan'){const[lx,ly]=L(ev);if(Math.abs(lx-st.lx)+Math.abs(ly-st.ly)>6)st.moved=true;
+    if(PZ.z>1.01){PZ.tx=st.tx+lx-st.lx;PZ.ty=st.ty+ly-st.ly;pzApply()}
+    else if(PV.cropping&&st.moved){st={m:'n',x:st.q.x,y:st.q.y}}return}
    if(st.m==='n')PV.sel={x0:Math.min(st.x,q.x),y0:Math.min(st.y,q.y),x1:Math.max(st.x,q.x),y1:Math.max(st.y,q.y)};
    else if(st.m==='c')PV.sel={x0:Math.min(st.ax,q.x),y0:Math.min(st.ay,q.y),x1:Math.max(st.ax,q.x),y1:Math.max(st.ay,q.y)};
    else if(st.m==='x')PV.sel={...s,x0:Math.min(st.ax,q.x),x1:Math.max(st.ax,q.x)};
    else if(st.m==='y')PV.sel={...s,y0:Math.min(st.ay,q.y),y1:Math.max(st.ay,q.y)};
-   else if(st.m==='mv'){const w=st.s.x1-st.s.x0,h=st.s.y1-st.s.y0;let x0=st.s.x0+q.x-st.q.x,y0=st.s.y0+q.y-st.q.y;x0=Math.max(0,Math.min(1-w,x0));y0=Math.max(0,Math.min(1-h,y0));PV.sel={x0,y0,x1:x0+w,y1:y0+h}}
+   else if(st.m==='mv'){const ww=st.s.x1-st.s.x0,hh=st.s.y1-st.s.y0;let x0=st.s.x0+q.x-st.q.x,y0=st.s.y0+q.y-st.q.y;x0=Math.max(0,Math.min(1-ww,x0));y0=Math.max(0,Math.min(1-hh,y0));PV.sel={x0,y0,x1:x0+ww,y1:y0+hh}}
    selShow()});
-  const up=()=>{const s=PV.sel;if(st&&st.m!=='n'&&s&&(s.x1-s.x0<MIN||s.y1-s.y0<MIN)){const cx=(s.x0+s.x1)/2,cy=(s.y0+s.y1)/2;PV.sel={x0:cl(cx-MIN),y0:cl(cy-MIN),x1:cl(cx+MIN),y1:cl(cy+MIN)};selShow()}st=null};c.addEventListener('pointerup',up);c.addEventListener('pointercancel',up)})();
+  const up=ev=>{pts.delete(ev.pointerId);if(pts.size<2)pin=null;if(pts.size)return;
+   const s=PV.sel;if(st&&st.m!=='pan'&&s&&(s.x1-s.x0<MIN||s.y1-s.y0<MIN)){if(st.m==='n'&&s.x1-s.x0<.004&&s.y1-s.y0<.004){/* لمسة بس */}else{const cx=(s.x0+s.x1)/2,cy=(s.y0+s.y1)/2,hx=Math.max(MIN,s.x1-s.x0)/2,hy=Math.max(MIN,s.y1-s.y0)/2;PV.sel={x0:cl(cx-hx),y0:cl(cy-hy),x1:cl(cx+hx),y1:cl(cy+hy)};selShow()}}st=null};
+  w.addEventListener('pointerup',up);w.addEventListener('pointercancel',up);
+  addEventListener('resize',()=>selShow());
+})();
 
 /* ===== جمل ثابتة للنسخ ===== */
 const FJ0={a:['وتدوول نظر الدعوى أمام هيئة مفوضي الدولة على النحو الثابت بمحاضر جلساتها، وبجلسة {التاريخ} تقرر حجز الدعوى لإعداد تقرير بالرأي القانوني فيها، والذي ارتأى الحكم','وقد جرى نظر الشق العاجل من الدعوى على النحو المبين بجلسة {التاريخ}، وبالجلسة ذاتها قررت المحكمة إحالة الدعوى إلى هيئة مفوضي الدولة لإعداد تقرير بالرأي القانوني في موضوعها، والذي ارتأى الحكم'],
@@ -3828,7 +3863,7 @@ $('phCrop').onclick=()=>{cropUI(true);if(!PV.sel){const ab=autoBox();if(ab){PV.s
 $('phCropNo').onclick=()=>cropUI(false);
 $('phCropAll').onclick=()=>{PV.crop=null;cropUI(false);$('phSS').textContent='هتتبعت الصورة كلها'};
 $('phCropOk').onclick=()=>{const s=PV.sel;
-  if(!s||(s.x1-s.x0)<.08||(s.y1-s.y0)<.04){$('phSS').textContent='اسحب بصباعك على الجزء اللي فيه الكلام الأول';return}
+  if(!s||(s.x1-s.x0)<.01||(s.y1-s.y0)<.008){$('phSS').textContent='اسحب بصباعك على الجزء اللي فيه الكلام الأول';return}
   // نضيف هامش صغير عشان أطراف الحروف ما تتقصش
   const m=.012;PV.crop={x0:Math.max(0,s.x0-m),y0:Math.max(0,s.y0-m),x1:Math.min(1,s.x1+m),y1:Math.min(1,s.y1+m)};
   cropUI(false);$('phSS').textContent='✂ اتقصت — اضغط «إرسال ✓»'};
