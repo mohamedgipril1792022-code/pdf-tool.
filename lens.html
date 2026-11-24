@@ -255,8 +255,10 @@ async function loadMany(fs){
   if(!base.length){S.sel=new Set();S.raw={};S.regs=[];S.rc={};S.sc=0;$('pages').innerHTML='';$('vlist').innerHTML=VH;$('out').hidden=true;$('status').textContent=''}
   showDoc();await persistFiles();if(!base.length)await DB.set('state',{});
   if(bad.length)$('fname').textContent+=' — تعذّر فتح: '+bad.join('، ');
-  /* لينس العرائض والتقارير: قراءة تلقائية لكل صفحات الملفات الجديدة بمجرد الرفع */
-  if(KIND==='d'){const t0=base.reduce((n,f)=>n+f.n,0);for(let p=t0+1;p<=S.doc.numPages;p++)S.sel.add(p);upd();if(!$('autoRd').checked){$('autoRd').checked=true;try{localStorage.setItem(NS+'autoRd','1')}catch(e){}}autoSched()}
+  /* قراءة تلقائية لكل صفحات الملفات الجديدة بمجرد الرفع (كل أنواع لينس) — الأحكام في التسجيل تبدأ بشاشة المراجعة */
+  {const t0=base.reduce((n,f)=>n+f.n,0),np=[];for(let p=t0+1;p<=S.doc.numPages;p++){S.sel.add(p);np.push(p)}upd();
+   if(!$('autoRd').checked){$('autoRd').checked=true;try{localStorage.setItem(NS+'autoRd','1')}catch(e){}}
+   if(KIND==='j'&&!t0)setTimeout(()=>runRead(np,true),400);else autoSched()}
   save();
 }
 async function delFile(i){
