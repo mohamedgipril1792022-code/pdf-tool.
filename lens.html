@@ -102,7 +102,7 @@ label.chk{display:flex;gap:6px;align-items:center;font-size:.9rem}
     <input id="phF" type="file" accept="image/*" capture="environment" hidden>
     <input id="phG" type="file" accept="image/*" multiple hidden>
     <div id="phPv" hidden style="margin-top:8px;text-align:center">
-      <div class="row" style="justify-content:center;margin:0 0 8px"><button id="phOk" class="pri">إرسال ✓</button><button id="phAll" hidden>إرسال الكل</button><button id="phNo">إلغاء</button><button id="phL">↺ لفّ يسار</button><button id="phR">↻ لفّ يمين</button><button id="phCrop">✂ قص</button></div>
+      <div class="row" style="justify-content:center;margin:0 0 8px"><button id="phOk" class="pri">إرسال ✓</button><button id="phAll" hidden>إرسال الكل</button><button id="phNo">إلغاء</button><button id="phL">↺ لفّ يسار</button><button id="phR">↻ لفّ يمين</button><button id="phCrop">✂ قص</button><label class="chk" title="يشيل الضل ويبيّض الورقة ويغمّق الكلام زي كام سكانر"><input type="checkbox" id="phScan" checked> 📄 سكانر</label></div>
       <div id="phCropBar" class="row" hidden style="justify-content:center;margin:0 0 8px"><span class="hint" style="width:100%">اسحب الأركان أو الحواف لتكبير وتصغير الإطار، ومن جوه الإطار لتحريكه. كبّر الصورة بصباعين أو دبل تاب أو زرار +، واسحب برّه الإطار لتحريك الصورة. وبعدين «تم»</span><button id="phCropOk" class="pri">✓ تم القص</button><label class="chk" style="font-size:12px"><input type="checkbox" id="phAutoCrop" checked> افتح القص تلقائي بعد التصوير</label><button id="phCropAll">الصورة كلها</button><button id="phCropNo">رجوع</button></div>
       <div id="phCvW" style="position:relative;display:inline-block;max-width:100%;line-height:0;overflow:hidden;border-radius:8px"><canvas id="phCv" style="max-width:100%;max-height:62vh;display:block;border:1px solid var(--line);border-radius:8px;background:#fff"></canvas><div id="phSel" hidden style="position:absolute;border:1.5px solid rgba(255,255,255,.9);border-radius:16px;background:transparent;box-shadow:0 0 0 9999px rgba(0,0,0,.55);pointer-events:none"><i class="lc tl"></i><i class="lc tr"></i><i class="lc bl"></i><i class="lc br"></i></div><style>#phSel .lc{position:absolute;width:28px;height:28px;border:0 solid #fff;filter:drop-shadow(0 0 2px rgba(0,0,0,.6))}#phSel .tl{top:-5px;left:-5px;border-top-width:5px;border-left-width:5px;border-top-left-radius:18px}#phSel .tr{top:-5px;right:-5px;border-top-width:5px;border-right-width:5px;border-top-right-radius:18px}#phSel .bl{bottom:-5px;left:-5px;border-bottom-width:5px;border-left-width:5px;border-bottom-left-radius:18px}#phSel .br{bottom:-5px;right:-5px;border-bottom-width:5px;border-right-width:5px;border-bottom-right-radius:18px}</style></div>
     </div>
@@ -3745,8 +3745,27 @@ function pvDraw(){
   const cw=W0*(cr.x1-cr.x0),ch=H0*(cr.y1-cr.y0),cap=PV.cropping?2600:(PHQ>=3000?4200:2600),k=Math.min(1,cap/Math.max(cw,ch)),c=$('phCv');
   c.width=Math.max(1,Math.round(cw*k));c.height=Math.max(1,Math.round(ch*k));const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);
   x.save();x.scale(k,k);x.translate(-cr.x0*W0,-cr.y0*H0);x.translate(W0/2,H0/2);x.rotate(PV.rot*Math.PI/180);x.drawImage(bm,-bm.width/2,-bm.height/2);x.restore();
+  if(!PV.cropping&&$('phScan').checked)scanFx(c);
   try{phFit();pzReset()}catch(e){}
 }
+/* ===== وضع سكانر (زي كام سكانر): إزالة الضل وتبييض الورقة وتغميق الكلام ===== */
+function scanFx(c){try{
+  const W=c.width,H=c.height,x=c.getContext('2d',{willReadFrequently:true}),im=x.getImageData(0,0,W,H),d=im.data,n=W*H,g=new Uint8ClampedArray(n);
+  for(let i=0,j=0;i<n;i++,j+=4)g[i]=(d[j]*77+d[j+1]*150+d[j+2]*29)>>8;
+  // خلفية الورقة: تصغير + أعلى قيمة حوالين كل نقطة (يمسح الكلام) + تنعيم، وبعدين تكبير
+  const S=Math.max(1,Math.round(Math.max(W,H)/200)),sw=Math.ceil(W/S),sh=Math.ceil(H/S);let b=new Float32Array(sw*sh);
+  for(let y=0;y<sh;y++)for(let xx=0;xx<sw;xx++){let m=0;const y1=Math.min(H,(y+1)*S),x1=Math.min(W,(xx+1)*S);for(let yy=y*S;yy<y1;yy+=2)for(let q=xx*S;q<x1;q+=2){const v=g[yy*W+q];if(v>m)m=v}b[y*sw+xx]=m}
+  const mx=a=>{const o=new Float32Array(sw*sh);for(let y=0;y<sh;y++)for(let xx=0;xx<sw;xx++){let m=0;for(let dy=-1;dy<=1;dy++){const yy=y+dy;if(yy<0||yy>=sh)continue;for(let dx=-1;dx<=1;dx++){const q=xx+dx;if(q<0||q>=sw)continue;const v=a[yy*sw+q];if(v>m)m=v}}o[y*sw+xx]=m}return o};
+  const bl=a=>{const o=new Float32Array(sw*sh);for(let y=0;y<sh;y++)for(let xx=0;xx<sw;xx++){let t=0,k=0;for(let dy=-2;dy<=2;dy++){const yy=y+dy;if(yy<0||yy>=sh)continue;for(let dx=-2;dx<=2;dx++){const q=xx+dx;if(q<0||q>=sw)continue;t+=a[yy*sw+q];k++}}o[y*sw+xx]=t/k}return o};
+  b=bl(mx(mx(mx(mx(b)))));
+  const bc=document.createElement('canvas');bc.width=sw;bc.height=sh;const bx=bc.getContext('2d'),bi=bx.createImageData(sw,sh);
+  for(let i=0;i<sw*sh;i++){const v=Math.max(30,b[i]);bi.data[i*4]=bi.data[i*4+1]=bi.data[i*4+2]=v;bi.data[i*4+3]=255}bx.putImageData(bi,0,0);
+  const fc=document.createElement('canvas');fc.width=W;fc.height=H;const fx=fc.getContext('2d',{willReadFrequently:true});fx.imageSmoothingEnabled=true;fx.imageSmoothingQuality='high';fx.drawImage(bc,0,0,W,H);
+  const B=fx.getImageData(0,0,W,H).data;
+  const L=new Uint8ClampedArray(256);for(let k=0;k<256;k++){const r=k/255;L[k]=r>=.86?255:r<=.35?0:Math.round(255*Math.pow((r-.35)/.51,1.25))}
+  for(let i=0,j=0;i<n;i++,j+=4){const r=Math.min(255,Math.round(g[i]*255/Math.max(30,B[j])));const v=L[r];d[j]=d[j+1]=d[j+2]=v;d[j+3]=255}
+  x.putImageData(im,0,0);
+}catch(e){}}
 // ===== قص الصورة على الموبايل قبل الإرسال =====
 // تحديد مكان الكلام تلقائياً (اقتراح — تقدر تسحب تاني)
 function autoBox(){try{
@@ -3891,6 +3910,7 @@ async function pvNext(){
   // القص بيظهر تلقائي بعد التصوير، ومعاه اقتراح لمكان الكلام
   if($('phAutoCrop').checked){cropUI(true);const ab=autoBox();if(ab){PV.sel=ab;selShow()}}$('phSS').textContent='تأكد من استقامة الورقة (أدِرها عند اللزوم) ثم «إرسال» — المتبقي '+(PV.q.length)+' صورة';
 }
+$('phScan').checked=localStorage.getItem(NS+'phScan')!=='0';$('phScan').onchange=()=>{try{localStorage.setItem(NS+'phScan',$('phScan').checked?'1':'0')}catch(e){}if(PV.bm&&!PV.cropping)pvDraw()};
 $('phL').onclick=()=>{PV.rot=(PV.rot+270)%360;PV.crop=null;pvDraw()};
 $('phR').onclick=()=>{PV.rot=(PV.rot+90)%360;PV.crop=null;pvDraw()};
 $('phNo').onclick=()=>pvNext();
