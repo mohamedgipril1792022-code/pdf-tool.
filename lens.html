@@ -73,7 +73,7 @@ label.chk{display:flex;gap:6px;align-items:center;font-size:.9rem}
 
 
 <section class="panel" id="phn">
-  <b>🔗 إرسال واستقبال الصور بين الأجهزة</b>
+  <b>🔗 إرسال واستقبال الصور بين الأجهزة</b> <span id="phDot" class="hint"></span>
   <div class="row" style="margin-top:6px">
     <button id="phWifi" class="pri">📶 استقبال على الواي فاي (ثابت)</button>
     <button id="phRecv">📥 استقبال</button>
@@ -97,7 +97,7 @@ label.chk{display:flex;gap:6px;align-items:center;font-size:.9rem}
     <button id="phCon" class="pri">اتصال</button></div>
     <div class="row" id="phChg" hidden><button id="phChgB">تغيير الجهاز المستقبِل</button></div>
     <div class="row" id="phCam" hidden style="margin-top:8px">
-      <button id="phShot" class="pri">📷 صوّر وأرسل</button><button id="phPick">🖼 من المعرض</button>
+      <button id="phShot" class="pri">📷 صوّر</button><button id="phPick">🖼 من المعرض</button>
     </div>
     <input id="phF" type="file" accept="image/*" capture="environment" hidden>
     <input id="phG" type="file" accept="image/*" multiple hidden>
@@ -106,7 +106,7 @@ label.chk{display:flex;gap:6px;align-items:center;font-size:.9rem}
       <div id="phCropBar" class="row" hidden style="justify-content:center;margin:0 0 8px"><span class="hint" style="width:100%">اسحب الأركان أو الحواف لتكبير وتصغير الإطار، ومن جوه الإطار لتحريكه. كبّر الصورة بصباعين أو دبل تاب أو زرار +، واسحب برّه الإطار لتحريك الصورة. وبعدين «تم»</span><button id="phCropOk" class="pri">✓ تم القص</button><label class="chk"><input type="checkbox" id="phScan2" checked> 📄 سكانر</label><label class="chk" style="font-size:12px"><input type="checkbox" id="phAutoCrop" checked> افتح القص تلقائي بعد التصوير</label><button id="phCropAll">الصورة كلها</button><button id="phCropNo">رجوع</button></div>
       <div id="phCvW" style="position:relative;display:inline-block;max-width:100%;line-height:0;overflow:hidden;border-radius:8px"><canvas id="phCv" style="max-width:100%;max-height:62vh;display:block;border:1px solid var(--line);border-radius:8px;background:#fff"></canvas><div id="phSel" hidden style="position:absolute;border:1.5px solid rgba(255,255,255,.9);border-radius:16px;background:transparent;box-shadow:0 0 0 9999px rgba(0,0,0,.55);pointer-events:none"><i class="lc tl"></i><i class="lc tr"></i><i class="lc bl"></i><i class="lc br"></i></div><style>#phSel .lc{position:absolute;width:28px;height:28px;border:0 solid #fff;filter:drop-shadow(0 0 2px rgba(0,0,0,.6))}#phSel .tl{top:-5px;left:-5px;border-top-width:5px;border-left-width:5px;border-top-left-radius:18px}#phSel .tr{top:-5px;right:-5px;border-top-width:5px;border-right-width:5px;border-top-right-radius:18px}#phSel .bl{bottom:-5px;left:-5px;border-bottom-width:5px;border-left-width:5px;border-bottom-left-radius:18px}#phSel .br{bottom:-5px;right:-5px;border-bottom-width:5px;border-right-width:5px;border-bottom-right-radius:18px}</style></div>
     </div>
-    <div class="hint" id="phSS"></div>
+    <div class="row" style="justify-content:center;margin-top:6px"><span class="hint" id="phSS" style="margin:0"></span><button id="phUn" hidden style="font-size:13px">↩ تراجع عن آخر صورة</button></div>
   </div>
 </section>
 
@@ -140,7 +140,7 @@ label.chk{display:flex;gap:6px;align-items:center;font-size:.9rem}
     
     
     
-    <label class="chk"><input type="checkbox" id="win" checked> قارئ ويندوز المحلي <span id="winst" class="hint"></span></label><label class="chk"><input type="checkbox" id="gon"> قارئ جوجل للأرقام والسطور المهمة <span id="gst" class="hint"></span></label><div class="row" id="gbox" style="gap:8px;width:100%" hidden><input id="gkey" type="password" autocomplete="off" dir="ltr" placeholder="مفتاح Google Cloud Vision (API key)" style="flex:1;min-width:180px"><button type="button" id="gtest">اختبار المفتاح</button><label class="chk" style="width:100%"><input type="checkbox" id="gvpg" checked> الصفحة الضعيفة كلها بجوجل (أقصى دقة)</label><span class="hint" id="guse" style="width:100%"></span><span class="hint" style="width:100%">يُرسَل إلى جوجل فقط: سطور الأرقام، ومن «قبول الدعوى شكلًا» إلى «وكيل»، والقضايا والتصرف النهائي، وفي تقرير المفوض طلبات المدعي وما انتهى إليه — صورة واحدة لكل صفحة.</span></div>
+    <label class="chk"><input type="checkbox" id="win" checked> قارئ ويندوز المحلي <span id="winst" class="hint"></span></label><label class="chk"><input type="checkbox" id="gon"> قارئ جوجل للأرقام والسطور المهمة <span id="gst" class="hint"></span></label><div class="row" id="gbox" style="gap:8px;width:100%" hidden><input id="gkey" type="password" autocomplete="off" dir="ltr" placeholder="مفتاح Google Cloud Vision (API key)" style="flex:1;min-width:180px"><button type="button" id="gtest">اختبار المفتاح</button><span class="hint" style="width:100%">يُرسَل إلى جوجل فقط: سطور الأرقام، ومن «قبول الدعوى شكلًا» إلى «وكيل»، والقضايا والتصرف النهائي، وفي تقرير المفوض طلبات المدعي وما انتهى إليه — صورة واحدة لكل صفحة.</span></div>
     <div style="margin:6px 0"><button id="winck" type="button" class="s">🩺 فحص القارئ</button><div id="winckr" style="margin-top:6px;line-height:1.9"></div></div>
     <details class="lset" id="wini"><summary>📥 تثبيت قارئ ويندوز على جهاز آخر</summary>
       <ol class="hint" style="margin:6px 0;padding-inline-start:22px;line-height:1.9"><li>اضغط الزر أدناه لنسخ أمر التثبيت.</li><li>على ذلك الجهاز: كليك يمين على زر ابدأ ← «Terminal (Admin)» أو «Windows PowerShell (Admin)».</li><li>الصق (Ctrl+V) ثم Enter وانتظر حتى تظهر «تم التثبيت بنجاح».</li><li>في Edge: اسمح بـ «Local network» للموقع، ثم أعد فتح البرنامج.</li></ol>
@@ -592,18 +592,6 @@ async function readSmart(maker,psm,lm){
     $('status').textContent='الجودة ضعيفة — إعادة القراءة بدقة أعلى…';
     try{let c2=await maker(1.5);if(dg){const q=rotC(c2,dg);c2.width=c2.height=0;c2=deskewC(q)}const r2=await ocr(c2,'4');try{r2._nums=numScan(c2,r2)}catch(e){r2._nums=[]}c2.width=c2.height=0;if((r2.data.confidence||0)>(r.data.confidence||0))r=r2}catch(e){}
   }
-  if(psm==='3'&&$('gvpg')&&$('gvpg').checked&&gOn()&&(r.data.confidence||0)<75&&gQuota()){
-   try{
-    $('status').textContent='الصفحة ضعيفة — قراءة سحابية بدقة أعلى…';
-    const k=Math.min(1,2200/c.width),g2=document.createElement('canvas');
-    g2.width=Math.round(c.width*k);g2.height=Math.round(c.height*k);
-    g2.getContext('2d').drawImage(c,0,0,g2.width,g2.height);
-    const b64=g2.toDataURL('image/jpeg',.85).split(',')[1];g2.width=g2.height=0;
-    const g=await gCall(b64),tx=(g.fullTextAnnotation&&g.fullTextAnnotation.text)||'';
-    if(tx.replace(/\s/g,'').length>(r.data.text||'').replace(/\s/g,'').length){r.data.text=tx;r._gv=1;r.data.confidence=Math.max(r.data.confidence||0,92)}
-    gUsed(gCount()+1);gSt('قرأتها جوجل بدقة أعلى — '+tx.replace(/\s/g,'').length+' حرف');
-   }catch(e){gErr(e)}
-  }
   if(psm==='3'){r._pg=true;r._deg=dg}
   return r;
 }
@@ -915,11 +903,6 @@ const GV={bad:false,n:0,pg:0};
 function gKey(){try{return(localStorage.getItem(NS+'gkey')||'').trim()}catch(e){return''}}
 function gOn(){const c=$('gon');return !!(c&&c.checked&&!GV.bad&&gKey()&&navigator.onLine!==false)}
 function gSt(t){const e=$('gst');if(e)e.textContent=t}
-/* حصة الشهر: الصفحة الضعيفة بس هي اللي بتروح لجوجل، وبحد ٩٠٠ صفحة في الشهر */
-function gMonth(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)}
-function gCount(){try{const o=JSON.parse(localStorage.getItem(NS+'guse')||'{}');return o.m===gMonth()?(o.n||0):0}catch(e){return 0}}
-function gUsed(n){try{localStorage.setItem(NS+'guse',JSON.stringify({m:gMonth(),n}))}catch(e){}const e=$('guse');if(e)e.textContent='استُخدم الشهر ده: '+toAr(n)+' صفحة من ٩٠٠'}
-function gQuota(){const n=gCount();if(n>=900){gSt('وصلت حد الـ٩٠٠ صفحة الشهر ده — القراءة السحابية واقفة لحد الشهر الجاي');return false}return true}
 async function gCall(b64){
   const res=await fetch('https://vision.googleapis.com/v1/images:annotate?key='+encodeURIComponent(gKey()),{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({requests:[{image:{content:b64},features:[{type:'DOCUMENT_TEXT_DETECTION'}],imageContext:{languageHints:['ar']}}]})});
@@ -1467,6 +1450,17 @@ function pdfFromJpegs(L){
   for(let i=1;i<tot;i++)put(String(offs[i]).padStart(10,'0')+' 00000 n \n');
   put('trailer\n<</Size '+tot+'/Root 1 0 R>>\nstartxref\n'+xr+'\n%%EOF');
   const out=new Uint8Array(len);let o=0;for(const u of parts){out.set(u,o);o+=u.length}return out.buffer;
+}
+async function delLastPhonePage(){
+  if(S.saved!==PN||!S.phone.length)return 'مفيش صور موبايل مستلمة';
+  S.phone.pop();
+  if(!S.phone.length){await wipeAll();return null}
+  const np=S.phone.length+1;
+  S.sel.delete(np);delete S.raw[np];delete S.regs[np];delete S.rc[np];
+  const pdf=pdfFromJpegs(S.phone);
+  if(!await openDoc(pdf.slice(0),PN))return 'فشل تحديث الملف بعد الحذف';
+  await DB.set('file',{name:PN,buf:pdf});await DB.set('phone',S.phone);
+  upd();save();return null;
 }
 async function gotImg(m){
   if(typeof pdfjsLib==='undefined')return 'تعذّر تحميل مكتبة PDF';
@@ -3611,82 +3605,112 @@ var qrcode = function() {
     return qrcode;
 }));
 
-let phPeer=null;
+let phPeer=null,phBeacon=null;
+let LAPID='';try{LAPID=localStorage.getItem(NS+'lapid')||''}catch(e){}
+if(!/^pdftg-l-/.test(LAPID)){LAPID='pdftg-l-'+Math.random().toString(36).slice(2,8)+Date.now().toString(36);try{localStorage.setItem(NS+'lapid',LAPID)}catch(e){}}
 const PBC=(()=>{try{return new BroadcastChannel((MODE==='t'?'tasgeel-'+KIND:'pdftools')+'-lens-recv')}catch(e){return {postMessage(){},onmessage:null}}})();
-PBC.onmessage=e=>{if(e.data&&e.data.t==='release'&&phPeer){try{phPeer.destroy()}catch(x){}phPeer=null;const el=$('phRS');if(el)el.textContent='الاستقبال اتنقل لنافذة تانية من البرنامج — دوس «استقبال» هنا لو عايزه يرجع'}};
-addEventListener('pagehide',()=>{try{phPeer&&phPeer.destroy()}catch(e){}});
+PBC.onmessage=e=>{if(e.data&&e.data.t==='release'){try{phPeer&&phPeer.destroy()}catch(x){}try{phBeacon&&phBeacon.destroy()}catch(x){}phPeer=null;phBeacon=null;const el=$('phRS');if(el)el.textContent='الاستقبال اتنقل لنافذة تانية من البرنامج — دوس «استقبال» هنا لو عايزه يرجع'}};
+addEventListener('pagehide',()=>{try{phPeer&&phPeer.destroy()}catch(e){}try{phBeacon&&phBeacon.destroy()}catch(e){}});
 function myCode(){let c='';try{c=localStorage.getItem(NS+'pcode')||''}catch(e){}if(!/^\d{4}$/.test(c)){c=String(Math.floor(1000+Math.random()*9000));try{localStorage.setItem(NS+'pcode',c)}catch(e){}}return c}
+function attachRecv(c){
+  $('phRS').textContent='✅ تم ربط جهاز';phDotSet('🟢 الموبايل متصل');setTimeout(()=>phLink(c,'phRS'),2000);
+  const cfg=()=>{try{c.send({t:'cfg',q:+$('qual').value})}catch(e){}};c.on('open',cfg);if(c.open)cfg();$('qual').addEventListener('change',cfg);
+  c.on('data',async m=>{
+    if(m&&m.t==='who'){try{c.send({t:'lap',id:LAPID})}catch(e){}return}
+    if(m&&m.t==='ping'){try{c.send({t:'pong'})}catch(e){}return}
+    if(m&&m.t==='del'){let er=null;try{er=await delLastPhonePage()}catch(e){er='تعذّر الحذف'}try{c.send(er?{t:'err',e:er}:{t:'okd',n:S.phone.length})}catch(e){}$('phRS').textContent=er?('⚠ '+er):'🗑 اتحذفت آخر صورة — الصور: '+S.phone.length;return}
+    if(!m||m.t!=='img')return;
+    try{c.send({t:'got',id:m.id})}catch(e){}
+    $('phRS').textContent='⏳ وصلت صورة — جاري تجهيزها…';
+    const er=await gotImg(m);
+    try{c.send(er?{t:'err',e:er}:{t:'ok',n:S.phone.length})}catch(e){}
+    $('phRS').textContent=er?('⚠ '+er):'✅ وصلت صورة '+S.phone.length+' — كمّل أو اقرأها';
+  });
+  c.on('close',()=>{$('phRS').textContent='انقطع الجهاز — في انتظار اتصال جديد';phDotSet('⚪ مستني الموبايل…')});
+}
 $('phRecv').onclick=async()=>{
   try{localStorage.setItem(NS+'role','r')}catch(e){}
   WF.on=false;clearTimeout(WF.t);$('wfB').hidden=true;
   $('phRB').hidden=false;$('phRS').textContent='جاري التجهيز…';
   try{await loadPeer()}catch(e){$('phRS').textContent='تعذّر تحميل مكتبة الربط — تأكد من الاتصال بالإنترنت.';return}
-  try{phPeer&&phPeer.destroy()}catch(e){}
+  try{phPeer&&phPeer.destroy()}catch(e){}try{phBeacon&&phBeacon.destroy()}catch(e){}
   // لو البرنامج مفتوح كمستقبِل في نافذة/تبويب تاني: نخليه يسيب الكود للنافذة دي
   try{PBC.postMessage({t:'release'})}catch(e){}
   await new Promise(r=>setTimeout(r,600));
   let code=myCode();let tries=0;
+  // البيكون: كود الـ٤ أرقام — للربط لأول مرة بس (وللموبايل اللي لسه على النسخة القديمة)
   const mk=()=>{
-    const pr=new Peer('pdftg-'+code);phPeer=pr;
-    pr.on('open',()=>{$('phCode').textContent=code;$('phRS').textContent='في انتظار جهاز مُرسِل… (أبقِ الصفحة مفتوحة)'});
+    const pr=new Peer('pdftg-'+code);phBeacon=pr;
+    pr.on('open',()=>{$('phCode').textContent=code});
     pr.on('error',er=>{
       if(er.type==='unavailable-id'){
         tries++;try{pr.destroy()}catch(e){}
-        if(tries<=4){$('phRS').textContent='الكود لسه محجوز من اتصال قديم — بحاول تاني ('+tries+')…';setTimeout(mk,3000);return}
-        // الكود فضل محجوز: ناخد كود جديد
+        if(tries<=4){setTimeout(mk,3000);return}
         code=String(Math.floor(1000+Math.random()*9000));try{localStorage.setItem(NS+'pcode',code)}catch(e){}tries=0;
-        $('phRS').textContent='الكود القديم كان محجوز — اتعمل كود جديد، اكتبه في الموبايل';setTimeout(mk,500);return}
-      if(/network|server-error|socket/.test(er.type)){$('phRS').textContent='⚠ مفيش اتصال بسيرفر الربط — اتأكد من النت، وهحاول تاني لوحدي';try{pr.destroy()}catch(e){}setTimeout(mk,5000);return}
+        setTimeout(mk,500);return}
+      if(/network|server-error|socket/.test(er.type)){try{pr.destroy()}catch(e){}setTimeout(mk,5000);return}});
+    pr.on('disconnected',()=>{try{pr.reconnect()}catch(e){}});
+    pr.on('connection',attachRecv);
+  };
+  // المعرف الدائم للاب: الموبايل بيوصله مباشرة من غير كود بعد أول ربط
+  let tries2=0;
+  const mkMain=()=>{
+    const pr=new Peer(LAPID);phPeer=pr;
+    pr.on('open',()=>{$('phRS').textContent='في انتظار الموبايل… (أبقِ الصفحة مفتوحة)';phDotSet('⚪ مستني الموبايل…')});
+    pr.on('error',er=>{
+      if(er.type==='unavailable-id'){tries2++;try{pr.destroy()}catch(e){}
+        if(tries2<=6){$('phRS').textContent='بيرجع يحجز معرف اللاب ('+tries2+')…';setTimeout(mkMain,3000)}return}
+      if(/network|server-error|socket/.test(er.type)){$('phRS').textContent='⚠ مفيش اتصال بسيرفر الربط — اتأكد من النت، وهحاول تاني لوحدي';try{pr.destroy()}catch(e){}setTimeout(mkMain,5000);return}
       $('phRS').textContent='مشكلة في الربط: '+er.type});
     pr.on('disconnected',()=>{try{pr.reconnect()}catch(e){}});
-    pr.on('connection',c=>{
-      $('phRS').textContent='✅ تم ربط جهاز';setTimeout(()=>phLink(c,'phRS'),2000);
-      const cfg=()=>{try{c.send({t:'cfg',q:+$('qual').value})}catch(e){}};c.on('open',cfg);if(c.open)cfg();$('qual').addEventListener('change',cfg);
-      c.on('data',async m=>{
-        if(!m||m.t!=='img')return;
-        try{c.send({t:'got',id:m.id})}catch(e){}
-        $('phRS').textContent='⏳ وصلت صورة — جاري تجهيزها…';
-        const er=await gotImg(m);
-        try{c.send(er?{t:'err',e:er}:{t:'ok',n:S.phone.length})}catch(e){}
-        $('phRS').textContent=er?('⚠ '+er):'✅ وصلت صورة '+S.phone.length+' — كمّل أو اقرأها';
-      });
-      c.on('close',()=>{$('phRS').textContent='انقطع الجهاز — في انتظار اتصال جديد'});
-    });
-  };mk();
+    pr.on('connection',attachRecv);
+  };
+  mk();mkMain();
 };
 let phC=null,phTo='';const PHT={};let PHL='',PHRELAY=false;
 // نوع الاتصال: مباشر (نفس الشبكة — سريع) ولا عن طريق سيرفر وسيط (أبطأ)
 async function phLink(c,el){try{const pc=c.peerConnection;if(!pc)return;let st=await pc.getStats(),pair=null;st.forEach(r=>{if(r.type==='transport'&&r.selectedCandidatePairId)pair=st.get(r.selectedCandidatePairId)});if(!pair)st.forEach(r=>{if(r.type==='candidate-pair'&&(r.selected||r.nominated&&r.state==='succeeded'))pair=pair||r});if(!pair)return;const lc=st.get(pair.localCandidateId),rc=st.get(pair.remoteCandidateId);const relay=[lc,rc].some(x=>x&&x.candidateType==='relay');if(el==='phSS')PHRELAY=relay;const e=$(el);if(e)e.textContent+=relay?' · ⚠ الاتصال عن طريق سيرفر وسيط (أبطأ) — خلّي الجهازين على نفس الواي فاي':' · ⚡ اتصال مباشر'}catch(e){}}try{phTo=localStorage.getItem(NS+'pto')||''}catch(e){}
 let phSP=null,phCing=null;
 // يرجّع الاتصال لوحده (بعد ما الموبايل يسيب البرنامج ويرجع، أو الكاميرا تفتح) — ويستنى لحد ما يفتح
+function normDest(d){d=(d||'').trim();if(!d)return '';return /^\d{4}$/.test(d)?'pdftg-'+d:d}
+function phDotSet(t){const e=$('phDot');if(e)e.textContent=t}
+let phHB=null,PHONG=0;
+function hbStart(){hbStop();PHONG=Date.now();phHB=setInterval(()=>{if(!(phC&&phC.open))return;if(Date.now()-PHONG>45000){try{phC.close()}catch(e){}phEnsure();return}try{phC.send({t:'ping'})}catch(e){}},20000)}
+function hbStop(){if(phHB)clearInterval(phHB);phHB=null}
 function phEnsure(ms){
   if(phC&&phC.open)return Promise.resolve(true);
   if(!phTo)return Promise.resolve(false);
   if(!phCing)phConnect(phTo,true);
   return new Promise(r=>{const t0=Date.now();const iv=setInterval(()=>{if(phC&&phC.open){clearInterval(iv);r(true)}else if(Date.now()-t0>(ms||15000)){clearInterval(iv);r(false)}},250)})}
-function phWake(){let r='';try{r=localStorage.getItem(NS+'role')||''}catch(e){}if(document.visibilityState==='visible'&&r==='s'&&phTo&&!$('phSB').hidden&&!(phC&&phC.open))phEnsure()}
+function phWake(){let r='';try{r=localStorage.getItem(NS+'role')||''}catch(e){}if(document.visibilityState!=='visible')return;
+ if(r==='s'&&(phTo||localStorage.getItem(NS+'lap'))&&!$('phSB').hidden&&!(phC&&phC.open))phEnsure();
+ else if(r==='r'&&!$('phRB').hidden&&(!phPeer||phPeer.destroyed||phPeer.disconnected))$('phRecv').click();
+ else if(r==='w'&&!$('wfB').hidden&&!WF.on)wfStart()}
 document.addEventListener('visibilitychange',phWake);addEventListener('focus',phWake);addEventListener('pageshow',phWake);addEventListener('online',phWake);
-async function phConnect(code,quiet){
-  $('phSS').textContent=quiet?'🔄 بيرجع يتصل باللاب…':'جاري الاتصال…';
+async function phConnect(dest,quiet){
+  dest=normDest(dest);if(!dest)return;
+  $('phSS').textContent=quiet?'🔄 بيرجع يتصل باللاب…':'جاري الاتصال…';phDotSet('🟡 بيحاول يتصل باللاب…');
   try{await loadPeer()}catch(e){$('phSS').textContent='تعذّر تحميل مكتبة الربط — تأكد من الاتصال بالإنترنت.';return}
   try{phC&&phC.close()}catch(e){}try{phSP&&phSP.destroy()}catch(e){}
   const pr=new Peer();phSP=pr;let done=false;phCing=pr;setTimeout(()=>{if(phCing===pr)phCing=null},16000);
   const tm=setTimeout(()=>{if(!done)$('phSS').textContent='تأخر الاتصال — تأكد أن الجهاز الآخر في وضع «استقبال».'},15000);
-  pr.on('error',er=>{$('phSS').textContent=er.type==='peer-unavailable'?'الجهاز الآخر ليس في وضع «استقبال» (أو الكود خاطئ).':'مشكلة: '+er.type});
+  pr.on('error',er=>{$('phSS').textContent=er.type==='peer-unavailable'?'اللاب مش متاح — افتح البرنامج عليه وهيتصل لوحده':'مشكلة: '+er.type;if(er.type==='peer-unavailable')phDotSet('🔴 اللاب مش متاح — افتح البرنامج عليه')});
   pr.on('open',()=>{
-    const c=pr.connect('pdftg-'+code,{reliable:true});phC=c;
-    c.on('open',()=>{done=true;clearTimeout(tm);phTo=code;if(phCing===pr)phCing=null;try{localStorage.setItem(NS+'pto',code)}catch(e){}
-      $('phSS').textContent='✅ متصل — صوّر أو اختر صوراً';if(PQ.length)setTimeout(phRun,300);setTimeout(()=>phLink(c,'phSS'),1500);$('phCam').hidden=false;$('phChg').hidden=false;$('phIn').parentNode.hidden=true});
-    c.on('data',m=>{if(m&&m.t==='got'){const x=PHT[m.id];delete PHT[m.id];PHL=x?' · '+toArN(x.kb)+' ك.ب في '+toArN(((performance.now()-x.t)/1000).toFixed(1))+' ث':'';$('phSS').textContent='✅ وصلت للجهاز التاني'+PHL+' — بيتجهّز للقراءة';return}if(m&&m.t==='cfg'){PHQ=+m.q||0;try{localStorage.setItem(NS+'phq',PHQ)}catch(e){}return}if(m&&m.t==='ok'){const k0=Object.keys(PHT)[0];if(k0)delete PHT[k0]}if(m&&m.t==='ok')$('phSS').textContent='✅ أُرسلت واستلمها الجهاز الآخر (الصور: '+m.n+')'+PHL;else if(m&&m.t==='err')$('phSS').textContent='⚠ '+m.e});
-    c.on('close',()=>{if(phC!==c)return;$('phSS').textContent='🔄 الاتصال اتقطع — بيرجع يتصل لوحده…';if(document.visibilityState==='visible')setTimeout(()=>phEnsure(),800)});
+    const c=pr.connect(dest,{reliable:true});phC=c;
+    c.on('open',()=>{done=true;clearTimeout(tm);phTo=dest;if(phCing===pr)phCing=null;try{localStorage.setItem(NS+'pto',dest)}catch(e){}
+      $('phSS').textContent='✅ متصل — صوّر وهتوصل للاب لوحدها';phDotSet('🟢 متصل باللاب');try{c.send({t:'who'})}catch(e){}hbStart();if(PQ.length)setTimeout(phRun,300);setTimeout(()=>phLink(c,'phSS'),1500);$('phCam').hidden=false;$('phChg').hidden=false;$('phIn').parentNode.hidden=true});
+    c.on('data',m=>{if(m&&m.t==='lap'){try{localStorage.setItem(NS+'lap',m.id)}catch(e){}if(c.peer!==m.id){try{c.close()}catch(e){}setTimeout(()=>phConnect(m.id,true),400)}return}if(m&&m.t==='pong'){PHONG=Date.now();return}if(m&&m.t==='got'){const x=PHT[m.id];delete PHT[m.id];PHL=x?' · '+toArN(x.kb)+' ك.ب في '+toArN(((performance.now()-x.t)/1000).toFixed(1))+' ث':'';$('phSS').textContent='✅ وصلت للجهاز التاني'+PHL+' — بيتجهّز للقراءة';return}if(m&&m.t==='cfg'){PHQ=+m.q||0;try{localStorage.setItem(NS+'phq',PHQ)}catch(e){}return}if(m&&m.t==='ok'){const k0=Object.keys(PHT)[0];if(k0)delete PHT[k0]}if(m&&m.t==='ok')$('phSS').textContent='✅ أُرسلت واستلمها الجهاز الآخر (الصور: '+m.n+')'+PHL;else if(m&&m.t==='err')$('phSS').textContent='⚠ '+m.e});
+    c.on('close',()=>{if(phC!==c)return;hbStop();$('phSS').textContent='🔄 الاتصال اتقطع — بيرجع يتصل لوحده…';phDotSet('🟡 بيرجع يتصل باللاب…');if(document.visibilityState==='visible')setTimeout(()=>phEnsure(),800)});
   });
 }
 $('phSend').onclick=()=>{
   const h=!$('phSB').hidden;$('phSB').hidden=h;if(h)return;
   try{localStorage.setItem(NS+'role','s')}catch(e){}
-  if(phTo){$('phIn').parentNode.hidden=true;$('phChg').hidden=false;phConnect(phTo)}else{$('phIn').parentNode.hidden=false;$('phChg').hidden=true}
+  let lap='';try{lap=localStorage.getItem(NS+'lap')||''}catch(e){}
+  const dest=lap||phTo;
+  if(dest){$('phIn').parentNode.hidden=true;$('phChg').hidden=false;phConnect(dest)}else{$('phIn').parentNode.hidden=false;$('phChg').hidden=true}
 };
-$('phChgB').onclick=()=>{phTo='';try{localStorage.removeItem(NS+'pto')}catch(e){}try{phC&&phC.close()}catch(e){}$('phCam').hidden=true;$('phChg').hidden=true;$('phIn').parentNode.hidden=false;$('phIn').value='';$('phSS').textContent='اكتب كود الجهاز المستقبِل'};
+$('phChgB').onclick=()=>{phTo='';try{localStorage.removeItem(NS+'pto')}catch(e){}try{localStorage.removeItem(NS+'lap')}catch(e){}try{phC&&phC.close()}catch(e){}$('phCam').hidden=true;$('phChg').hidden=true;$('phIn').parentNode.hidden=false;$('phIn').value='';$('phSS').textContent='اكتب كود الجهاز المستقبِل'};
 $('phCon').onclick=()=>{
   const code=$('phIn').value.replace(/[^0-9٠-٩]/g,'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
   if(code.length!==4){$('phSS').textContent='الكود لازم ٤ أرقام';return}
@@ -3715,9 +3739,17 @@ async function wfStart(){
 async function wfPoll(){
   clearTimeout(WF.t);if(!WF.on)return;let wait=1500;
   try{const r=await fetch(WO.url+'/take',{cache:'no-store',signal:AbortSignal.timeout(15000)});
-    if(r.status===200){const buf=await r.arrayBuffer(),left=+(r.headers.get('X-Left')||0);
+    if(r.status===200){let buf=await r.arrayBuffer();const left=+(r.headers.get('X-Left')||0);
       $('wfS').textContent='⏳ وصلت صورة — جاري تجهيزها…';
-      let w=0,h=0;try{const bm=await createImageBitmap(new Blob([buf],{type:'image/jpeg'}));w=bm.width;h=bm.height;bm.close&&bm.close()}catch(e){}
+      let w=0,h=0,bm0=null;try{bm0=await createImageBitmap(new Blob([buf],{type:'image/jpeg'}));w=bm0.width;h=bm0.height}catch(e){}
+      // قص تلقائي على الكلام لصور الواي فاي (من غير فلتر سكانر تاني) — لو مش قادر يحدد تتبعت زي ما هي
+      if(bm0)try{const rt=guessRot(bm0),ab=guessCrop(bm0,rt);
+        if(ab){const ob=PV.bm,or2=PV.rot,oc=PV.crop,og=PV.cropping;PV.bm=bm0;PV.rot=rt;PV.crop=ab;PV.cropping=false;
+          const cc=composeShot(true);PV.bm=ob;PV.rot=or2;PV.crop=oc;PV.cropping=og;
+          const bl=await new Promise(r2=>cc.toBlob(r2,'image/jpeg',.9));
+          if(bl){buf=await bl.arrayBuffer();w=cc.width;h=cc.height}}
+      }catch(e){}
+      try{bm0&&bm0.close&&bm0.close()}catch(e){}
       const er=w?await gotImg({buf,w,h}):'الصورة اللي وصلت بايظة';WF.n++;
       $('wfS').textContent=er?'⚠ '+er:'✅ وصلت صورة '+S.phone.length+(left?' — لسه '+left+' جاية':' — مستني صور تانية');wait=left?50:800}
     else if(r.status!==204){$('wfS').textContent='⚠ البرنامج المساعد قديم أو فيه مشكلة ('+r.status+')';wait=5000}
@@ -3728,7 +3760,7 @@ async function wfPoll(){
 }
 $('phWifi').onclick=()=>{if(!$('wfB').hidden&&WF.on){WF.on=false;clearTimeout(WF.t);$('wfB').hidden=true;try{localStorage.setItem(NS+'role','')}catch(e){}return}wfStart()};
 if(matchMedia('(pointer:coarse)').matches&&!matchMedia('(min-width:900px)').matches)$('phWifi').hidden=true;
-setTimeout(()=>{let r='';try{r=localStorage.getItem(NS+'role')||''}catch(e){}if(r==='w')wfStart();else if(r==='r')$('phRecv').click();else if(r==='s'&&phTo)$('phSend').click()},700);
+setTimeout(()=>{let r='';try{r=localStorage.getItem(NS+'role')||''}catch(e){}if(r==='w')wfStart();else if(r==='r')$('phRecv').click();else if(r==='s'&&(phTo||localStorage.getItem(NS+'lap')))$('phSend').click()},700);
 /* كاميرا داخل البرنامج: الخلفية دايمًا (المتصفح ساعات بيفتح الأمامية مع زر الملف) */
 const CAM={st:null,face:'environment'};
 /* الكاميرا بتتفتح في الصفحة الرئيسية للتطبيق (مش جوه إطار لينس) عشان تملأ الشاشة كلها لحد آخرها */
@@ -3741,16 +3773,17 @@ async function camOpen(){CAM.face='environment';const W=camW(),d=W.document;
  const old=d.getElementById('camO');if(old)old.remove();
  const o=d.createElement('div');o.id='camO';o.dir='rtl';o.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;width:100%;height:100%;z-index:2147483647;background:#000;display:flex;flex-direction:column;zoom:1';
  const bs='font:600 17px system-ui,sans-serif;padding:12px 18px;border-radius:12px;border:0;background:#2b3a4a;color:#fff';
- o.innerHTML='<video id="camV" playsinline autoplay muted style="flex:1 1 auto;width:100%;min-height:0;object-fit:cover;background:#000;display:block"></video><div style="flex:0 0 auto;display:flex;justify-content:space-around;align-items:center;padding:16px 10px calc(18px + env(safe-area-inset-bottom));background:#000"><button type="button" id="camX" style="'+bs+'">✕ إلغاء</button><button type="button" id="camS" aria-label="التقاط" style="width:78px;height:78px;border-radius:50%;border:5px solid #fff;background:rgba(255,255,255,.3)"></button><button type="button" id="camF" style="'+bs+'">🔄 قلب</button></div>';
+ o.innerHTML='<div style="flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;background:#000;color:#fff;font:600 14px system-ui,sans-serif"><span id="camSt">وجّه الكاميرا للصفحة ودوس الزر — القص والإرسال بيحصلوا لوحدهم</span><button type="button" id="camUn" hidden style="font:600 13px system-ui,sans-serif;padding:6px 10px;border-radius:10px;border:1px solid #777;background:#222;color:#fff;white-space:nowrap">↩ تراجع</button></div><video id="camV" playsinline autoplay muted style="flex:1 1 auto;width:100%;min-height:0;object-fit:cover;background:#000;display:block"></video><div style="flex:0 0 auto;display:flex;justify-content:space-around;align-items:center;padding:16px 10px calc(18px + env(safe-area-inset-bottom));background:#000"><button type="button" id="camX" style="'+bs+'">✕ تم</button><button type="button" id="camS" aria-label="التقاط" style="width:78px;height:78px;border-radius:50%;border:5px solid #fff;background:rgba(255,255,255,.3)"></button><button type="button" id="camF" style="'+bs+'">🔄 قلب</button></div>';
  d.body.appendChild(o);CAM.ov=d.documentElement.style.overflow;d.documentElement.style.overflow='hidden';
  const V=d.getElementById('camV');
  const start=async()=>{try{CAM.st&&CAM.st.getTracks().forEach(t=>t.stop())}catch(e){}CAM.st=await camGet();if(!CAM.st){camStop();$('phF').click();return}V.srcObject=CAM.st;try{await V.play()}catch(e){}};
  d.getElementById('camX').onclick=camStop;
+ d.getElementById('camUn').onclick=()=>phUndo();
  d.getElementById('camF').onclick=()=>{CAM.face=CAM.face==='environment'?'user':'environment';start()};
  d.getElementById('camS').onclick=async()=>{if(!V.videoWidth||CAM.shot)return;CAM.shot=1;o.style.opacity='.35';
-  /* التقاط فوري: الإطار بيتاخد كصورة جاهزة من غير ضغط JPEG، والكاميرا تتقفل على طول */
+  /* التقاط فوري من غير ضغط JPEG — الكاميرا بتفضل مفتوحة للصفحة اللي بعدها على طول */
   let bm=null;try{bm=await createImageBitmap(V)}catch(e){const c=document.createElement('canvas');c.width=V.videoWidth;c.height=V.videoHeight;c.getContext('2d').drawImage(V,0,0);bm=c}
-  CAM.shot=0;camStop();if(bm)sendFiles([bm])};
+  o.style.opacity='';CAM.shot=0;if(bm)quickShoot(bm)};
  await start();
 }
 $('phShot').onclick=()=>{camOpen()};$('phPick').onclick=()=>$('phG').click();
@@ -4005,7 +4038,29 @@ $('phOk').onclick=()=>{
   const c=$('phCv'),cc=document.createElement('canvas');cc.width=c.width;cc.height=c.height;cc.getContext('2d').drawImage(c,0,0);
   PQ.push(cc);phRun();pvNext();
 };
-function sendFiles(fs){PV.q.push(...fs);if(!PV.bm)pvNext()}
+/* ===== تصوير بزر واحد: قص تلقائي وإرسال في الخلفية من غير شاشة مراجعة ===== */
+let QSP=Promise.resolve();
+function guessRot(bm){return bm.width>bm.height*1.1?90:0}
+function guessCrop(bm,rot){const ob=PV.bm,or=PV.rot,oc=PV.crop;PV.bm=bm;PV.rot=rot;let r=null;try{r=autoBox()}catch(e){}PV.bm=ob;PV.rot=or;PV.crop=oc;return r}
+function composeShot(noScan){const sc=$('phScan'),was=sc.checked;if(noScan)sc.checked=false;try{pvDraw()}finally{if(noScan)sc.checked=was}const c=$('phCv'),cc=document.createElement('canvas');cc.width=c.width;cc.height=c.height;cc.getContext('2d').drawImage(c,0,0);return cc}
+function camNote(t){try{const e=camW().document.getElementById('camSt');if(e)e.textContent=t}catch(e){}}
+function camUndo(on){try{const e=camW().document.getElementById('camUn');if(e)e.hidden=!on}catch(e){}const u=$('phUn');if(u)u.hidden=!on}
+function phUndo(){camUndo(false);if(phC&&phC.open){try{phC.send({t:'del'})}catch(e){}$('phSS').textContent='🗑 بطلب من اللاب يحذف آخر صورة…';camNote('🗑 بطلب من اللاب يحذف آخر صورة…')}}
+function quickShoot(f){QSP=QSP.then(()=>quickShoot1(f)).catch(()=>{});return QSP}
+async function quickShoot1(f){
+  let bm=null;try{bm=await loadBm(f)}catch(e){$('phSS').textContent='⚠ تعذّرت قراءة الصورة — جرّب صورة بصيغة JPG/PNG';camNote('⚠ الصورة مش مقروءة');return}
+  const rot=guessRot(bm),ab=guessCrop(bm,rot);
+  const ob=PV.bm,or=PV.rot,oc=PV.crop,og=PV.cropping;PV.bm=bm;PV.rot=rot;PV.crop=ab;PV.cropping=false;
+  let cc=null;try{cc=composeShot(false)}catch(e){}
+  PV.bm=ob;PV.rot=or;PV.crop=oc;PV.cropping=og;
+  if(!cc){$('phSS').textContent='⚠ تعذّر تجهيز الصورة';camNote('⚠ تعذّر تجهيز الصورة');return}
+  PQ.push(cc);camUndo(false);
+  const t=(ab?'✅ اتقصّت على الكلام':'📄 هتتبعت الصورة كلها')+(PQ.length>1?' — ('+PQ.length+' في الطابور)':'');
+  $('phSS').textContent=t;camNote(t);
+  phRun();
+}
+function sendFiles(fs){for(const f of fs)quickShoot(f)}
+$('phUn').onclick=phUndo;
 $('phF').onchange=e=>{const fs=[...e.target.files];e.target.value='';if(fs.length)sendFiles(fs)};
 $('phG').onchange=e=>{const fs=[...e.target.files];e.target.value='';if(fs.length)sendFiles(fs)};
 (async()=>{
@@ -4019,5 +4074,5 @@ $('phG').onchange=e=>{const fs=[...e.target.files];e.target.value='';if(fs.lengt
 })();
 </script>
 <script>(function(){try{if(KIND==='d'||!(window.parent&&window.parent!==window&&window.parent.lensToOpinion)){var h=function(){["toOp","jdt"].forEach(function(i){var e=document.getElementById(i);if(e)e.style.display="none"})};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",h);else h()}}catch(e){}})()</script>
-<div id="lensVer" style="text-align:center;font-size:11px;opacity:.55;margin:14px 0 6px">لينس — نسخة ١٦٧</div></body>
+<div id="lensVer" style="text-align:center;font-size:11px;opacity:.55;margin:14px 0 6px">لينس — نسخة ١٦٨</div></body>
 </html>
