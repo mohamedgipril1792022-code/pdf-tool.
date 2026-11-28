@@ -438,7 +438,7 @@ d.addEventListener('input',sch);d.addEventListener('change',sch);d.addEventListe
 #csr table{table-layout:auto}#csr td,#csr th{word-break:break-word;overflow-wrap:anywhere}
 @media (max-width:700px){#csr table.csx,#csr table.csx tbody,#csr table.csx tr,#csr table.csx td{display:block;width:100%}#csr table.csx thead{display:none}#csr table.csx tr{border:1px solid var(--line);border-radius:8px;margin:0 0 8px;padding:4px 8px}#csr table.csx td{border:0;border-bottom:1px dashed var(--line);text-align:right;padding:4px 2px}#csr table.csx td:last-child{border-bottom:0}#csr table.csx td:empty{display:none}#csr table.csx td::before{content:attr(data-l)": ";color:var(--mut);font-weight:700;font-size:.82rem}}
 </style>
-<details id="cs" class="noprint"><summary>بحث برقم الدعوى</summary><div class="addrow"><input id="csq" type="text" dir="ltr" inputmode="numeric" placeholder="مثلًا 1234 أو 1234/70"><button id="csb" type="button">بحث</button></div><div id="csr"></div></details>
+<details id="cs" class="noprint"><summary>بحث برقم الدعوى</summary><div class="addrow"><input id="csq" type="text" dir="ltr" inputmode="numeric" placeholder="رقم الدعوى — مثل 1234 أو 1234/70"><input id="csy" type="text" dir="ltr" inputmode="numeric" maxlength="4" placeholder="السنة" title="السنة القضائية: 21 أو 2021 — اختياري" style="flex:0 0 7ch;text-align:center"><button id="csb" type="button">بحث</button></div><div id="csr"></div></details>
  </div>
  <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><div id="edinf" hidden style="background:#12263F;color:#fff;border-radius:8px;padding:5px 8px;font-size:.78rem;line-height:1.6"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="edok" type="button" class="sec" hidden>✓ الاسم صحيح</button><button id="eddone" type="button">تم</button></div></div></div>
  <div id="bigbar" class="noprint"><button id="bsm" type="button" class="sec" aria-label="تصغير">−</button><button id="blg" type="button" class="sec" aria-label="تكبير">+</button><span class="sp"></span><button id="bpr" type="button" class="sec">🖨 طباعة</button><button id="bcl" type="button">✕ إغلاق</button></div>
@@ -674,14 +674,14 @@ function build(){
 const csn=s=>toEn(String(s==null?'':s)).replace(/[\u200e\u200f]/g,'');
 const csT=s=>csn(s).match(/\d+/g)||[];
 function csSearch(){
- const o=$('csr'),q=csn($('csq').value).trim();
- if(!q){o.innerHTML='';return}
- const pt=q.split(/[\/\\\-\s]+/).filter(Boolean),n=(pt[0]||'').replace(/\D/g,''),y=(pt[1]||'').replace(/\D/g,'');
- if(!n){o.innerHTML='<span class="hint err">اكتب أرقام بس.</span>';return}
+ const o=$('csr'),q=csn($('csq').value).trim(),qy=csn((($('csy')||{}).value)||'').trim();
+ if(!q&&!qy){o.innerHTML='';return}
+ const pt=q.split(/[\/\\\-\s]+/).filter(Boolean),n=(pt[0]||'').replace(/\D/g,''),y=(pt[1]||'').replace(/\D/g,'')||qy.replace(/\D/g,'');
+ if(!n&&!y){o.innerHTML='<span class="hint err">اكتب رقم الدعوى أو السنة.</span>';return}
  if(!state.files.length){o.innerHTML='<span class="hint err">ضيف ملف PDF الأول.</span>';return}
  const h=[];
- for(const f of state.files)for(const r of f.rows)if(csT(r.no).some(x=>x.includes(n))&&(!y||csT(r.yr).some(x=>x===y||x.endsWith(y))))h.push([f,r]);
- if(!h.length){o.innerHTML='<span class="hint">مفيش دعوى بالرقم ده في الملفات.</span>';return}
+ for(const f of state.files)for(const r of f.rows)if((!n||csT(r.no).some(x=>x.includes(n)))&&(!y||csT(r.yr).some(x=>x===y||x.endsWith(y))))h.push([f,r]);
+ if(!h.length){o.innerHTML='<span class="hint">مفيش دعوى بالبيانات دي في الملفات.</span>';return}
  const L=[['الجلسة',(f,r)=>esc(dB(toAr(dShow(f.date||''))))],['القسم',(f,r)=>esc(r.sec||f.kind||'')],['م',(f,r)=>esc(toAr(r.m==null?'':r.m))],['رقم الدعوى',(f,r)=>esc(toAr(r.no))+' / '+esc(toAr(r.yr))],['المدعي',(f,r)=>esc(r.pl||'')],['المدعى عليه',(f,r)=>esc(r.df||'')],['الجلسة السابقة',(f,r)=>r.prev?esc(toAr(r.prev)):''],['القرار',(f,r)=>esc(toAr((r.dec||'')+(r.note?' - '+r.note:'')))],['الجلسة القادمة',(f,r)=>r.next?esc(toAr(r.next)):'']];
  const used=L.filter((c,i)=>i<6||c[0]==='القرار'||h.some(([f,r])=>c[1](f,r)));
  const rows=h.map(([f,r])=>'<tr>'+used.map(c=>`<td data-l="${c[0]}">${c[1](f,r)}</td>`).join('')+'</tr>').join('');
@@ -690,6 +690,7 @@ function csSearch(){
 $('csb').addEventListener('click',csSearch);
 $('csq').addEventListener('input',csSearch);
 $('csq').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();csSearch()}});
+if($('csy')){$('csy').addEventListener('input',csSearch);$('csy').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();csSearch()}})}
 function fit(){
  const sc=$('scaler'),v=$('view'),s=sc.firstElementChild;
  if(!s){return}
@@ -1275,7 +1276,7 @@ d.addEventListener('input',sch);d.addEventListener('change',sch);d.addEventListe
 #csr table{table-layout:auto}#csr td,#csr th{word-break:break-word;overflow-wrap:anywhere}
 @media (max-width:700px){#csr table.csx,#csr table.csx tbody,#csr table.csx tr,#csr table.csx td{display:block;width:100%}#csr table.csx thead{display:none}#csr table.csx tr{border:1px solid var(--line);border-radius:8px;margin:0 0 8px;padding:4px 8px}#csr table.csx td{border:0;border-bottom:1px dashed var(--line);text-align:right;padding:4px 2px}#csr table.csx td:last-child{border-bottom:0}#csr table.csx td:empty{display:none}#csr table.csx td::before{content:attr(data-l)": ";color:var(--mut);font-weight:700;font-size:.82rem}}
 </style>
-<details id="cs" class="noprint"><summary>بحث برقم الدعوى</summary><div class="addrow"><input id="csq" type="text" dir="ltr" inputmode="numeric" placeholder="مثلًا 1234 أو 1234/70"><button id="csb" type="button">بحث</button></div><div id="csr"></div></details>
+<details id="cs" class="noprint"><summary>بحث برقم الدعوى</summary><div class="addrow"><input id="csq" type="text" dir="ltr" inputmode="numeric" placeholder="رقم الدعوى — مثل 1234 أو 1234/70"><input id="csy" type="text" dir="ltr" inputmode="numeric" maxlength="4" placeholder="السنة" title="السنة القضائية: 21 أو 2021 — اختياري" style="flex:0 0 7ch;text-align:center"><button id="csb" type="button">بحث</button></div><div id="csr"></div></details>
  </div>
  <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><div id="edinf" hidden style="background:#12263F;color:#fff;border-radius:8px;padding:5px 8px;font-size:.78rem;line-height:1.6"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="edok" type="button" class="sec" hidden>✓ الاسم صحيح</button><button id="eddone" type="button">تم</button></div></div></div>
   <div id="bigbar" class="noprint"><button id="bsm" type="button" class="sec" aria-label="تصغير">−</button><button id="blg" type="button" class="sec" aria-label="تكبير">+</button><span class="sp"></span><button id="bpr" type="button" class="sec">🖨 طباعة</button><button id="bcl" type="button">✕ إغلاق</button></div>
@@ -1581,14 +1582,14 @@ function build(){
 const csn=s=>toEn(String(s==null?'':s)).replace(/[\u200e\u200f]/g,'');
 const csT=s=>csn(s).match(/\d+/g)||[];
 function csSearch(){
- const o=$('csr'),q=csn($('csq').value).trim();
- if(!q){o.innerHTML='';return}
- const pt=q.split(/[\/\\\-\s]+/).filter(Boolean),n=(pt[0]||'').replace(/\D/g,''),y=(pt[1]||'').replace(/\D/g,'');
- if(!n){o.innerHTML='<span class="hint err">اكتب أرقام بس.</span>';return}
+ const o=$('csr'),q=csn($('csq').value).trim(),qy=csn((($('csy')||{}).value)||'').trim();
+ if(!q&&!qy){o.innerHTML='';return}
+ const pt=q.split(/[\/\\\-\s]+/).filter(Boolean),n=(pt[0]||'').replace(/\D/g,''),y=(pt[1]||'').replace(/\D/g,'')||qy.replace(/\D/g,'');
+ if(!n&&!y){o.innerHTML='<span class="hint err">اكتب رقم الدعوى أو السنة.</span>';return}
  if(!state.files.length){o.innerHTML='<span class="hint err">ضيف ملف PDF الأول.</span>';return}
  const h=[];
- for(const f of state.files)for(const r of f.rows)if(csT(r.no).some(x=>x.includes(n))&&(!y||csT(r.yr).some(x=>x===y||x.endsWith(y))))h.push([f,r]);
- if(!h.length){o.innerHTML='<span class="hint">مفيش دعوى بالرقم ده في الملفات.</span>';return}
+ for(const f of state.files)for(const r of f.rows)if((!n||csT(r.no).some(x=>x.includes(n)))&&(!y||csT(r.yr).some(x=>x===y||x.endsWith(y))))h.push([f,r]);
+ if(!h.length){o.innerHTML='<span class="hint">مفيش دعوى بالبيانات دي في الملفات.</span>';return}
  const L=[['الجلسة',(f,r)=>esc(dB(toAr(dShow(f.date||''))))],['القسم',(f,r)=>esc(r.sec||f.kind||'')],['م',(f,r)=>esc(toAr(r.m==null?'':r.m))],['رقم الدعوى',(f,r)=>esc(toAr(r.no))+' / '+esc(toAr(r.yr))],['المدعي',(f,r)=>esc(r.pl||'')],['المدعى عليه',(f,r)=>esc(r.df||'')],['الجلسة السابقة',(f,r)=>r.prev?esc(toAr(r.prev)):''],['القرار',(f,r)=>esc(toAr((r.dec||'')+(r.note?' - '+r.note:'')))],['الجلسة القادمة',(f,r)=>r.next?esc(toAr(r.next)):'']];
  const used=L.filter((c,i)=>i<6||c[0]==='القرار'||h.some(([f,r])=>c[1](f,r)));
  const rows=h.map(([f,r])=>'<tr>'+used.map(c=>`<td data-l="${c[0]}">${c[1](f,r)}</td>`).join('')+'</tr>').join('');
@@ -1597,6 +1598,7 @@ function csSearch(){
 $('csb').addEventListener('click',csSearch);
 $('csq').addEventListener('input',csSearch);
 $('csq').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();csSearch()}});
+if($('csy')){$('csy').addEventListener('input',csSearch);$('csy').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();csSearch()}})}
 function fit(){
  const sc=$('scaler'),v=$('view'),s=sc.firstElementChild;
  if(!s){return}
@@ -2194,7 +2196,7 @@ d.addEventListener('input',sch);d.addEventListener('change',sch);d.addEventListe
 #csr table{table-layout:auto}#csr td,#csr th{word-break:break-word;overflow-wrap:anywhere}
 @media (max-width:700px){#csr table.csx,#csr table.csx tbody,#csr table.csx tr,#csr table.csx td{display:block;width:100%}#csr table.csx thead{display:none}#csr table.csx tr{border:1px solid var(--line);border-radius:8px;margin:0 0 8px;padding:4px 8px}#csr table.csx td{border:0;border-bottom:1px dashed var(--line);text-align:right;padding:4px 2px}#csr table.csx td:last-child{border-bottom:0}#csr table.csx td:empty{display:none}#csr table.csx td::before{content:attr(data-l)": ";color:var(--mut);font-weight:700;font-size:.82rem}}
 </style>
-<details id="cs" class="noprint"><summary>بحث برقم الدعوى</summary><div class="addrow"><input id="csq" type="text" dir="ltr" inputmode="numeric" placeholder="مثلًا 1234 أو 1234/70"><button id="csb" type="button">بحث</button></div><div id="csr"></div></details>
+<details id="cs" class="noprint"><summary>بحث برقم الدعوى</summary><div class="addrow"><input id="csq" type="text" dir="ltr" inputmode="numeric" placeholder="رقم الدعوى — مثل 1234 أو 1234/70"><input id="csy" type="text" dir="ltr" inputmode="numeric" maxlength="4" placeholder="السنة" title="السنة القضائية: 21 أو 2021 — اختياري" style="flex:0 0 7ch;text-align:center"><button id="csb" type="button">بحث</button></div><div id="csr"></div></details>
  </div>
  <div id="stk" class="noprint"><div id="orig" class="orig" hidden><div class="cap">الأصل</div><canvas id="ocv"></canvas></div><div id="edbox" class="orig" hidden><div class="cap" id="edlbl"></div><div id="edinf" hidden style="background:#12263F;color:#fff;border-radius:8px;padding:5px 8px;font-size:.78rem;line-height:1.6"></div><textarea id="edta" rows="1" dir="rtl" style="width:100%;font:inherit;font-size:1rem;line-height:1.5;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)"></textarea><div class="actions"><button id="edok" type="button" class="sec" hidden>✓ الاسم صحيح</button><button id="eddone" type="button">تم</button></div></div></div>
   <div id="bigbar" class="noprint"><button id="bsm" type="button" class="sec" aria-label="تصغير">−</button><button id="blg" type="button" class="sec" aria-label="تكبير">+</button><span class="sp"></span><button id="bpr" type="button" class="sec">🖨 طباعة</button><button id="bcl" type="button">✕ إغلاق</button></div>
@@ -2494,14 +2496,14 @@ function build(){
 const csn=s=>toEn(String(s==null?'':s)).replace(/[\u200e\u200f]/g,'');
 const csT=s=>csn(s).match(/\d+/g)||[];
 function csSearch(){
- const o=$('csr'),q=csn($('csq').value).trim();
- if(!q){o.innerHTML='';return}
- const pt=q.split(/[\/\\\-\s]+/).filter(Boolean),n=(pt[0]||'').replace(/\D/g,''),y=(pt[1]||'').replace(/\D/g,'');
- if(!n){o.innerHTML='<span class="hint err">اكتب أرقام بس.</span>';return}
+ const o=$('csr'),q=csn($('csq').value).trim(),qy=csn((($('csy')||{}).value)||'').trim();
+ if(!q&&!qy){o.innerHTML='';return}
+ const pt=q.split(/[\/\\\-\s]+/).filter(Boolean),n=(pt[0]||'').replace(/\D/g,''),y=(pt[1]||'').replace(/\D/g,'')||qy.replace(/\D/g,'');
+ if(!n&&!y){o.innerHTML='<span class="hint err">اكتب رقم الدعوى أو السنة.</span>';return}
  if(!state.files.length){o.innerHTML='<span class="hint err">ضيف ملف PDF الأول.</span>';return}
  const h=[];
- for(const f of state.files)for(const r of f.rows)if(csT(r.no).some(x=>x.includes(n))&&(!y||csT(r.yr).some(x=>x===y||x.endsWith(y))))h.push([f,r]);
- if(!h.length){o.innerHTML='<span class="hint">مفيش دعوى بالرقم ده في الملفات.</span>';return}
+ for(const f of state.files)for(const r of f.rows)if((!n||csT(r.no).some(x=>x.includes(n)))&&(!y||csT(r.yr).some(x=>x===y||x.endsWith(y))))h.push([f,r]);
+ if(!h.length){o.innerHTML='<span class="hint">مفيش دعوى بالبيانات دي في الملفات.</span>';return}
  const L=[['الجلسة',(f,r)=>esc(dB(toAr(dShow(f.date||''))))],['القسم',(f,r)=>esc(r.sec||f.kind||'')],['م',(f,r)=>esc(toAr(r.m==null?'':r.m))],['رقم الدعوى',(f,r)=>esc(toAr(r.no))+' / '+esc(toAr(r.yr))],['المدعي',(f,r)=>esc(r.pl||'')],['المدعى عليه',(f,r)=>esc(r.df||'')],['الجلسة السابقة',(f,r)=>r.prev?esc(toAr(r.prev)):''],['القرار',(f,r)=>esc(toAr((r.dec||'')+(r.note?' - '+r.note:'')))],['الجلسة القادمة',(f,r)=>r.next?esc(toAr(r.next)):'']];
  const used=L.filter((c,i)=>i<6||c[0]==='القرار'||h.some(([f,r])=>c[1](f,r)));
  const rows=h.map(([f,r])=>'<tr>'+used.map(c=>`<td data-l="${c[0]}">${c[1](f,r)}</td>`).join('')+'</tr>').join('');
@@ -2510,6 +2512,7 @@ function csSearch(){
 $('csb').addEventListener('click',csSearch);
 $('csq').addEventListener('input',csSearch);
 $('csq').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();csSearch()}});
+if($('csy')){$('csy').addEventListener('input',csSearch);$('csy').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();csSearch()}})}
 function fit(){
  const sc=$('scaler'),v=$('view'),s=sc.firstElementChild;
  if(!s){return}
