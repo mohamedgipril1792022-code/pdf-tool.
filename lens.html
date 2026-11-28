@@ -140,7 +140,7 @@ label.chk{display:flex;gap:6px;align-items:center;font-size:.9rem}
     
     
     
-    <label class="chk"><input type="checkbox" id="win" checked> قارئ ويندوز المحلي <span id="winst" class="hint"></span></label><label class="chk"><input type="checkbox" id="gon"> قارئ جوجل للأرقام والسطور المهمة <span id="gst" class="hint"></span></label><div class="row" id="gbox" style="gap:8px;width:100%" hidden><input id="gkey" type="password" autocomplete="off" dir="ltr" placeholder="مفتاح Google Cloud Vision (API key)" style="flex:1;min-width:180px"><button type="button" id="gtest">اختبار المفتاح</button><span class="hint" style="width:100%">يُرسَل إلى جوجل فقط: سطور الأرقام، ومن «قبول الدعوى شكلًا» إلى «وكيل»، والقضايا والتصرف النهائي، وفي تقرير المفوض طلبات المدعي وما انتهى إليه — صورة واحدة لكل صفحة.</span></div>
+    <label class="chk"><input type="checkbox" id="win" checked> قارئ ويندوز المحلي <span id="winst" class="hint"></span></label><label class="chk"><input type="checkbox" id="gon"> قارئ جوجل للأرقام والسطور المهمة <span id="gst" class="hint"></span></label><div class="row" id="gbox" style="gap:8px;width:100%" hidden><input id="gkey" type="password" autocomplete="off" dir="ltr" placeholder="مفتاح Google Cloud Vision (API key)" style="flex:1;min-width:180px"><button type="button" id="gtest">اختبار المفتاح</button><label class="chk" style="width:100%"><input type="checkbox" id="gvpg" checked> الصفحة الضعيفة كلها بجوجل (أقصى دقة)</label><span class="hint" id="guse" style="width:100%"></span><span class="hint" style="width:100%">يُرسَل إلى جوجل فقط: سطور الأرقام، ومن «قبول الدعوى شكلًا» إلى «وكيل»، والقضايا والتصرف النهائي، وفي تقرير المفوض طلبات المدعي وما انتهى إليه — صورة واحدة لكل صفحة.</span></div>
     <div style="margin:6px 0"><button id="winck" type="button" class="s">🩺 فحص القارئ</button><div id="winckr" style="margin-top:6px;line-height:1.9"></div></div>
     <details class="lset" id="wini"><summary>📥 تثبيت قارئ ويندوز على جهاز آخر</summary>
       <ol class="hint" style="margin:6px 0;padding-inline-start:22px;line-height:1.9"><li>اضغط الزر أدناه لنسخ أمر التثبيت.</li><li>على ذلك الجهاز: كليك يمين على زر ابدأ ← «Terminal (Admin)» أو «Windows PowerShell (Admin)».</li><li>الصق (Ctrl+V) ثم Enter وانتظر حتى تظهر «تم التثبيت بنجاح».</li><li>في Edge: اسمح بـ «Local network» للموقع، ثم أعد فتح البرنامج.</li></ol>
@@ -592,6 +592,18 @@ async function readSmart(maker,psm,lm){
     $('status').textContent='الجودة ضعيفة — إعادة القراءة بدقة أعلى…';
     try{let c2=await maker(1.5);if(dg){const q=rotC(c2,dg);c2.width=c2.height=0;c2=deskewC(q)}const r2=await ocr(c2,'4');try{r2._nums=numScan(c2,r2)}catch(e){r2._nums=[]}c2.width=c2.height=0;if((r2.data.confidence||0)>(r.data.confidence||0))r=r2}catch(e){}
   }
+  if(psm==='3'&&$('gvpg')&&$('gvpg').checked&&gOn()&&(r.data.confidence||0)<75&&gQuota()){
+   try{
+    $('status').textContent='الصفحة ضعيفة — قراءة سحابية بدقة أعلى…';
+    const k=Math.min(1,2200/c.width),g2=document.createElement('canvas');
+    g2.width=Math.round(c.width*k);g2.height=Math.round(c.height*k);
+    g2.getContext('2d').drawImage(c,0,0,g2.width,g2.height);
+    const b64=g2.toDataURL('image/jpeg',.85).split(',')[1];g2.width=g2.height=0;
+    const g=await gCall(b64),tx=(g.fullTextAnnotation&&g.fullTextAnnotation.text)||'';
+    if(tx.replace(/\s/g,'').length>(r.data.text||'').replace(/\s/g,'').length){r.data.text=tx;r._gv=1;r.data.confidence=Math.max(r.data.confidence||0,92)}
+    gUsed(gCount()+1);gSt('قرأتها جوجل بدقة أعلى — '+tx.replace(/\s/g,'').length+' حرف');
+   }catch(e){gErr(e)}
+  }
   if(psm==='3'){r._pg=true;r._deg=dg}
   return r;
 }
@@ -903,6 +915,11 @@ const GV={bad:false,n:0,pg:0};
 function gKey(){try{return(localStorage.getItem(NS+'gkey')||'').trim()}catch(e){return''}}
 function gOn(){const c=$('gon');return !!(c&&c.checked&&!GV.bad&&gKey()&&navigator.onLine!==false)}
 function gSt(t){const e=$('gst');if(e)e.textContent=t}
+/* حصة الشهر: الصفحة الضعيفة بس هي اللي بتروح لجوجل، وبحد ٩٠٠ صفحة في الشهر */
+function gMonth(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)}
+function gCount(){try{const o=JSON.parse(localStorage.getItem(NS+'guse')||'{}');return o.m===gMonth()?(o.n||0):0}catch(e){return 0}}
+function gUsed(n){try{localStorage.setItem(NS+'guse',JSON.stringify({m:gMonth(),n}))}catch(e){}const e=$('guse');if(e)e.textContent='استُخدم الشهر ده: '+toAr(n)+' صفحة من ٩٠٠'}
+function gQuota(){const n=gCount();if(n>=900){gSt('وصلت حد الـ٩٠٠ صفحة الشهر ده — القراءة السحابية واقفة لحد الشهر الجاي');return false}return true}
 async function gCall(b64){
   const res=await fetch('https://vision.googleapis.com/v1/images:annotate?key='+encodeURIComponent(gKey()),{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({requests:[{image:{content:b64},features:[{type:'DOCUMENT_TEXT_DETECTION'}],imageContext:{languageHints:['ar']}}]})});
