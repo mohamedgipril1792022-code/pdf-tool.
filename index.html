@@ -7653,7 +7653,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  <section class="panel" aria-label="بحث">
   <h1>البحث العام</h1>
   <div class="row2"><div><label for="smode">البحث بـ</label><select id="smode"><option value="no">رقم الدعوى</option><option value="nm">الاسم (المدعي / المدعى عليه)</option></select></div><div><label for="sscope">في</label><select id="sscope"><option value="all">كل الرولات</option><option value="xl">الإكسيل بس</option><option value="pdf">الـ PDF بس</option><option value="mh">المحال بس</option></select></div></div>
-  <div class="sbar"><input id="q" type="text" placeholder="رقم الدعوى أو 1234/2020" aria-label="كلمة البحث"><button id="go" type="button">بحث</button></div>
+  <div class="sbar"><input id="q" type="text" placeholder="رقم الدعوى أو 1234/2020" aria-label="كلمة البحث"><input id="qy" type="text" dir="ltr" inputmode="numeric" maxlength="4" placeholder="السنة" title="السنة القضائية: 21 أو 2021 — اختياري" aria-label="السنة" style="flex:0 0 7ch;text-align:center"><button id="go" type="button">بحث</button></div>
   <p class="hint">بيدوّر برقم الدعوى أو بالاسم في الرولات المحفوظة (PDF وإكسيل، أو واحد منهم) ويعرض مراحل الدعوى مرتبة بالتاريخ لحد آخر إجراء. الإجراء مرتبط بالجلسة اللي اتاخد فيها.</p>
   <div id="res"></div>
  </section>
@@ -7804,11 +7804,12 @@ const nz=s=>String(toEn(s==null?'':s)).replace(/[ً-ْـ‎‏]/g,'').replace(/[
 const ham=(a,b)=>{if(a.length!==b.length)return 9;let h=0;for(let i=0;i<a.length;i++)if(a[i]!==b[i])h++;return h};
 function search(){
  const o=$('res'),q0=$('q').value.replace(/[‎‏]/g,'').trim(),mode=$('smode').value,scope=$('sscope').value;
- if(!q0){o.innerHTML='';return}
+ const qy0=toEn(String((($('qy')||{}).value)||'').replace(/[‎‏]/g,'')).trim();
+ if(!q0&&!qy0){o.innerHTML='';return}
  let n='',y='',words=[];
  if(mode==='no'){
-  const q=toEn(q0),pt=q.split(/[\/\\\-\s]+/).filter(Boolean);n=(pt[0]||'').replace(/\D/g,'').replace(/^0+/,'');y=(pt[1]||'').replace(/\D/g,'');
-  if(!n){o.innerHTML='<span class="err">اكتب رقم الدعوى.</span>';return}
+  const q=toEn(q0),pt=q.split(/[\/\\\-\s]+/).filter(Boolean);n=(pt[0]||'').replace(/\D/g,'').replace(/^0+/,'');y=(pt[1]||'').replace(/\D/g,'')||qy0.replace(/\D/g,'');
+  if(!n&&!y){o.innerHTML='<span class="err">اكتب رقم الدعوى أو السنة.</span>';return}
  }else{words=nz(q0).split(' ').filter(Boolean);if(!words.length){o.innerHTML='<span class="err">اكتب اسم.</span>';return}}
  const mhH=mode==='no'?MH.find(n,y):[];
  const tgB=mode==='no'?tgBlock(TG.find(n,y)):'';
